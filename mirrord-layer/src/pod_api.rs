@@ -118,7 +118,7 @@ pub async fn create_agent(
         .create(&PostParams::default(), &agent_pod)
         .await
         .unwrap();
-
+    tokio::time::sleep(std::time::Duration::from_secs(5)).await;
     let pods_api: Api<Pod> = Api::namespaced(client.clone(), agent_namespace);
     let pods = pods_api
         .list(&ListParams::default().labels(&format!("job-name={}", agent_job_name)))
