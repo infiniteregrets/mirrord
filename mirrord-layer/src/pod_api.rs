@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use envconfig::Envconfig;
 use k8s_openapi::api::{batch::v1::Job, core::v1::Pod};
 use kube::{
@@ -118,7 +120,7 @@ pub async fn create_agent(
         .create(&PostParams::default(), &agent_pod)
         .await
         .unwrap();
-
+    tokio::time::sleep(Duration::from_secs(2)).await;
     let pods_api: Api<Pod> = Api::namespaced(client.clone(), agent_namespace);
     let pods = pods_api
         .list(&ListParams::default().labels(&format!("job-name={}", agent_job_name)))
