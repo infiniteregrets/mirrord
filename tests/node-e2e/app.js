@@ -5,7 +5,7 @@ const app = express();
 const PORT = 80;
 
 const TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-
+var path = process.cwd() + "/test";
 
 app.get('/', (req, res) => {
     res.send('Request received'); // Todo: validate responses 
@@ -22,7 +22,7 @@ app.post('/', (req, res) => {
 
 app.put('/', (req, res) => {
     req.on('data', (data) => {
-        fs.writeFile('/tmp/test', data.toString(), (err) => {
+        fs.writeFile(path, data.toString(), (err) => {
             if (err) {
                 throw err;
             }
@@ -33,7 +33,7 @@ app.put('/', (req, res) => {
 
 app.delete('/', (req, res) => {
     req.on('data', (data) => {
-        fs.unlink('/tmp/test', (err) => {
+        fs.unlink(path, (err) => {
             if (err) {
                 throw err;
             }

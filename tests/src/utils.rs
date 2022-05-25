@@ -1,5 +1,15 @@
-use std::{collections::HashMap, env, panic, path::Path, process, process::Stdio};
+use std::{
+    collections::HashMap,
+    env,
+    fmt::Debug,
+    panic,
+    path::Path,
+    process,
+    process::Stdio,
+    sync::{mpsc, mpsc::channel},
+};
 
+use futures::{StreamExt, TryStreamExt};
 use k8s_openapi::{
     api::{
         apps::v1::Deployment,
@@ -9,14 +19,17 @@ use k8s_openapi::{
 };
 use kube::{
     api::{DeleteParams, ListParams, PostParams},
+    core::WatchEvent,
     Api, Client, Config,
 };
+use notify::{watcher, DebouncedEvent, RecursiveMode, Watcher};
 use reqwest::{Method, StatusCode};
+use serde::de::DeserializeOwned;
 use serde_json::json;
 use tokio::{
     io::{AsyncBufReadExt, BufReader},
     process::{Child, ChildStdout, Command},
-    time::{sleep, Duration},
+    time::{sleep, timeout, Duration},
 };
 
 static TEXT: &str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -61,7 +74,7 @@ pub async fn get_service_url(client: &Client, namespace: &str) -> Option<String>
         .into_iter()
         .next()
         .and_then(|pod| pod.status)
-        .and_then(|status| status.pod_ip.clone());
+        .and_then(|status| status.host_ip.clone());
     let port = services
         .into_iter()
         .next()
@@ -104,6 +117,7 @@ pub async fn create_namespace(client: &Client, namespace: &str) {
         .create(&PostParams::default(), &new_namespace)
         .await
         .unwrap();
+    watch_resource_exists(namespace_api, namespace).await;
 }
 
 // kubectl delete namespace name
@@ -179,6 +193,7 @@ pub async fn create_nginx_pod(client: &Client, namespace: &str) {
         .create(&PostParams::default(), &deployment)
         .await
         .unwrap();
+    watch_resource_exists(deployment_api, "nginx").await;
 
     let service_api: Api<Service> = Api::namespaced(client.clone(), namespace);
     let service = serde_json::from_value(json!({
@@ -211,6 +226,23 @@ pub async fn create_nginx_pod(client: &Client, namespace: &str) {
         .create(&PostParams::default(), &service)
         .await
         .unwrap();
+    watch_resource_exists(service_api, "nginx").await;
+}
+
+pub async fn watch_resource_exists<K: Debug + Clone + DeserializeOwned>(api: Api<K>, name: &str) {
+    let params = ListParams::default()
+        .fields(&format!("metadata.name={}", name))
+        .timeout(10);
+    let mut stream = api.watch(&params, "0").await.unwrap().boxed();
+    while let Some(status) = stream.try_next().await.unwrap() {
+        match status {
+            WatchEvent::Modified(_) => break,
+            WatchEvent::Error(s) => {
+                panic!("Error watching namespaces: {:?}", s);
+            }
+            _ => {}
+        }
+    }
 }
 
 // to all requests the express API prints {request_name}: Request completed
@@ -229,17 +261,55 @@ pub async fn validate_requests(stdout: ChildStdout, service_url: &str) {
     buffer.read_line(&mut stream).await.unwrap();
     assert!(stream.contains("POST: Request completed"));
 
-    http_request(service_url, Method::PUT).await;
-    sleep(Duration::from_secs(2)).await;
-    assert!(Path::new("/tmp/test").exists());
-    buffer.read_line(&mut stream).await.unwrap();
-    assert!(stream.contains("PUT: Request completed"));
+    let (tx, rx) = mpsc::channel();
+    let mut watcher = watcher(tx, Duration::from_millis(100)).unwrap();
+    let cwd = env::current_dir().unwrap().to_str().unwrap().to_owned();
+    println!("{}", cwd);
+    let exact_file_path = format!("{}/test", cwd);    
 
-    http_request(service_url, Method::DELETE).await;
-    sleep(Duration::from_secs(2)).await;
-    assert!(!Path::new("/tmp/test").exists());
-    buffer.read_line(&mut stream).await.unwrap();
-    assert!(stream.contains("DELETE: Request completed"));
+    let task_url = service_url.to_string();    
+     
+    tokio::spawn(async move {
+        watcher.watch(cwd, RecursiveMode::Recursive).unwrap();
+        loop {
+            match rx.recv() {                
+                Ok(event) => match event {
+                    DebouncedEvent::Create(path) => {
+                        println!("cr{:?}", path);
+                        assert_eq!(path.to_str().unwrap(), &exact_file_path);
+                    }
+                    DebouncedEvent::Write(path) => {
+                        println!("wr{:?}", path);
+                        assert_eq!(path.to_str().unwrap(), &exact_file_path);
+                    }
+                    DebouncedEvent::Remove(path) => {
+                        println!("rem{:?}", path);
+                        assert_eq!(path.to_str().unwrap(), &exact_file_path);
+                    }
+                    _ => panic!("unexpected event"),
+                },
+                Err(e) => {
+                    panic!("{:?}", e);
+                }
+            }
+    }
+    })
+    .await
+    .unwrap();
+
+
+
+    tokio::spawn(async move {
+        println!("here");
+        http_request(&task_url, Method::PUT).await;
+        buffer.read_line(&mut stream).await.unwrap();
+        assert!(stream.contains("PUT: Request completed"));
+        http_request(&task_url, Method::DELETE).await;
+        buffer.read_line(&mut stream).await.unwrap();
+        assert!(stream.contains("DELETE: Request completed"));
+    })
+    .await
+    .unwrap();
 }
 
 pub async fn validate_no_requests(stdout: ChildStdout, service_url: &str) {
@@ -261,6 +331,9 @@ pub async fn test_server_init(
 ) -> Child {
     let pod_name = get_nginx_pod_name(&client, pod_namespace).await.unwrap();
     let command = vec!["node", "node-e2e/app.js"];
+    // used by the CI, to load the image locally:
+    // docker build -t test . -f mirrord-agent/Dockerfile
+    // minikube load image test:latest
     env.insert("MIRRORD_AGENT_IMAGE", "test");
     let server = start_node_server(&pod_name, command, env);
     setup_panic_hook();

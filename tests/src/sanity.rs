@@ -95,7 +95,8 @@ mod tests {
         let mut server = test_server_init(&client, pod_namespace, env).await;
         create_namespace(&client, test_namespace).await;
         create_nginx_pod(&client, test_namespace).await;
-        sleep(Duration::from_secs(2)).await; // we need a short sleep here, otherwise the test panics
+        
+
         let service_url = get_service_url(&client, test_namespace).await.unwrap();
 
         let mut stderr_reader = BufReader::new(server.stderr.take().unwrap());
@@ -213,9 +214,7 @@ mod tests {
         let client = setup_kube_client().await;
         let pod_namespace = "test-pod-namespace";
         create_namespace(&client, pod_namespace).await;
-        create_nginx_pod(&client, pod_namespace).await;
-        sleep(Duration::from_secs(5)).await;
-        // need to sleep here, otherwise pod_api.rs panics
+        create_nginx_pod(&client, pod_namespace).await;        
 
         let env = HashMap::from([("MIRRORD_AGENT_IMPERSONATED_POD_NAMESPACE", pod_namespace)]);
         let mut server = test_server_init(&client, pod_namespace, env).await;

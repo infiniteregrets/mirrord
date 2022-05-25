@@ -2053,10 +2053,12 @@ dependencies = [
 name = "tests"
 version = "0.1.0"
 dependencies = [
+ "futures",
  "k8s-openapi",
  "kube",
  "mirrord",
  "reqwest",
+ "serde",
  "serde_json",
  "tokio",
 ]
