@@ -55,9 +55,21 @@ jobs:
   test_agent_image:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Build image
-        run: docker build . --file mirrord-agent/Dockerfile
+      - uses: actions/checkout@v2    
+      - uses: docker/setup-buildx-action@v2
+      - name: build and export 
+        uses: docker/build-push-action@v3
+        with: 
+          context: .
+          tag: test:latest
+          file: mirrord-agent/Dockerfile
+          outputs: type=docker,dest=/tmp/test.tar
+      - name: upload image
+        uses: actions/upload-artifact@v2
+        with:
+          name: test
+          path: /tmp/test.tar
+      
 
   test_mirrord_layer:
     strategy:
@@ -95,10 +107,11 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
-    needs: build_mirrord
+    needs: [build_mirrord, test_agent_image]
     name: e2e
     steps:
       - uses: actions/checkout@v2
+      - uses: docker/setup-buildx-action@v2
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
@@ -116,7 +129,13 @@ jobs:
         uses: medyagh/setup-minikube@master
         with:
           container-runtime: containerd
-      - run: docker build -t test . --file mirrord-agent/Dockerfile
+      - name: download image
+        uses: actions/download-artifact@v2
+        with:
+          name: test
+          path: /tmp
+      - name: load image
+        run: docker load --input /tmp/test.tar          
       - run: minikube image load test:latest
       - name: setup nginx
         run: kubectl apply -f tests/app.yaml      
