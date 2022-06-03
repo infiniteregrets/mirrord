@@ -55,11 +55,11 @@ jobs:
   test_agent_image:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2    
+      - uses: actions/checkout@v2
       - uses: docker/setup-buildx-action@v2
-      - name: build and export 
+      - name: build and export
         uses: docker/build-push-action@v3
-        with: 
+        with:
           context: .
           tag: test:latest
           file: mirrord-agent/Dockerfile
@@ -69,7 +69,6 @@ jobs:
         with:
           name: test
           path: /tmp/test.tar
-      
 
   test_mirrord_layer:
     strategy:
@@ -99,11 +98,10 @@ jobs:
           toolchain: nightly
           components: rustfmt
       - uses: Swatinem/rust-cache@v1
-        with: 
+        with:
           key: ubuntu-latest
-      - run: sudo apt install -y libpcap-dev cmake          
+      - run: sudo apt install -y libpcap-dev cmake
       - run: cargo +nightly build --manifest-path=./Cargo.toml
-
 
   e2e:
     runs-on: ubuntu-latest
@@ -121,8 +119,8 @@ jobs:
         with:
           node-version: 14
       - uses: Swatinem/rust-cache@v1
-        with: 
-          key: ubuntu-latest    
+        with:
+          key: ubuntu-latest
       - run: npm install express
       - run: sudo apt-get update -y && sudo apt-get install -y libpcap-dev cmake
       - name: start minikube
@@ -135,9 +133,9 @@ jobs:
           name: test
           path: /tmp
       - name: load image
-        run: docker load --input /tmp/test.tar          
+        run: docker load --input /tmp/test.tar && docker image ls -a
       - run: minikube image load test:latest
       - name: setup nginx
-        run: kubectl apply -f tests/app.yaml      
+        run: kubectl apply -f tests/app.yaml
       - name: run node tests
         run: cargo test --manifest-path ./tests/Cargo.toml  -- --test-threads 1
