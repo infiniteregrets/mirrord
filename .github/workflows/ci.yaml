@@ -134,6 +134,7 @@ jobs:
           path: /tmp
       - name: load image
         run: docker load --input /tmp/test.tar && docker image ls -a
+      - run: docker image tag $(docker images | awk '{print $3}' | awk 'NR==2') test:latest
       - run: minikube image load test:latest
       - name: setup nginx
         run: kubectl apply -f tests/app.yaml
