@@ -61,7 +61,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          tag: test:latest
+          tag: test
           file: mirrord-agent/Dockerfile
           outputs: type=docker,dest=/tmp/test.tar
       - name: upload image
@@ -133,7 +133,7 @@ jobs:
           name: test
           path: /tmp
       - name: load image
-        run: docker load --input /tmp/test.tar test:latest && docker image ls -a
+        run: docker load --input /tmp/test.tar && docker image ls -a
       - run: minikube image load test:latest
       - name: setup nginx
         run: kubectl apply -f tests/app.yaml
