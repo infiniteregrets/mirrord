@@ -16,7 +16,7 @@ use tracing::{debug, error, warn};
 
 use crate::{
     common::HookMessage,
-    macros::{hook, try_hook},
+    macros::{hook, try_hook, hook_sym},
     tcp::{HookMessageTcp, Listen},
     HOOK_SENDER,
 };
@@ -109,7 +109,7 @@ fn is_ignored_port(port: Port) -> bool {
 
 /// Create the socket, add it to SOCKETS if successful and matching protocol and domain (Tcpv4/v6)
 fn socket(domain: c_int, type_: c_int, protocol: c_int) -> RawFd {
-    debug!("socket called domain:{:?}, type:{:?}", domain, type_);
+    debug!("socket called domain:{:?}, type:{:?}, protocol:{:?}", domain, type_, protocol);
     let fd = unsafe { libc::socket(domain, type_, protocol) };
     if fd == -1 {
         error!("socket failed");
@@ -559,7 +559,15 @@ unsafe extern "C" fn dup3_detour(oldfd: c_int, newfd: c_int, flags: c_int) -> c_
 }
 
 pub fn enable_socket_hooks(interceptor: &mut Interceptor) {
+    // frida_gum::Module::enumerate_modules().iter().for_each(|module| debug!("Module: {:?}", module.name));
+
+    // frida_gum::Module::enumerate_symbols("go-e2e").iter().for_each(|symbol| debug!("Symbol: {:?}", symbol.name));
+
+    // frida_gum::Module::find_symbol_by_name(Some("go-e2e"), "syscall.socket");
     hook!(interceptor, "socket", socket_detour);
+    hook_sym!(interceptor, "syscall.socket", socket_detour);
+    hook_sym!(interceptor, "syscall.accept", accept_detour);
+    hook_sym!(interceptor, "syscall.accept4", accept4_detour);
     hook!(interceptor, "bind", bind_detour);
     hook!(interceptor, "listen", listen_detour);
     hook!(interceptor, "connect", connect_detour);
