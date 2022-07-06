@@ -116,7 +116,7 @@ fn socket(domain: c_int, type_: c_int, protocol: c_int) -> RawFd {
         return fd;
     }
     // We don't handle non Tcpv4 sockets
-    if !((domain == libc::AF_INET) || (domain == libc::AF_INET6) && (type_ & libc::SOCK_STREAM) > 0)
+    if !((domain == libc::AF_INET) || (domain == libc::AF_INET6) || (domain == libc::AF_UNSPEC) && (type_ & libc::SOCK_STREAM) > 0)
     {
         debug!("non Tcp socket domain:{:?}, type:{:?}", domain, type_);
         return fd;
