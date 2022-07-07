@@ -134,6 +134,17 @@ fn socket(domain: c_int, type_: c_int, protocol: c_int) -> RawFd {
     fd
 }
 
+unsafe extern "C" fn go_socket_detour(domain: isize, type_: isize, protocol: isize) -> RawFd {
+    debug!("socket called in go_detour: domain:{:?}, type:{:?}, protocol:{:?}", domain, type_, protocol);    
+
+    if domain as i32 == libc::AF_UNSPEC {
+        debug!("go_socket_detour: AF_UNSPEC");
+    }
+
+    socket(libc::AF_UNSPEC, libc::SOCK_STREAM | libc::SOCK_CLOEXEC, protocol as c_int)
+    -1 
+}
+
 unsafe extern "C" fn socket_detour(domain: c_int, type_: c_int, protocol: c_int) -> c_int {
     socket(domain, type_, protocol)
 }
@@ -565,9 +576,9 @@ pub fn enable_socket_hooks(interceptor: &mut Interceptor) {
 
     // frida_gum::Module::find_symbol_by_name(Some("go-e2e"), "syscall.socket");
     hook!(interceptor, "socket", socket_detour);
-    hook_sym!(interceptor, "syscall.socket", socket_detour);
-    hook_sym!(interceptor, "syscall.accept", accept_detour);
-    hook_sym!(interceptor, "syscall.accept4", accept4_detour);
+    hook_sym!(interceptor, "syscall.socket", go_socket_detour);
+    // hook_sym!(interceptor, "syscall.accept", accept_detour);
+    // hook_sym!(interceptor, "syscall.accept4", accept4_detour);
     hook!(interceptor, "bind", bind_detour);
     hook!(interceptor, "listen", listen_detour);
     hook!(interceptor, "connect", connect_detour);

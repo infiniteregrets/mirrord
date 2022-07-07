@@ -64,6 +64,26 @@
         "MIRRORD_FILE_OPS": "true",
         "RUST_BACKTRACE": "short"
       }
+    },
+
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "main.go: Debug mirrord-layer",
+      "program": "${workspaceFolder}/tests/go-e2e/go-e2e",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "sourceMap": {},
+      "sourceLanguages": ["golang"],
+      "env": {
+        "DYLD_INSERT_LIBRARIES": "${workspaceFolder}/target/debug/libmirrord_layer.dylib",
+        "LD_PRELOAD": "${workspaceFolder}/target/debug/libmirrord_layer.so",
+        "RUST_LOG": "warn,mirrord=debug",
+        "MIRRORD_AGENT_IMPERSONATED_POD_NAME": "",
+        "MIRRORD_AGENT_RUST_LOG": "warn,mirrord=debug",
+        "MIRRORD_ACCEPT_INVALID_CERTIFICATES": "true",
+        "RUST_BACKTRACE": "short"
+      }
     }
   ]
 }
