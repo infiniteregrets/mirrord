@@ -576,7 +576,7 @@ pub fn enable_socket_hooks(interceptor: &mut Interceptor) {
 
     // frida_gum::Module::find_symbol_by_name(Some("go-e2e"), "syscall.socket");
     hook!(interceptor, "socket", socket_detour);
-    hook_sym!(interceptor, "syscall.socket", go_socket_detour);
+    //hook_sym!(interceptor, "syscall.socket", go_socket_detour);
     // hook_sym!(interceptor, "syscall.accept", accept_detour);
     // hook_sym!(interceptor, "syscall.accept4", accept4_detour);
     hook!(interceptor, "bind", bind_detour);

@@ -1,25 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "GET" {
-		fmt.Println("GET")
-	} else if r.Method == "POST" {
-		fmt.Println("POST")
-	} else if r.Method == "PUT" {
-		fmt.Println("PUT")
-	} else if r.Method == "DELETE" {
-		fmt.Println("DELETE")
-	}
-
-}
-
 func main() {
-	http.HandleFunc("/", handler)
-	fmt.Println("listening on port 8080")
-	http.ListenAndServe(":8080", nil)
+	r := gin.Default()
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "pong",
+		})
+	})
+	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
