@@ -10,6 +10,20 @@ macro_rules! hook {
     };
 }
 
+macro_rules! hook_sym {
+    ($interceptor:expr, $func:expr, $detour_name:expr, $binary:expr) => {
+        $interceptor
+            .replace(
+                frida_gum::Module::find_symbol_by_name(Some($binary), $func).unwrap(),
+                frida_gum::NativePointer($detour_name as *mut libc::c_void),
+                frida_gum::NativePointer(std::ptr::null_mut::<libc::c_void>()),
+            )
+            .inspect_err(|err| {
+                debug!("Failed to hook {:?}", err);
+            }).inspect(|_| debug!( "{:?} hooked", $func)).unwrap();
+    };
+}
+
 macro_rules! try_hook {
     ($interceptor:expr, $func:expr, $detour_name:expr) => {
         if let Some(addr) = frida_gum::Module::find_export_by_name(None, $func) {
