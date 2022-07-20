@@ -2,6 +2,7 @@
 #![feature(once_cell)]
 #![feature(result_option_inspect)]
 #![feature(const_trait_impl)]
+#![feature(naked_functions)]
 
 use std::{
     collections::{HashSet, VecDeque},

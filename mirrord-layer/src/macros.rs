@@ -20,7 +20,9 @@ macro_rules! hook_sym {
             )
             .inspect_err(|err| {
                 debug!("Failed to hook {:?}", err);
-            }).inspect(|_| debug!( "{:?} hooked", $func)).unwrap();
+            })
+            .inspect(|_| debug!("{:?} hooked", $func))
+            .unwrap();
     };
 }
 
@@ -47,4 +49,5 @@ macro_rules! try_hook {
 }
 
 pub(crate) use hook;
+pub(crate) use hook_sym;
 pub(crate) use try_hook;

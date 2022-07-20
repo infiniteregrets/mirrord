@@ -1,4 +1,4 @@
-use std::{ffi::CStr, os::unix::io::RawFd};
+use std::{arch::asm, env, ffi::CStr, os::unix::io::RawFd};
 
 use frida_gum::interceptor::Interceptor;
 use libc::{c_char, c_int, sockaddr, socklen_t};
@@ -8,7 +8,7 @@ use tracing::{debug, error, trace};
 use super::ops::*;
 use crate::{
     error::LayerError,
-    macros::{hook, try_hook},
+    macros::{hook, hook_sym, try_hook},
     socket::AddrInfoHintExt,
 };
 
@@ -207,6 +207,23 @@ unsafe extern "C" fn freeaddrinfo_detour(addrinfo: *mut libc::addrinfo) {
     }
 }
 
+#[cfg(target_os = "linux")]
+#[cfg(target_arch = "x86_64")]
+#[naked]
+unsafe extern "C" fn go_raw_syscall_detour() {
+    asm!("", options(noreturn))
+}
+
+#[allow(dead_code)]
+unsafe extern "C" fn c_abi_syscall_handler() {
+    todo!()
+}
+
+// NOTE: (July 20) - We need to figure if the binary being provided is compiled by go or not, for
+// example if we end up hooking multiple symbols, it would be a waste to try_hook the symbol and log
+// that it does not exist. Instead, check if the binary is compiled by go - skip the set of
+// symbols/functions all together.
+
 pub(crate) fn enable_socket_hooks(interceptor: &mut Interceptor, enabled_remote_dns: bool) {
     hook!(interceptor, "socket", socket_detour);
     hook!(interceptor, "bind", bind_detour);
@@ -228,5 +245,12 @@ pub(crate) fn enable_socket_hooks(interceptor: &mut Interceptor, enabled_remote_
     if enabled_remote_dns {
         hook!(interceptor, "getaddrinfo", getaddrinfo_detour);
         hook!(interceptor, "freeaddrinfo", freeaddrinfo_detour);
+    }
+
+    // NOTE: Golang uses libc on macos
+    // Golang hooks -
+    if cfg!(linux) {
+        let binary = env::var("MIRRORD_DEBUG_BINARY").unwrap();
+        hook_sym!(interceptor, "RawSyscall", go_raw_syscall_detour, &binary);
     }
 }

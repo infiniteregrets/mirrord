@@ -5,6 +5,9 @@ pub struct LayerConfig {
     #[envconfig(from = "MIRRORD_AGENT_RUST_LOG", default = "info")]
     pub agent_rust_log: String,
 
+    #[envconfig(from = "MIRRORD_DEBUG_BINARY")]
+    pub binary: String,
+
     #[envconfig(from = "MIRRORD_AGENT_NAMESPACE", default = "default")]
     pub agent_namespace: String,
 
