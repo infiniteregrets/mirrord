@@ -207,11 +207,25 @@ unsafe extern "C" fn freeaddrinfo_detour(addrinfo: *mut libc::addrinfo) {
     }
 }
 
+// NOTE: golang calling convention
+// func Syscall(trap int64, a1, a2, a3 uintptr) (r1, r2, err uintptr);
+// Trap # in AX, args in DI SI DX R10 R8 R9, return in AX DX
+// Note that this differs from "standard" ABI convention, which
+// would pass 4th arg in CX, not R10.
+
 #[cfg(target_os = "linux")]
 #[cfg(target_arch = "x86_64")]
 #[naked]
-unsafe extern "C" fn go_raw_syscall_detour() {
-    asm!("", options(noreturn))
+unsafe extern fn go_raw_syscall_detour() {
+    asm!(
+        "MOVQ	a1+8(FP), DX
+	     MOVQ	a2+16(FP), SI
+	     MOVQ	a3+24(FP), DI
+	     MOVQ	trap+0(FP), AX
+         CALL   c_abi_syscall_handler
+         RET",
+        options(noreturn)
+    )
 }
 
 #[allow(dead_code)]
@@ -249,8 +263,14 @@ pub(crate) fn enable_socket_hooks(interceptor: &mut Interceptor, enabled_remote_
 
     // NOTE: Golang uses libc on macos
     // Golang hooks -
+    debug!("Hooking golang syscalls");
     if cfg!(linux) {
-        let binary = env::var("MIRRORD_DEBUG_BINARY").unwrap();
-        hook_sym!(interceptor, "RawSyscall", go_raw_syscall_detour, &binary);
+        match env::var("MIRRORD_DEBUG_BINARY") {
+            Ok(binary) => {
+                debug!("binary: {}", binary);
+                hook_sym!(interceptor, "RawSyscall", go_raw_syscall_detour, &binary)
+            },
+            Err(_) => error!("Failed to get MIRRORD_DEBUG_BINARY env var"),
+        }        
     }
 }

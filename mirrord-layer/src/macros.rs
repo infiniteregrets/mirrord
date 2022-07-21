@@ -22,7 +22,7 @@ macro_rules! hook_sym {
                 debug!("Failed to hook {:?}", err);
             })
             .inspect(|_| debug!("{:?} hooked", $func))
-            .unwrap();
+            .unwrap()
     };
 }
 
