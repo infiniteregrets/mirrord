@@ -213,25 +213,35 @@ unsafe extern "C" fn freeaddrinfo_detour(addrinfo: *mut libc::addrinfo) {
 // Note that this differs from "standard" ABI convention, which
 // would pass 4th arg in CX, not R10.
 
+
+// NOTE: how C calls socket() `gcc -S -masm intel -fverbose-asm -g -O2 test.c -o test.s`
+/*
+# test.c:18:     s = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+	.loc 1 18 9 view .LVU8
+	mov	edx, DWORD PTR 12[rax]	# res.0_1->ai_protocol, res.0_1->ai_protocol
+	mov	esi, DWORD PTR 8[rax]	# res.0_1->ai_socktype, res.0_1->ai_socktype
+	mov	edi, DWORD PTR 4[rax]	# res.0_1->ai_family, res.0_1->ai_family
+	call	socket@PLT	#
+*/
+
+// for now lets just try to see if we are able to take the call from go abi to c abi for `socket`
 #[cfg(target_os = "linux")]
 #[cfg(target_arch = "x86_64")]
 #[naked]
-unsafe extern fn go_raw_syscall_detour() {
+unsafe extern fn go_raw_syscall_detour() {    
     asm!(
-        "MOVQ	a1+8(FP), DX
-	     MOVQ	a2+16(FP), SI
-	     MOVQ	a3+24(FP), DI
-	     MOVQ	trap+0(FP), AX
-         CALL   c_abi_syscall_handler
-         RET",
-        options(noreturn)
-    )
+        "mov rdx, QWORD PTR [rsp+0x10]",
+        "mov rsi, QWORD PTR [rsp+0x18]",
+        "mov rdx, QWORD PTR [rsp+0x20]",
+        "ret",
+        // "call c_abi_syscall_handler@plt",
+        options(noreturn),        
+    );
 }
 
-#[allow(dead_code)]
-unsafe extern "C" fn c_abi_syscall_handler() {
-    todo!()
-}
+// unsafe extern "C" fn c_abi_syscall_handler(arg1: c_int, arg2: c_int, arg3: c_int) {
+//     println!("Received {:?}, {:?}, {:?}", arg1, arg2, arg3);
+// }
 
 // NOTE: (July 20) - We need to figure if the binary being provided is compiled by go or not, for
 // example if we end up hooking multiple symbols, it would be a waste to try_hook the symbol and log
@@ -263,14 +273,15 @@ pub(crate) fn enable_socket_hooks(interceptor: &mut Interceptor, enabled_remote_
 
     // NOTE: Golang uses libc on macos
     // Golang hooks -
-    debug!("Hooking golang syscalls");
-    if cfg!(linux) {
-        match env::var("MIRRORD_DEBUG_BINARY") {
-            Ok(binary) => {
-                debug!("binary: {}", binary);
-                hook_sym!(interceptor, "RawSyscall", go_raw_syscall_detour, &binary)
-            },
-            Err(_) => error!("Failed to get MIRRORD_DEBUG_BINARY env var"),
-        }        
-    }
+    hook_sym!(interceptor, "syscall.RawSyscall.abi0", go_raw_syscall_detour, "go-e2e")
+    // debug!("Hooking golang syscalls");
+    // if cfg!(linux) {
+    //     match env::var("MIRRORD_DEBUG_BINARY") {
+    //         Ok(binary) => {
+    //             debug!("binary: {}", binary);
+    //             hook_sym!(interceptor, "RawSyscall", go_raw_syscall_detour, &binary)
+    //         },
+    //         Err(_) => error!("Failed to get MIRRORD_DEBUG_BINARY env var"),
+    //     }        
+    // }
 }

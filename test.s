@@ -5,7 +5,7 @@
 
 # GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 # options passed:  -imultiarch x86_64-linux-gnu test.c -masm=intel
-# -mtune=generic -march=x86-64 -g -O2 -fverbose-asm
+# -mtune=generic -march=x86-64 -auxbase-strip test.s -g -O2 -fverbose-asm
 # -fasynchronous-unwind-tables -fstack-protector-strong -Wformat
 # -Wformat-security -fstack-clash-protection -fcf-protection
 # options enabled:  -fPIC -fPIE -faggressive-loop-optimizations

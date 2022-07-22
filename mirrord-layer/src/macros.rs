@@ -11,7 +11,12 @@ macro_rules! hook {
 }
 
 macro_rules! hook_sym {
-    ($interceptor:expr, $func:expr, $detour_name:expr, $binary:expr) => {
+    ($interceptor:expr, $func:expr, $detour_name:expr, $binary:expr) => {        
+        //print all symbols in binary
+        // frida_gum::Module::enumerate_symbols($binary).iter().map(|symbol| {
+        //     println!("{:?}", symbol.name);
+        // }).collect::<>()
+        
         $interceptor
             .replace(
                 frida_gum::Module::find_symbol_by_name(Some($binary), $func).unwrap(),
