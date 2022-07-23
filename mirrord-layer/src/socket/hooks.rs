@@ -224,7 +224,6 @@ unsafe extern "C" fn freeaddrinfo_detour(addrinfo: *mut libc::addrinfo) {
 	call	socket@PLT	#
 */
 
-// for now lets just try to see if we are able to take the call from go abi to c abi for `socket`
 #[cfg(target_os = "linux")]
 #[cfg(target_arch = "x86_64")]
 #[naked]
@@ -232,16 +231,17 @@ unsafe extern fn go_raw_syscall_detour() {
     asm!(
         "mov rdx, QWORD PTR [rsp+0x10]",
         "mov rsi, QWORD PTR [rsp+0x18]",
-        "mov rdx, QWORD PTR [rsp+0x20]",
-        "ret",
-        // "call c_abi_syscall_handler@plt",
+        "mov rdx, QWORD PTR [rsp+0x20]", 
+        "mov rax, QWORD PTR [rsp+0x8]",
+        "call c_abi_syscall_handler",
         options(noreturn),        
     );
 }
 
-// unsafe extern "C" fn c_abi_syscall_handler(arg1: c_int, arg2: c_int, arg3: c_int) {
-//     println!("Received {:?}, {:?}, {:?}", arg1, arg2, arg3);
-// }
+#[no_mangle]
+unsafe extern "C" fn c_abi_syscall_handler(arg1: c_int, arg2: c_int, arg3: c_int, arg4: c_int) {
+    println!("Received {:?}, {:?}, {:?}, {:?}", arg1, arg2, arg3, arg4);
+}
 
 // NOTE: (July 20) - We need to figure if the binary being provided is compiled by go or not, for
 // example if we end up hooking multiple symbols, it would be a waste to try_hook the symbol and log

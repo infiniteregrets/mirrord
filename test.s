@@ -5,7 +5,7 @@
 
 # GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 # options passed:  -imultiarch x86_64-linux-gnu test.c -masm=intel
-# -mtune=generic -march=x86-64 -auxbase-strip test.s -g -O2 -fverbose-asm
+# -mtune=generic -march=x86-64 -g -O2 -fverbose-asm
 # -fasynchronous-unwind-tables -fstack-protector-strong -Wformat
 # -Wformat-security -fstack-clash-protection -fcf-protection
 # options enabled:  -fPIC -fPIE -faggressive-loop-optimizations
@@ -68,43 +68,45 @@
 	.globl	main
 	.type	main, @function
 main:
-.LFB9:
+.LFB20:
 	.file 1 "test.c"
-	.loc 1 5 12 view -0
+	.loc 1 7 12 view -0
 	.cfi_startproc
 	endbr64	
 	sub	rsp, 88	#,
 	.cfi_def_cfa_offset 96
-# test.c:11:     getaddrinfo("www.example.com", "http", &hints, &res);
-	.loc 1 11 5 is_stmt 0 view .LVU1
+# test.c:10:     getaddrinfo("www.example.com", "http", &hints, &res);
+	.loc 1 10 5 is_stmt 0 view .LVU1
 	lea	rsi, .LC0[rip]	#,
 	lea	rdi, .LC1[rip]	#,
-# test.c:5: int main() {
-	.loc 1 5 12 view .LVU2
+# test.c:7: int main() {
+	.loc 1 7 12 view .LVU2
 	mov	rax, QWORD PTR fs:40	# tmp95, MEM[(<address-space-1> long unsigned int *)40B]
-	mov	QWORD PTR 72[rsp], rax	# D.2860, tmp95
+	mov	QWORD PTR 72[rsp], rax	# D.3647, tmp95
 	xor	eax, eax	# tmp95
-	.loc 1 6 5 is_stmt 1 view .LVU3
-	.loc 1 7 5 view .LVU4
-	.loc 1 11 5 view .LVU5
+	.loc 1 8 5 is_stmt 1 view .LVU3
+	.loc 1 9 5 view .LVU4
+	.loc 1 10 5 view .LVU5
 	lea	rcx, 8[rsp]	# tmp88,
 	lea	rdx, 16[rsp]	# tmp89,
 	call	getaddrinfo@PLT	#
 .LVL0:
-	.loc 1 18 5 view .LVU6
-# test.c:18:     s = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-	.loc 1 18 53 is_stmt 0 view .LVU7
+	.loc 1 11 5 view .LVU6
+# test.c:11:     s = syscall(SYS_socket, res->ai_family, res->ai_socktype, res->ai_protocol);
+	.loc 1 11 66 is_stmt 0 view .LVU7
 	mov	rax, QWORD PTR 8[rsp]	# res.0_1, res
-# test.c:18:     s = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-	.loc 1 18 9 view .LVU8
-	mov	edx, DWORD PTR 12[rax]	# res.0_1->ai_protocol, res.0_1->ai_protocol
-	mov	esi, DWORD PTR 8[rax]	# res.0_1->ai_socktype, res.0_1->ai_socktype
-	mov	edi, DWORD PTR 4[rax]	# res.0_1->ai_family, res.0_1->ai_family
-	call	socket@PLT	#
+# test.c:11:     s = syscall(SYS_socket, res->ai_family, res->ai_socktype, res->ai_protocol);
+	.loc 1 11 9 view .LVU8
+	mov	edi, 41	#,
+	mov	ecx, DWORD PTR 12[rax]	# res.0_1->ai_protocol, res.0_1->ai_protocol
+	mov	edx, DWORD PTR 8[rax]	# res.0_1->ai_socktype, res.0_1->ai_socktype
+	mov	esi, DWORD PTR 4[rax]	# res.0_1->ai_family, res.0_1->ai_family
+	xor	eax, eax	#
+	call	syscall@PLT	#
 .LVL1:
-# test.c:20: }
-	.loc 1 20 1 view .LVU9
-	mov	rax, QWORD PTR 72[rsp]	# tmp96, D.2860
+# test.c:13: }
+	.loc 1 13 1 view .LVU9
+	mov	rax, QWORD PTR 72[rsp]	# tmp96, D.3647
 	xor	rax, QWORD PTR fs:40	# tmp96, MEM[(<address-space-1> long unsigned int *)40B]
 	jne	.L5	#,
 	xor	eax, eax	#
@@ -117,7 +119,7 @@ main:
 	call	__stack_chk_fail@PLT	#
 .LVL2:
 	.cfi_endproc
-.LFE9:
+.LFE20:
 	.size	main, .-main
 	.text
 .Letext0:
@@ -127,18 +129,19 @@ main:
 	.file 5 "/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h"
 	.file 6 "/usr/include/netinet/in.h"
 	.file 7 "/usr/include/netdb.h"
-	.file 8 "/usr/include/x86_64-linux-gnu/sys/socket.h"
+	.file 8 "/usr/include/unistd.h"
+	.file 9 "/usr/include/x86_64-linux-gnu/bits/getopt_core.h"
 	.section	.debug_info,"",@progbits
 .Ldebug_info0:
-	.long	0x301
+	.long	0x350
 	.value	0x4
 	.long	.Ldebug_abbrev0
 	.byte	0x8
 	.uleb128 0x1
-	.long	.LASF41
+	.long	.LASF46
 	.byte	0xc
-	.long	.LASF42
-	.long	.LASF43
+	.long	.LASF47
+	.long	.LASF48
 	.long	.Ldebug_ranges0+0
 	.quad	0
 	.long	.Ldebug_line0
@@ -347,13 +350,16 @@ main:
 	.byte	0xe5
 	.byte	0x1e
 	.long	0x199
+	.uleb128 0x5
+	.byte	0x8
+	.long	0x85
 	.uleb128 0xe
 	.long	.LASF29
 	.byte	0x30
 	.byte	0x7
 	.value	0x235
 	.byte	0x8
-	.long	0x235
+	.long	0x23b
 	.uleb128 0xf
 	.long	.LASF30
 	.byte	0x7
@@ -394,7 +400,7 @@ main:
 	.byte	0x7
 	.value	0x23c
 	.byte	0x14
-	.long	0x235
+	.long	0x23b
 	.byte	0x18
 	.uleb128 0xf
 	.long	.LASF36
@@ -408,7 +414,7 @@ main:
 	.byte	0x7
 	.value	0x23e
 	.byte	0x14
-	.long	0x23b
+	.long	0x241
 	.byte	0x28
 	.byte	0
 	.uleb128 0x5
@@ -416,93 +422,131 @@ main:
 	.long	0xc4
 	.uleb128 0x5
 	.byte	0x8
-	.long	0x1b6
+	.long	0x1bc
 	.uleb128 0x10
-	.long	.LASF44
-	.byte	0x1
-	.byte	0x5
-	.byte	0x5
-	.long	0x6b
-	.quad	.LFB9
-	.quad	.LFE9-.LFB9
-	.uleb128 0x1
-	.byte	0x9c
-	.long	0x2e2
-	.uleb128 0x11
-	.string	"s"
-	.byte	0x1
-	.byte	0x6
-	.byte	0x9
-	.long	0x6b
-	.uleb128 0x12
 	.long	.LASF38
+	.byte	0x8
+	.value	0x21f
+	.byte	0xf
+	.long	0x1b6
+	.uleb128 0xd
+	.long	.LASF39
+	.byte	0x9
+	.byte	0x24
+	.byte	0xe
+	.long	0x85
+	.uleb128 0xd
+	.long	.LASF40
+	.byte	0x9
+	.byte	0x32
+	.byte	0xc
+	.long	0x6b
+	.uleb128 0xd
+	.long	.LASF41
+	.byte	0x9
+	.byte	0x37
+	.byte	0xc
+	.long	0x6b
+	.uleb128 0xd
+	.long	.LASF42
+	.byte	0x9
+	.byte	0x3b
+	.byte	0xc
+	.long	0x6b
+	.uleb128 0x11
+	.long	.LASF49
 	.byte	0x1
 	.byte	0x7
+	.byte	0x5
+	.long	0x6b
+	.quad	.LFB20
+	.quad	.LFE20-.LFB20
+	.uleb128 0x1
+	.byte	0x9c
+	.long	0x330
+	.uleb128 0x12
+	.string	"s"
+	.byte	0x1
+	.byte	0x8
+	.byte	0x9
+	.long	0x6b
+	.uleb128 0x13
+	.long	.LASF43
+	.byte	0x1
+	.byte	0x9
 	.byte	0x15
-	.long	0x1b6
+	.long	0x1bc
 	.uleb128 0x3
 	.byte	0x91
 	.sleb128 -80
-	.uleb128 0x13
+	.uleb128 0x14
 	.string	"res"
 	.byte	0x1
-	.byte	0x7
+	.byte	0x9
 	.byte	0x1d
-	.long	0x23b
+	.long	0x241
 	.uleb128 0x3
 	.byte	0x91
 	.sleb128 -88
-	.uleb128 0x14
-	.quad	.LVL0
-	.long	0x2e2
-	.long	0x2c7
 	.uleb128 0x15
+	.quad	.LVL0
+	.long	0x330
+	.long	0x30a
+	.uleb128 0x16
 	.uleb128 0x1
 	.byte	0x55
 	.uleb128 0x9
 	.byte	0x3
 	.quad	.LC1
-	.uleb128 0x15
+	.uleb128 0x16
 	.uleb128 0x1
 	.byte	0x54
 	.uleb128 0x9
 	.byte	0x3
 	.quad	.LC0
-	.uleb128 0x15
+	.uleb128 0x16
 	.uleb128 0x1
 	.byte	0x51
 	.uleb128 0x3
 	.byte	0x91
 	.sleb128 -80
-	.uleb128 0x15
+	.uleb128 0x16
 	.uleb128 0x1
 	.byte	0x52
 	.uleb128 0x3
 	.byte	0x91
 	.sleb128 -88
 	.byte	0
-	.uleb128 0x16
+	.uleb128 0x15
 	.quad	.LVL1
-	.long	0x2ef
+	.long	0x33d
+	.long	0x322
 	.uleb128 0x16
-	.quad	.LVL2
-	.long	0x2fb
+	.uleb128 0x1
+	.byte	0x55
+	.uleb128 0x2
+	.byte	0x8
+	.byte	0x29
 	.byte	0
 	.uleb128 0x17
-	.long	.LASF39
-	.long	.LASF39
+	.quad	.LVL2
+	.long	0x34a
+	.byte	0
+	.uleb128 0x18
+	.long	.LASF44
+	.long	.LASF44
 	.byte	0x7
 	.value	0x294
 	.byte	0xc
 	.uleb128 0x18
-	.long	.LASF40
-	.long	.LASF40
+	.long	.LASF45
+	.long	.LASF45
 	.byte	0x8
-	.byte	0x66
-	.byte	0xc
+	.value	0x420
+	.byte	0x11
 	.uleb128 0x19
-	.long	.LASF45
-	.long	.LASF45
+	.long	.LASF50
+	.long	.LASF50
 	.byte	0
 	.section	.debug_abbrev,"",@progbits
 .Ldebug_abbrev0:
@@ -714,6 +758,25 @@ main:
 	.byte	0
 	.byte	0
 	.uleb128 0x10
+	.uleb128 0x34
+	.byte	0
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x39
+	.uleb128 0xb
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x3f
+	.uleb128 0x19
+	.uleb128 0x3c
+	.uleb128 0x19
+	.byte	0
+	.byte	0
+	.uleb128 0x11
 	.uleb128 0x2e
 	.byte	0x1
 	.uleb128 0x3f
@@ -740,7 +803,7 @@ main:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x11
+	.uleb128 0x12
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
@@ -755,7 +818,7 @@ main:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x12
+	.uleb128 0x13
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
@@ -772,7 +835,7 @@ main:
 	.uleb128 0x18
 	.byte	0
 	.byte	0
-	.uleb128 0x13
+	.uleb128 0x14
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
@@ -789,7 +852,7 @@ main:
 	.uleb128 0x18
 	.byte	0
 	.byte	0
-	.uleb128 0x14
+	.uleb128 0x15
 	.uleb128 0x4109
 	.byte	0x1
 	.uleb128 0x11
@@ -800,7 +863,7 @@ main:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x15
+	.uleb128 0x16
 	.uleb128 0x410a
 	.byte	0
 	.uleb128 0x2
@@ -809,7 +872,7 @@ main:
 	.uleb128 0x18
 	.byte	0
 	.byte	0
-	.uleb128 0x16
+	.uleb128 0x17
 	.uleb128 0x4109
 	.byte	0
 	.uleb128 0x11
@@ -818,7 +881,7 @@ main:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x17
+	.uleb128 0x18
 	.uleb128 0x2e
 	.byte	0
 	.uleb128 0x3f
@@ -833,25 +896,6 @@ main:
 	.uleb128 0xb
 	.uleb128 0x3b
 	.uleb128 0x5
-	.uleb128 0x39
-	.uleb128 0xb
-	.byte	0
-	.byte	0
-	.uleb128 0x18
-	.uleb128 0x2e
-	.byte	0
-	.uleb128 0x3f
-	.uleb128 0x19
-	.uleb128 0x3c
-	.uleb128 0x19
-	.uleb128 0x6e
-	.uleb128 0xe
-	.uleb128 0x3
-	.uleb128 0xe
-	.uleb128 0x3a
-	.uleb128 0xb
-	.uleb128 0x3b
-	.uleb128 0xb
 	.uleb128 0x39
 	.uleb128 0xb
 	.byte	0
@@ -878,14 +922,14 @@ main:
 	.byte	0
 	.value	0
 	.value	0
-	.quad	.LFB9
-	.quad	.LFE9-.LFB9
+	.quad	.LFB20
+	.quad	.LFE20-.LFB20
 	.quad	0
 	.quad	0
 	.section	.debug_ranges,"",@progbits
 .Ldebug_ranges0:
-	.quad	.LFB9
-	.quad	.LFE9
+	.quad	.LFB20
+	.quad	.LFE20
 	.quad	0
 	.quad	0
 	.section	.debug_line,"",@progbits
@@ -895,18 +939,24 @@ main:
 	.string	"ai_addr"
 .LASF6:
 	.string	"__uint8_t"
+.LASF45:
+	.string	"syscall"
 .LASF33:
 	.string	"ai_protocol"
 .LASF34:
 	.string	"ai_addrlen"
-.LASF42:
+.LASF47:
 	.string	"test.c"
-.LASF43:
+.LASF48:
 	.string	"/home/mehula/mirrord"
 .LASF41:
+	.string	"opterr"
+.LASF46:
 	.string	"GNU C17 9.4.0 -masm=intel -mtune=generic -march=x86-64 -g -O2 -fasynchronous-unwind-tables -fstack-protector-strong -fstack-clash-protection -fcf-protection"
 .LASF30:
 	.string	"ai_flags"
+.LASF38:
+	.string	"__environ"
 .LASF21:
 	.string	"__u6_addr8"
 .LASF27:
@@ -917,17 +967,19 @@ main:
 	.string	"signed char"
 .LASF26:
 	.string	"__in6_u"
+.LASF40:
+	.string	"optind"
 .LASF22:
 	.string	"__u6_addr16"
 .LASF1:
 	.string	"short unsigned int"
 .LASF23:
 	.string	"__u6_addr32"
-.LASF39:
+.LASF44:
 	.string	"getaddrinfo"
 .LASF8:
 	.string	"__uint32_t"
-.LASF45:
+.LASF50:
 	.string	"__stack_chk_fail"
 .LASF15:
 	.string	"sa_family_t"
@@ -947,11 +999,15 @@ main:
 	.string	"ai_canonname"
 .LASF2:
 	.string	"unsigned int"
+.LASF39:
+	.string	"optarg"
 .LASF12:
 	.string	"long long unsigned int"
 .LASF18:
 	.string	"uint8_t"
-.LASF44:
+.LASF42:
+	.string	"optopt"
+.LASF49:
 	.string	"main"
 .LASF37:
 	.string	"ai_next"
@@ -963,14 +1019,12 @@ main:
 	.string	"sa_family"
 .LASF10:
 	.string	"char"
-.LASF38:
+.LASF43:
 	.string	"hints"
 .LASF5:
 	.string	"short int"
 .LASF19:
 	.string	"uint16_t"
-.LASF40:
-	.string	"socket"
 .LASF20:
 	.string	"uint32_t"
 .LASF9:
