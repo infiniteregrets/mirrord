@@ -224,23 +224,45 @@ unsafe extern "C" fn freeaddrinfo_detour(addrinfo: *mut libc::addrinfo) {
 	call	socket@PLT	#
 */
 
+// NOTE(July 23): arguments are passed in rdi, rsi, rdx, rcx, r8d, r9d...
+/*
+Example:
+        mov     r9d, 3,
+        mov     r8d, 2,
+        movabs  rcx, 430,
+        movabs  rdx, 3293,
+        movabs  rsi, 29,
+        movabs  rdi, 118,
+*/
+
 #[cfg(target_os = "linux")]
 #[cfg(target_arch = "x86_64")]
 #[naked]
 unsafe extern fn go_raw_syscall_detour() {    
     asm!(
-        "mov rdx, QWORD PTR [rsp+0x10]",
-        "mov rsi, QWORD PTR [rsp+0x18]",
-        "mov rdx, QWORD PTR [rsp+0x20]", 
-        "mov rax, QWORD PTR [rsp+0x8]",
+        "mov rsi, QWORD PTR [rsp+0x10]",
+        "mov rdx, QWORD PTR [rsp+0x18]",
+        "mov rcx, QWORD PTR [rsp+0x20]", 
+        "mov rdi, QWORD PTR [rsp+0x8]",
         "call c_abi_syscall_handler",
-        options(noreturn),        
+        "ret", options(noreturn),        
     );
 }
 
+
+//TODO: Use variable arguments feature for params
+//NOTE: The mapping for syscall constants is the same between Go ABI and C ABI.
+//      Refer: https://cs.opensource.google/go/go/+/refs/tags/go1.18.4:src/syscall/zsysnum_linux_amd64.go;l=8
 #[no_mangle]
-unsafe extern "C" fn c_abi_syscall_handler(arg1: c_int, arg2: c_int, arg3: c_int, arg4: c_int) {
-    println!("Received {:?}, {:?}, {:?}, {:?}", arg1, arg2, arg3, arg4);
+unsafe extern "C" fn c_abi_syscall_handler(syscall: i64, param1: i64, param2: i64, param3: i64) {
+    debug!("C ABI handler received `Syscall - {:?}` with args >> arg1 -> {:?}, arg2 -> {:?}, arg3 -> {:?}", syscall, param1, param2, param3);
+    let mut res: i32 = match syscall {
+        libc::SYS_socket => socket(param1 as i32, param2 as i32, param3 as i32),
+        _ => panic!("Unhandled Syscall - {:?}", syscall),
+    };
+    asm!("mov rax, {res}",
+        "mov  QWORD PTR [rsp+0x30],rdx",
+        res = out(reg) res);
 }
 
 // NOTE: (July 20) - We need to figure if the binary being provided is compiled by go or not, for
