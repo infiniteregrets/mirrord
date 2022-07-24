@@ -213,15 +213,14 @@ unsafe extern "C" fn freeaddrinfo_detour(addrinfo: *mut libc::addrinfo) {
 // Note that this differs from "standard" ABI convention, which
 // would pass 4th arg in CX, not R10.
 
-
 // NOTE: how C calls socket() `gcc -S -masm intel -fverbose-asm -g -O2 test.c -o test.s`
 /*
 # test.c:18:     s = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-	.loc 1 18 9 view .LVU8
-	mov	edx, DWORD PTR 12[rax]	# res.0_1->ai_protocol, res.0_1->ai_protocol
-	mov	esi, DWORD PTR 8[rax]	# res.0_1->ai_socktype, res.0_1->ai_socktype
-	mov	edi, DWORD PTR 4[rax]	# res.0_1->ai_family, res.0_1->ai_family
-	call	socket@PLT	#
+    .loc 1 18 9 view .LVU8
+    mov	edx, DWORD PTR 12[rax]	# res.0_1->ai_protocol, res.0_1->ai_protocol
+    mov	esi, DWORD PTR 8[rax]	# res.0_1->ai_socktype, res.0_1->ai_socktype
+    mov	edi, DWORD PTR 4[rax]	# res.0_1->ai_family, res.0_1->ai_family
+    call	socket@PLT	#
 */
 
 // NOTE(July 23): arguments are passed in rdi, rsi, rdx, rcx, r8d, r9d...
@@ -238,17 +237,20 @@ Example:
 #[cfg(target_os = "linux")]
 #[cfg(target_arch = "x86_64")]
 #[naked]
-unsafe extern fn go_raw_syscall_detour() {    
+unsafe extern "C" fn go_raw_syscall_detour() {
     asm!(
         "mov rsi, QWORD PTR [rsp+0x10]",
         "mov rdx, QWORD PTR [rsp+0x18]",
-        "mov rcx, QWORD PTR [rsp+0x20]", 
+        "mov rcx, QWORD PTR [rsp+0x20]",
         "mov rdi, QWORD PTR [rsp+0x8]",
         "call c_abi_syscall_handler",
-        "ret", options(noreturn),        
+        // "mov  QWORD PTR [rsp+0x28],rax",
+        // "mov  QWORD PTR [rsp+0x30],rdx",
+        // "mov  QWORD PTR [rsp+0x38],0x0",
+        "ret",
+        options(noreturn),
     );
 }
-
 
 //TODO: Use variable arguments feature for params
 //NOTE: The mapping for syscall constants is the same between Go ABI and C ABI.
@@ -256,12 +258,16 @@ unsafe extern fn go_raw_syscall_detour() {
 #[no_mangle]
 unsafe extern "C" fn c_abi_syscall_handler(syscall: i64, param1: i64, param2: i64, param3: i64) {
     debug!("C ABI handler received `Syscall - {:?}` with args >> arg1 -> {:?}, arg2 -> {:?}, arg3 -> {:?}", syscall, param1, param2, param3);
-    let mut res: i32 = match syscall {
-        libc::SYS_socket => socket(param1 as i32, param2 as i32, param3 as i32),
+    let mut res: i32 = match syscall {        
+        libc::SYS_socket => {
+            let sock = socket(param1 as i32, param2 as i32, param3 as i32);
+            debug!("C ABI handler returned socket descriptor -> {:?}", sock);
+            sock
+        },
         _ => panic!("Unhandled Syscall - {:?}", syscall),
-    };
+    };    
     asm!("mov rax, {res}",
-        "mov  QWORD PTR [rsp+0x30],rdx",
+         "mov rdx, 0",
         res = out(reg) res);
 }
 
@@ -295,7 +301,12 @@ pub(crate) fn enable_socket_hooks(interceptor: &mut Interceptor, enabled_remote_
 
     // NOTE: Golang uses libc on macos
     // Golang hooks -
-    hook_sym!(interceptor, "syscall.RawSyscall.abi0", go_raw_syscall_detour, "go-e2e")
+    hook_sym!(
+        interceptor,
+        "syscall.RawSyscall.abi0",
+        go_raw_syscall_detour,
+        "go-e2e"
+    )
     // debug!("Hooking golang syscalls");
     // if cfg!(linux) {
     //     match env::var("MIRRORD_DEBUG_BINARY") {
@@ -304,6 +315,6 @@ pub(crate) fn enable_socket_hooks(interceptor: &mut Interceptor, enabled_remote_
     //             hook_sym!(interceptor, "RawSyscall", go_raw_syscall_detour, &binary)
     //         },
     //         Err(_) => error!("Failed to get MIRRORD_DEBUG_BINARY env var"),
-    //     }        
+    //     }
     // }
 }
