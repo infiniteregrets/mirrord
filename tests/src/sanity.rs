@@ -644,6 +644,7 @@ mod tests {
         let mut process = run(node_command, &service.pod_name, None, Some(mirrord_args)).await;
 
         let res = process.child.wait().await.unwrap();
+        debug!("Exit Status = {:?}", res);
         assert!(res.success());
         process.assert_stderr();
     }
