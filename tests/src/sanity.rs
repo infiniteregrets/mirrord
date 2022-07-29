@@ -188,6 +188,7 @@ mod tests {
     ) -> TestProcess {
         let path = env!("CARGO_BIN_FILE_MIRRORD");
         let temp_dir = tempdir::TempDir::new("test").unwrap();
+        std::fs::create_dir(&temp_dir).unwrap();
         let mut mirrord_args = vec![
             "exec",
             "--pod-name",
