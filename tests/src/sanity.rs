@@ -668,7 +668,7 @@ mod tests {
             "node",
             "node-e2e/remote_dns/test_remote_dns_eneabled_works.mjs",
         ];
-        let mirrord_args = vec!["-d", "true"];
+        let mirrord_args = vec!["-d"];
         let mut process = run(node_command, &service.pod_name, None, Some(mirrord_args)).await;
 
         let res = process.child.wait().await.unwrap();
