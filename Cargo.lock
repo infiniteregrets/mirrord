@@ -2595,6 +2595,7 @@ dependencies = [
  "tempdir",
  "tokio",
  "tokio-util 0.7.3",
+ "tracing",
 ]
 
 [[package]]

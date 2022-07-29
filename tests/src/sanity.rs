@@ -38,7 +38,7 @@ mod tests {
     };
     // 0.8
     use tokio_util::sync::{CancellationToken, DropGuard};
-
+    use tracing::debug;
     static TEXT: &str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
     pub async fn watch_resource_exists<K: Debug + Clone + DeserializeOwned>(
@@ -562,7 +562,7 @@ mod tests {
 
         let shared_lib_path = get_shared_lib_path();
 
-        let mut args = vec!["--enable-fs", "--extract-path", &shared_lib_path];
+        let args = vec!["--enable-fs", "--extract-path", &shared_lib_path];
 
         let mut process = run(
             python_command,
