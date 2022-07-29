@@ -569,36 +569,36 @@ mod tests {
         process.assert_stderr();
     }
 
-    #[cfg(target_os = "linux")]
-    #[rstest]
-    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-    pub async fn test_file_ops(
-        #[future] service: EchoService,
-        #[values(Agent::Ephemeral, Agent::Job)] agent: Agent,
-    ) {
-        let service = service.await;
-        let _ = std::fs::create_dir(std::path::Path::new("/tmp/fs"));
-        let python_command = vec!["python3", "-B", "-m", "unittest", "-f", "python-e2e/ops.py"];
+    // #[cfg(target_os = "linux")]
+    // #[rstest]
+    // #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    // pub async fn test_file_ops(
+    //     #[future] service: EchoService,
+    //     #[values(Agent::Ephemeral, Agent::Job)] agent: Agent,
+    // ) {
+    //     let service = service.await;
+    //     let _ = std::fs::create_dir(std::path::Path::new("/tmp/fs"));
+    //     let python_command = vec!["python3", "-B", "-m", "unittest", "-f", "python-e2e/ops.py"];
 
-        let shared_lib_path = get_shared_lib_path();
+    //     let shared_lib_path = get_shared_lib_path();
 
-        let mut args = vec!["--enable-fs", "--extract-path", &shared_lib_path];
+    //     let mut args = vec!["--enable-fs", "--extract-path", &shared_lib_path];
 
-        if let Some(ephemeral_flag) = agent.flag() {
-            args.extend(ephemeral_flag);
-        }
+    //     if let Some(ephemeral_flag) = agent.flag() {
+    //         args.extend(ephemeral_flag);
+    //     }
 
-        let mut process = run(
-            python_command,
-            &service.pod_name,
-            Some(&service.namespace),
-            Some(args),
-        )
-        .await;
-        let res = process.child.wait().await.unwrap();
-        assert!(res.success());
-        process.assert_python_fileops_stderr();
-    }
+    //     let mut process = run(
+    //         python_command,
+    //         &service.pod_name,
+    //         Some(&service.namespace),
+    //         Some(args),
+    //     )
+    //     .await;
+    //     let res = process.child.wait().await.unwrap();
+    //     assert!(res.success());
+    //     process.assert_python_fileops_stderr();
+    // }
 
     #[cfg(target_os = "macos")]
     #[rstest]
