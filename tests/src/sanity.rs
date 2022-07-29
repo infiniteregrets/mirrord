@@ -628,21 +628,21 @@ mod tests {
         process.assert_python_fileops_stderr();
     }
 
-    #[rstest]
-    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-    pub async fn test_remote_env_vars_exclude_works(#[future] service: EchoService) {
-        let service = service.await;
-        let node_command = vec![
-            "node",
-            "node-e2e/remote_env/test_remote_env_vars_exclude_works.mjs",
-        ];
-        let mirrord_args = vec!["-x", "MIRRORD_FAKE_VAR_FIRST"];
-        let mut process = run(node_command, &service.pod_name, None, Some(mirrord_args)).await;
+    // #[rstest]
+    // #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    // pub async fn test_remote_env_vars_exclude_works(#[future] service: EchoService) {
+    //     let service = service.await;
+    //     let node_command = vec![
+    //         "node",
+    //         "node-e2e/remote_env/test_remote_env_vars_exclude_works.mjs",
+    //     ];
+    //     let mirrord_args = vec!["-x", "MIRRORD_FAKE_VAR_FIRST"];
+    //     let mut process = run(node_command, &service.pod_name, None, Some(mirrord_args)).await;
 
-        let res = process.child.wait().await.unwrap();
-        assert!(res.success());
-        process.assert_stderr();
-    }
+    //     let res = process.child.wait().await.unwrap();
+    //     assert!(res.success());
+    //     process.assert_stderr();
+    // }
 
     // #[rstest]
     // #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
