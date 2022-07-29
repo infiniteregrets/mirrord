@@ -187,8 +187,7 @@ mod tests {
         args: Option<Vec<&str>>,
     ) -> TestProcess {
         let path = env!("CARGO_BIN_FILE_MIRRORD");
-        let temp_dir = tempdir::TempDir::new("test").unwrap();
-        std::fs::create_dir(&temp_dir).unwrap();
+        let temp_dir = tempdir::TempDir::new("test").unwrap();        
         let mut mirrord_args = vec![
             "exec",
             "--pod-name",
@@ -496,28 +495,28 @@ mod tests {
         res.bytes().await.unwrap();
     }
 
-    // #[cfg(target_os = "linux")]
-    // #[rstest]
-    // #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-    // async fn test_mirror_http_traffic(
-    //     #[future] service: EchoService,
-    //     #[future] kube_client: Client,
-    //     #[values(Application::PythonHTTP, Application::NodeHTTP)] application: Application,
-    // ) {
-    //     let service = service.await;
-    //     let kube_client = kube_client.await;
-    //     let url = get_service_url(kube_client.clone(), &service).await;
-    //     let mut process = application
-    //         .run(&service.pod_name, Some(&service.namespace), None)
-    //         .await;
-    //     process.wait_for_line(Duration::from_secs(30), "real_port: 80");
-    //     send_requests(&url).await;
-    //     timeout(Duration::from_secs(40), process.child.wait())
-    //         .await
-    //         .unwrap()
-    //         .unwrap();
-    //     process.assert_stderr();
-    // }
+    #[cfg(target_os = "linux")]
+    #[rstest]
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn test_mirror_http_traffic(
+        #[future] service: EchoService,
+        #[future] kube_client: Client,
+        #[values(Application::PythonHTTP, Application::NodeHTTP)] application: Application,
+    ) {
+        let service = service.await;
+        let kube_client = kube_client.await;
+        let url = get_service_url(kube_client.clone(), &service).await;
+        let mut process = application
+            .run(&service.pod_name, Some(&service.namespace), None)
+            .await;
+        process.wait_for_line(Duration::from_secs(30), "real_port: 80");
+        send_requests(&url).await;
+        timeout(Duration::from_secs(40), process.child.wait())
+            .await
+            .unwrap()
+            .unwrap();
+        process.assert_stderr();
+    }
 
     // fn get_shared_lib_path() -> String {
     //     let agent_name = format!(
