@@ -12,6 +12,8 @@ task:
     - rustup component add rustfmt  
   fuck_you_script:
     - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    - echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/admin/.zprofile
+    - eval "$(/opt/homebrew/bin/brew shellenv)"
   node_script:
     - brew install node
     - npm install express
