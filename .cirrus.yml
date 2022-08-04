@@ -1,6 +1,7 @@
-task:
-  macos_instance:
+macos_instance:
     image: macos-monterey-base
+    
+task:  
   env:
     MIRRORD_AGENT_RUST_LOG: "warn,mirrord=debug"
   script: ls -a
