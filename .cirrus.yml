@@ -8,7 +8,7 @@ task:
     - curl https://sh.rustup.rs -sSf --output rustup.sh
     - sh rustup.sh --default-toolchain nightly -y
     - . $HOME/.cargo/env
-    - rustup default nightly
+    - rustup default nightly 
     - rustup component add rustfmt  
   fuck_you_script:
     - /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
