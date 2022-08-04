@@ -125,62 +125,62 @@ jobs:
       - run: sudo apt install -y libpcap-dev cmake
       - run: cargo +nightly build --manifest-path=./Cargo.toml
 
-  e2e:
-    runs-on: ubuntu-latest
-    name: e2e
-    needs: [build_mirrord, test_agent_image]
-    env:
-      MIRRORD_AGENT_RUST_LOG: "warn,mirrord=debug"
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: nightly
-          components: rustfmt
-      - uses: Swatinem/rust-cache@v1
-        with:
-          key: ubuntu-latest
-          cache-on-failure: true
+  # e2e:
+  #   runs-on: ubuntu-latest
+  #   name: e2e
+  #   needs: [build_mirrord, test_agent_image]
+  #   env:
+  #     MIRRORD_AGENT_RUST_LOG: "warn,mirrord=debug"
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions-rs/toolchain@v1
+  #       with:
+  #         profile: minimal
+  #         toolchain: nightly
+  #         components: rustfmt
+  #     - uses: Swatinem/rust-cache@v1
+  #       with:
+  #         key: ubuntu-latest
+  #         cache-on-failure: true
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 14
-      - run: npm install express
-      - run: |
-          sudo apt-get update -y
-          sudo apt-get install -y libpcap-dev cmake
-      - uses: actions/setup-python@v3
-      - run: pip3 install flask
-      - uses: actions/setup-go@v3
-        with:
-          go-version: "1.18.0"
-      - run: |
-          cd tests/go-e2e
-          go build 
-          cd ../..
-      - name: start minikube
-        uses: medyagh/setup-minikube@master
-        with:
-          container-runtime: containerd
-      - name: download image
-        uses: actions/download-artifact@v2
-        with:
-          name: test
-          path: /tmp
-      - run: minikube image load /tmp/test.tar
-      - name: cargo test
-        run: cargo test -p tests
-      - name: switch minikube runtime
-        run: |
-          minikube delete
-          minikube start --container-runtime=docker
-          minikube image load /tmp/test.tar
-      - name: test with docker runtime
-        run: cargo test -p tests
-      - name: Collect logs
-        if: ${{ failure() }}
-        run: for FILE in $(docker exec minikube ls /var/log/containers); do docker exec minikube cat /var/log/containers/$FILE; done
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 14
+  #     - run: npm install express
+  #     - run: |
+  #         sudo apt-get update -y
+  #         sudo apt-get install -y libpcap-dev cmake
+  #     - uses: actions/setup-python@v3
+  #     - run: pip3 install flask
+  #     - uses: actions/setup-go@v3
+  #       with:
+  #         go-version: "1.18.0"
+  #     - run: |
+  #         cd tests/go-e2e
+  #         go build 
+  #         cd ../..
+  #     - name: start minikube
+  #       uses: medyagh/setup-minikube@master
+  #       with:
+  #         container-runtime: containerd
+  #     - name: download image
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: test
+  #         path: /tmp
+  #     - run: minikube image load /tmp/test.tar
+  #     - name: cargo test
+  #       run: cargo test -p tests
+  #     - name: switch minikube runtime
+  #       run: |
+  #         minikube delete
+  #         minikube start --container-runtime=docker
+  #         minikube image load /tmp/test.tar
+  #     - name: test with docker runtime
+  #       run: cargo test -p tests
+  #     - name: Collect logs
+  #       if: ${{ failure() }}
+  #       run: for FILE in $(docker exec minikube ls /var/log/containers); do docker exec minikube cat /var/log/containers/$FILE; done
 
   e2e_macos:
     runs-on: macos-12
@@ -214,8 +214,10 @@ jobs:
           cd ../..
       - name: setup cluster requirements
         run: brew install ubuntu/microk8s/microk8s
+      - name: microk8s install
+        run: microk8s install
       - name: wait
-        run: microk8s status --wait-ready      
+        run: microk8s status --wait-ready            
       - name: download image
         uses: actions/download-artifact@v2
         with:
