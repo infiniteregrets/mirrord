@@ -1,6 +1,6 @@
 macos_instance:
-    image: macos-monterey-base
-    
+    image: ghcr.io/cirruslabs/macos-monterey-base:latest
+
 task:  
   env:
     MIRRORD_AGENT_RUST_LOG: "warn,mirrord=debug"
