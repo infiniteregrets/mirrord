@@ -5,25 +5,26 @@ task:
   env:
     MIRRORD_AGENT_RUST_LOG: "warn,mirrord=debug"
   rust_script:
-    - curl https://sh.rustup.rs -sSf --output rustup.sh
-    - sh rustup.sh --default-toolchain nightly -y
-    - . $HOME/.cargo/env
-    - rustup default nightly
-    - rustup component add rustfmt  
-  node_script:
-    - brew install node
-    - npm install express
-  python_script:
-    - brew install python
-    - pip3 install flask   
-  go_script:
-    - brew install go
-    - cd tests/go-e2e
-    - go build
-    - cd ../..
-  cluster_script:
-    - brew install docker colima kubectl
-    - colima start --kubernetes --network-address
-  docker_builder:
-    build_script: docker build . -f ./mirrord-agent/Dockerfile
+    - ssh
+  #   - curl https://sh.rustup.rs -sSf --output rustup.sh
+  #   - sh rustup.sh --default-toolchain nightly -y
+  #   - . $HOME/.cargo/env
+  #   - rustup default nightly
+  #   - rustup component add rustfmt  
+  # node_script:
+  #   - brew install node
+  #   - npm install express
+  # python_script:
+  #   - brew install python
+  #   - pip3 install flask   
+  # go_script:
+  #   - brew install go
+  #   - cd tests/go-e2e
+  #   - go build
+  #   - cd ../..
+  # cluster_script:
+  #   - brew install docker colima kubectl
+  #   - colima start --kubernetes --network-address
+  # docker_builder:
+  #   build_script: docker build . -f ./mirrord-agent/Dockerfile
   
