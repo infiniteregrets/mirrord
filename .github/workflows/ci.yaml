@@ -8,20 +8,20 @@ on:
     branches: [main, v2.0]
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: nightly
-          components: rustfmt, clippy
-      - uses: Swatinem/rust-cache@v1
-      # Needed for agent
-      - run: sudo apt install libpcap-dev cmake
-      - run: cargo fmt --all -- --check
-      - run: cargo clippy -- -D warnings
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions-rs/toolchain@v1
+  #       with:
+  #         profile: minimal
+  #         toolchain: nightly
+  #         components: rustfmt, clippy
+  #     - uses: Swatinem/rust-cache@v1
+  #     # Needed for agent
+  #     - run: sudo apt install libpcap-dev cmake
+  #     - run: cargo fmt --all -- --check
+  #     - run: cargo clippy -- -D warnings
 
   test_mirrord_protocol:
     strategy:
@@ -215,7 +215,7 @@ jobs:
       - name: setup cluster requirements
         run: brew install ubuntu/microk8s/microk8s
       - name: microk8s install
-        run: microk8s install
+        run: brew install multipass && microk8s install
       - name: wait
         run: microk8s status --wait-ready            
       - name: download image
