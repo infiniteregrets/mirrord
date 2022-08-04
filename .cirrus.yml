@@ -25,5 +25,5 @@ task:
     - brew install docker colima kubectl
     - colima start --kubernetes --network-address
   docker_builder:
-    - docker build . -f ./mirrord-agent/Dockerfile
+    build_script: docker build . -f ./mirrord-agent/Dockerfile
   
