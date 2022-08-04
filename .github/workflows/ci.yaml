@@ -213,7 +213,7 @@ jobs:
           go build 
           cd ../..
       - name: setup cluster requirements
-        run: brew install ubuntu/microk8s/microk8s
+        run: brew install docker ubuntu/microk8s/microk8s
       - name: microk8s install
         run: brew install multipass && microk8s install
       - name: wait
