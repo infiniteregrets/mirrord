@@ -4,13 +4,12 @@ macos_instance:
 task:  
   env:
     MIRRORD_AGENT_RUST_LOG: "warn,mirrord=debug"
-  script_install_rust:
+  script:
     - curl https://sh.rustup.rs -sSf --output rustup.sh
     - sh rustup.sh --default-toolchain nightly -y
     - . $HOME/.cargo/env
     - rustup default nightly
-    - rustup component add rustfmt
-  script_install_dependencies:
+    - rustup component add rustfmt  
     - brew install node
     - npm install express
     - brew install python
