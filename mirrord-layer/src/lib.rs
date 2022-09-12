@@ -88,6 +88,14 @@ fn init() {
 
     info!("Initializing mirrord-layer!");
 
+    debug!("Args: {:?}", std::env::args().collect::<Vec<_>>());
+    
+    for arg in std::env::args() {        
+        if arg == "/opt/homebrew/Cellar/go/1.18.4/libexec/bin/go" || arg == "/opt/homebrew/Cellar/go/1.18.4/libexec/pkg/tool/darwin_arm64/compile"{
+            return;
+        }
+    }    
+
     let config = LayerConfig::init_from_env().unwrap();
     let connection_port: u16 = rand::thread_rng().gen_range(30000..=65535);
 
