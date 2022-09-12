@@ -1,0 +1,4 @@
+API server listening at: 127.0.0.1:61192
+dyld[19990]: terminating because inserted dylib '/Users/mehularora/Library/Application Support/JetBrains/IntelliJIdea2022.2/plugins/mirrord/libmirrord_layer.dylib' could not be loaded: tried: '/Users/mehularora/Library/Application Support/JetBrains/IntelliJIdea2022.2/plugins/mirrord/libmirrord_layer.dylib' (mach-o file, but is an incompatible architecture (have 'arm64', need 'arm64e')), '/usr/local/lib/libmirrord_layer.dylib' (no such file), '/usr/lib/libmirrord_layer.dylib' (no such file)
+dyld[19990]: tried: '/Users/mehularora/Library/Application Support/JetBrains/IntelliJIdea2022.2/plugins/mirrord/libmirrord_layer.dylib' (mach-o file, but is an incompatible architecture (have 'arm64', need 'arm64e')), '/usr/local/lib/libmirrord_layer.dylib' (no such file), '/usr/lib/libmirrord_layer.dylib' (no such file)
+could not launch process: stub exited while waiting for connection: signal: abort trap
