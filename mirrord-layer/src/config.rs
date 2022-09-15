@@ -1,12 +1,12 @@
 use envconfig::Envconfig;
 
-#[derive(Envconfig, Clone)]
+#[derive(Envconfig, Debug, Clone)]
 pub struct LayerConfig {
     #[envconfig(from = "MIRRORD_AGENT_RUST_LOG", default = "info")]
     pub agent_rust_log: String,
 
-    #[envconfig(from = "MIRRORD_AGENT_NAMESPACE", default = "default")]
-    pub agent_namespace: String,
+    #[envconfig(from = "MIRRORD_AGENT_NAMESPACE")]
+    pub agent_namespace: Option<String>,
 
     #[envconfig(from = "MIRRORD_AGENT_IMAGE")]
     pub agent_image: Option<String>,
