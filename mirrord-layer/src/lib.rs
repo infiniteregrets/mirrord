@@ -81,25 +81,30 @@ pub(crate) static ENABLED_UDP_OUTGOING: OnceLock<bool> = OnceLock::new();
 
 #[ctor]
 fn init() {
-    ctrlc::set_handler(move || {
-        println!("received Ctrl+C!");
-    })
-    .expect("Error setting Ctrl-C handler");
+    // ctrlc::set_handler(move || {
+    //     println!("received Ctrl+C!");
+    // })
+    // .expect("Error setting Ctrl-C handler");
 
-    for arg in std::env::args() {
-        if arg == "/opt/homebrew/Cellar/go/1.18.4/libexec/bin/go"
-            || arg == "/opt/homebrew/Cellar/go/1.18.4/libexec/pkg/tool/darwin_arm64/compile"
-            || arg == "/opt/homebrew/Cellar/go/1.18.4/libexec/pkg/tool/darwin_arm64/asm"
-            || arg == "/opt/homebrew/Cellar/go/1.18.4/libexec/pkg/tool/darwin_arm64/cgo"
-            || arg == "/opt/homebrew/Cellar/go/1.18.4/libexec/pkg/tool/darwin_arm64/link"
-            || arg == "/Library/Developer/CommandLineTools/usr/bin/dsymutil"
-            || arg == "/Library/Developer/CommandLineTools/usr/bin/strip"
-            || arg == "/Users/mehularora/Library/Application Support/JetBrains/IntelliJIdea2022.2/plugins/go/lib/dlv/macarm/dlv"
-            || arg == "/Users/tal/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/222.3739.54/IntelliJ IDEA.app.plugins/go/lib/dlv/macarm/dlv"
+    // debug!("Args: {:?}", std::env::args().collect::<Vec<String>>());
+    println!("hi");    
+    if std::env::args().collect::<Vec<String>>().first().unwrap() == "/Users/mehularora/Library/Application Support/JetBrains/IntelliJIdea2022.2/plugins/go/lib/dlv/macarm/dlv"
+            // || arg == "/opt/homebrew/Cellar/go/1.18.4/libexec/pkg/tool/darwin_arm64/compile"
+            // || arg == "/opt/homebrew/Cellar/go/1.18.4/libexec/pkg/tool/darwin_arm64/asm"
+            // || arg == "/opt/homebrew/Cellar/go/1.18.4/libexec/pkg/tool/darwin_arm64/cgo"
+            // || arg == "/opt/homebrew/Cellar/go/1.18.4/libexec/pkg/tool/darwin_arm64/link"
+            // || arg == "/Library/Developer/CommandLineTools/usr/bin/dsymutil"
+            // || arg == "/Library/Developer/CommandLineTools/usr/bin/strip"
+            // || arg == "/Users/mehularora/Library/Application Support/JetBrains/IntelliJIdea2022.2/plugins/go/lib/dlv/macarm/dlv"
+            // || arg == "/Users/tal/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/222.3739.54/IntelliJ IDEA.app.plugins/go/lib/dlv/macarm/dlv"
         {
             return; 
-        }
-    }
+        }    
+    println!("bye");
+
+    // if std::env::args().collect::<Vec<String>>().contains(&String::from("dlv")) {
+    //     return;
+    // }
 
     tracing_subscriber::registry()
         .with(
@@ -112,7 +117,7 @@ fn init() {
 
     info!("Initializing mirrord-layer!");
 
-    debug!("Args: {:?}", std::env::args().collect::<Vec<_>>());
+    info!("Args: {:?}", std::env::args().collect::<Vec<_>>());
 
 
     let config = LayerConfig::init_from_env().unwrap();

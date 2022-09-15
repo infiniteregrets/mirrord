@@ -26,11 +26,17 @@ class GoRunConfig : GoRunConfigurationExtension() {
         state: GoRunningState<out GoRunConfigurationBase<*>>,
         commandLineType: GoRunningState.CommandLineType
     ) {
-        val (ldPreloadPath, dylibPath, defaultMirrordAgentLog, rustLog, invalidCertificates, ephemeralContainers) = MirrordDefaultData()
+        if (commandLineType == GoRunningState.CommandLineType.RUN) {
+            val (ldPreloadPath, dylibPath, defaultMirrordAgentLog, rustLog, invalidCertificates, ephemeralContainers) = MirrordDefaultData()
 
-        cmdLine.addEnvironmentVariable("DYLD_INSERT_LIBRARIES", dylibPath)
-//        cmdLine.addEnvironmentVariable("RUST_LOG", "DEBUG")
-        cmdLine.addEnvironmentVariable("MIRRORD_AGENT_IMPERSONATED_POD_NAME", "metalbear-deployment-85c754c75f-qnc8t")
+            cmdLine.addEnvironmentVariable("DYLD_INSERT_LIBRARIES", dylibPath)
+            cmdLine.addEnvironmentVariable("MIRRORD_ACCEPT_INVALID_CERTIFICATES", "true")
+            cmdLine.addEnvironmentVariable("RUST_LOG", "DEBUG")
+            cmdLine.addEnvironmentVariable(
+                "MIRRORD_AGENT_IMPERSONATED_POD_NAME",
+                "metalbear-deployment-85c754c75f-qnc8t"
+            )
+        }
         super.patchCommandLine(configuration, runnerSettings, cmdLine, runnerId, state, commandLineType)
     }
 }
