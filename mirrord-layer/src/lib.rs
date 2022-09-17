@@ -40,6 +40,7 @@ use tokio::{
 };
 use tracing::{error, info, trace};
 use tracing_subscriber::{fmt::format::FmtSpan, prelude::*};
+use tui::{widgets::{ListItem, Block, List, Borders}, style::{Modifier, Color, Style}};
 
 use crate::{common::HookMessage, config::LayerConfig, file::FileHandler};
 
@@ -81,6 +82,14 @@ pub(crate) static ENABLED_UDP_OUTGOING: OnceLock<bool> = OnceLock::new();
 
 #[ctor]
 fn init() {
+    let items = [ListItem::new("Item 1"), ListItem::new("Item 2"), ListItem::new("Item 3")];
+    List::new(items)
+        .block(Block::default().title("List").borders(Borders::ALL))
+        .style(Style::default().fg(Color::White))
+        .highlight_style(Style::default().add_modifier(Modifier::ITALIC))
+        .highlight_symbol(">>");
+    println!("Hello, world!");
+
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::fmt::layer()
