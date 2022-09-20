@@ -1,6 +1,7 @@
 package com.metalbear.mirrord
 
 import com.intellij.execution.ExecutionListener
+import com.intellij.execution.configuration.EnvironmentVariablesData
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.notification.NotificationType
@@ -34,68 +35,70 @@ class MirrordListener : ExecutionListener {
 
     override fun processStarting(executorId: String, env: ExecutionEnvironment) {
         if (enabled) {
-            val customDialogBuilder = MirrordDialogBuilder()
-            val kubeDataProvider = KubeDataProvider()
+            ApplicationManager.getApplication().invokeLater {
+                val customDialogBuilder = MirrordDialogBuilder()
+                val kubeDataProvider = KubeDataProvider()
 
-            val namespaces = try {
-                JBList(kubeDataProvider.getNamespaces())
-            } catch (e: Exception) {
-                MirrordEnabler.notify(
-                    "Error occurred while fetching namespaces from Kubernetes context",
-                    NotificationType.ERROR,
-                    env.project
-                )
-                return super.processStarting(executorId, env)
-            }
-            val panel = customDialogBuilder.createMirrordNamespaceDialog(namespaces)
-            val dialogBuilder = customDialogBuilder.getDialogBuilder(panel)
-
-            // SUCCESS: Ask the user for the impersonated pod in the chosen namespace
-            if (dialogBuilder.show() == DialogWrapper.OK_EXIT_CODE && !namespaces.isSelectionEmpty) {
-                val choseNamespace = namespaces.selectedValue
-
-                val pods = try {
-                    JBList(kubeDataProvider.getNameSpacedPods(choseNamespace))
+                val namespaces = try {
+                    JBList(kubeDataProvider.getNamespaces())
                 } catch (e: Exception) {
                     MirrordEnabler.notify(
-                        "Error occurred while fetching pods from Kubernetes context",
+                        "Error occurred while fetching namespaces from Kubernetes context",
                         NotificationType.ERROR,
                         env.project
                     )
-                    return super.processStarting(executorId, env)
+                    return@invokeLater super.processStarting(executorId, env)
                 }
-
-                val fileOpsCheckbox = JCheckBox("Enable File Operations")
-                val remoteDnsCheckbox = JCheckBox("Enable Remote DNS")
-                val ephemeralContainerCheckBox = JCheckBox("Enable Ephemeral Containers")
-
-                val agentRustLog = JTextField(mirrordEnv["MIRRORD_AGENT_RUST_LOG"])
-                val rustLog = JTextField(mirrordEnv["RUST_LOG"])
-
-                val panel = customDialogBuilder.createMirrordKubeDialog(
-                    pods,
-                    fileOpsCheckbox,
-                    remoteDnsCheckbox,
-                    ephemeralContainerCheckBox,
-                    agentRustLog,
-                    rustLog
-                )
+                val panel = customDialogBuilder.createMirrordNamespaceDialog(namespaces)
                 val dialogBuilder = customDialogBuilder.getDialogBuilder(panel)
 
-                // SUCCESS: set the respective environment variables
-                if (dialogBuilder.show() == DialogWrapper.OK_EXIT_CODE && !pods.isSelectionEmpty) {
-                    mirrordEnv["MIRRORD_AGENT_IMPERSONATED_POD_NAME"] = pods.selectedValue as String
-                    mirrordEnv["MIRRORD_AGENT_IMPERSONATED_POD_NAMESPACE"] = choseNamespace as String
-                    mirrordEnv["MIRRORD_FILE_OPS"] = fileOpsCheckbox.isSelected.toString()
-                    mirrordEnv["MIRRORD_EPHEMERAL_CONTAINER"] = ephemeralContainerCheckBox.isSelected.toString()
-                    mirrordEnv["MIRRORD_REMOTE_DNS"] = remoteDnsCheckbox.isSelected.toString()
-                    mirrordEnv["RUST_LOG"] = rustLog.text.toString()
-                    mirrordEnv["MIRRORD_AGENT_RUST_LOG"] = agentRustLog.text.toString()
+                // SUCCESS: Ask the user for the impersonated pod in the chosen namespace
+                if (dialogBuilder.show() == DialogWrapper.OK_EXIT_CODE && !namespaces.isSelectionEmpty) {
+                    val choseNamespace = namespaces.selectedValue
 
-                    val envMap = getRunConfigEnv(env)
-                    envMap?.putAll(mirrordEnv)
+                    val pods = try {
+                        JBList(kubeDataProvider.getNameSpacedPods(choseNamespace))
+                    } catch (e: Exception) {
+                        MirrordEnabler.notify(
+                            "Error occurred while fetching pods from Kubernetes context",
+                            NotificationType.ERROR,
+                            env.project
+                        )
+                        return@invokeLater super.processStarting(executorId, env)
+                    }
 
-                    envSet = envMap != null
+                    val fileOpsCheckbox = JCheckBox("Enable File Operations")
+                    val remoteDnsCheckbox = JCheckBox("Enable Remote DNS")
+                    val ephemeralContainerCheckBox = JCheckBox("Enable Ephemeral Containers")
+
+                    val agentRustLog = JTextField(mirrordEnv["MIRRORD_AGENT_RUST_LOG"])
+                    val rustLog = JTextField(mirrordEnv["RUST_LOG"])
+
+                    val panel = customDialogBuilder.createMirrordKubeDialog(
+                        pods,
+                        fileOpsCheckbox,
+                        remoteDnsCheckbox,
+                        ephemeralContainerCheckBox,
+                        agentRustLog,
+                        rustLog
+                    )
+                    val dialogBuilder = customDialogBuilder.getDialogBuilder(panel)
+
+                    // SUCCESS: set the respective environment variables
+                    if (dialogBuilder.show() == DialogWrapper.OK_EXIT_CODE && !pods.isSelectionEmpty) {
+                        mirrordEnv["MIRRORD_AGENT_IMPERSONATED_POD_NAME"] = pods.selectedValue as String
+                        mirrordEnv["MIRRORD_AGENT_IMPERSONATED_POD_NAMESPACE"] = choseNamespace as String
+                        mirrordEnv["MIRRORD_FILE_OPS"] = fileOpsCheckbox.isSelected.toString()
+                        mirrordEnv["MIRRORD_EPHEMERAL_CONTAINER"] = ephemeralContainerCheckBox.isSelected.toString()
+                        mirrordEnv["MIRRORD_REMOTE_DNS"] = remoteDnsCheckbox.isSelected.toString()
+                        mirrordEnv["RUST_LOG"] = rustLog.text.toString()
+                        mirrordEnv["MIRRORD_AGENT_RUST_LOG"] = agentRustLog.text.toString()
+
+                        val envMap = getRunConfigEnv(env)
+                        envMap?.putAll(mirrordEnv)
+
+                        envSet = envMap != null
+                    }
                 }
             }
         }
@@ -133,9 +136,12 @@ class MirrordListener : ExecutionListener {
     }
 
     private fun getRunConfigEnv(env: ExecutionEnvironment): LinkedHashMap<String, String>? {
-        if (env.runProfile::class.simpleName == "GoApplicationConfiguration")
-            return null
+        when(env.runProfile::class.simpleName) {
+            "GoApplicationConfiguration" -> return null
+            "CargoCommandConfiguration" -> return (env.runProfile.javaClass.getMethod("getEnv").invoke(env.runProfile) as EnvironmentVariablesData).envs as LinkedHashMap<String, String>
+        }
         return try {
+            val methods = env.runProfile.javaClass.declaredMethods
             val envMethod = env.runProfile.javaClass.getMethod("getEnvs")
             envMethod.invoke(env.runProfile) as LinkedHashMap<String, String>
         } catch (e: Exception) {

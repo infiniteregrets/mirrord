@@ -32,5 +32,6 @@
     </actions>
 
     <depends optional="true" config-file="go-plugin.xml">org.jetbrains.plugins.go</depends>
+    <depends optional="true" config-file="rust-plugin.xml">org.rust.lang</depends>
 
 </idea-plugin>
