@@ -14,6 +14,7 @@ plugins {
     id("org.jetbrains.changelog") version "1.3.1"
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
+
 }
 
 group = properties("pluginGroup")
@@ -25,10 +26,12 @@ repositories {
 }
 dependencies {
     implementation("com.github.zafarkhaja:java-semver:0.9.0")
-    implementation("io.kubernetes:client-java:16.0.1") {
+    implementation("io.kubernetes:client-java:16.0.2") {
         exclude(group = "org.slf4j", module = "slf4j-api")
         exclude(group = "org.yaml", module = "snakeyaml")
     }
+
+    implementation("com.beust:klaxon:5.6")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
@@ -102,9 +105,9 @@ tasks {
                 into(pluginName.get())
             }
             // NOTE: comment this line when developing locally without either of shared libs
-            if (!System.getenv("CI_BUILD_PLUGIN").toBoolean()) {
-                if (!inputs.sourceFiles.files.contains(File(lib))) throw StopExecutionException("Expected library: $lib >> Not Found")
-            }
+//            if (!System.getenv("CI_BUILD_PLUGIN").toBoolean()) {
+//                if (!inputs.sourceFiles.files.contains(File(lib))) throw StopExecutionException("Expected library: $lib >> Not Found")
+//            }
         }
         // custom delve
         val delveExecutables = mapOf("aarch64" to "$projectDir/dlv_aarch64", "amd64" to "$projectDir/dlv_amd64")
@@ -112,9 +115,9 @@ tasks {
             from(file(delve)) {
                 into(pluginName.get())
             }
-            if (!System.getenv("CI_BUILD_PLUGIN").toBoolean()) {
-                if (!inputs.sourceFiles.files.contains(File(delve))) throw StopExecutionException("Expected delve executable: $delve >> Not Found")
-            }
+//            if (!System.getenv("CI_BUILD_PLUGIN").toBoolean()) {
+//                if (!inputs.sourceFiles.files.contains(File(delve))) throw StopExecutionException("Expected delve executable: $delve >> Not Found")
+//            }
         }
     }
 
