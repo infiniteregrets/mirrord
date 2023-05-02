@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Types and traits for extracting data from requests."><meta name="keywords" content="rust, rustlang, rust-lang, extract"><title>axum::extract - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f2fc7b5fd698d27d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../static.files/storage-ff4706381ddb2707.js"></script><script defer src="../../static.files/main-02cbe07fc548e88c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../axum/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../axum/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Module extract</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../index.html">axum</a>::<wbr><a class="mod" href="#">extract</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../src/axum/extract/mod.rs.html#1-115">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Types and traits for extracting data from requests.</p>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Types and traits for extracting data from requests."><title>axum::extract - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="axum" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (478cbb42b 2023-03-28)" data-search-js="search-bc5a112813b5d712.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../axum/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../axum/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Module extract</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../index.html">axum</a>::<wbr><a class="mod" href="#">extract</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../src/axum/extract/mod.rs.html#1-115">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Types and traits for extracting data from requests.</p>
 <h2 id="table-of-contents"><a href="#table-of-contents">Table of contents</a></h2>
 <ul>
 <li><a href="#intro">Intro</a></li>
@@ -14,13 +14,14 @@
 <li><a href="#request-body-extractors">Request body extractors</a></li>
 <li><a href="#running-extractors-from-middleware">Running extractors from middleware</a></li>
 <li><a href="#wrapping-extractors">Wrapping extractors</a></li>
+<li><a href="#logging-rejections">Logging rejections</a></li>
 </ul>
 <h2 id="intro"><a href="#intro">Intro</a></h2>
 <p>A handler function is an async function that takes any number of
 “extractors” as arguments. An extractor is a type that implements
-<a href="trait.FromRequest.html"><code>FromRequest</code></a>
-or <a href="trait.FromRequestParts.html"><code>FromRequestParts</code></a>.</p>
-<p>For example, <a href="../struct.Json.html" title="Json"><code>Json</code></a> is an extractor that consumes the request body and
+<a href="trait.FromRequest.html" title="trait axum::extract::FromRequest"><code>FromRequest</code></a>
+or <a href="trait.FromRequestParts.html" title="trait axum::extract::FromRequestParts"><code>FromRequestParts</code></a>.</p>
+<p>For example, [<code>Json</code>] is an extractor that consumes the request body and
 deserializes it as JSON into some target type:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>axum::{
@@ -137,17 +138,19 @@ deserializes it as JSON into some target type:</p>
 left to right.</p>
 <p>The request body is an asynchronous stream that can only be consumed once.
 Therefore you can only have one extractor that consumes the request body. axum
-enforces by that requiring such extractors to be the <em>last</em> argument your
+enforces this by requiring such extractors to be the <em>last</em> argument your
 handler takes.</p>
 <p>For example</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>axum::http::{Method, HeaderMap};
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>axum::{extract::State, http::{Method, HeaderMap}};
 
 <span class="kw">async fn </span>handler(
     <span class="comment">// `Method` and `HeaderMap` don&#39;t consume the request body so they can
-    // put anywhere in the argument list
+    // put anywhere in the argument list (but before `body`)
     </span>method: Method,
     headers: HeaderMap,
+    <span class="comment">// `State` is also an extractor so it needs to be before `body`
+    </span>State(state): State&lt;AppState&gt;,
     <span class="comment">// `String` consumes the request body and thus must be the last extractor
     </span>body: String,
 ) {
@@ -155,7 +158,7 @@ handler takes.</p>
 </span>}</code></pre></div>
 <p>We get a compile error if <code>String</code> isn’t the last extractor:</p>
 
-<div class="example-wrap compile_fail"><div class='tooltip'>ⓘ</div><pre class="rust rust-example-rendered"><code><span class="kw">use </span>axum::http::Method;
+<div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>axum::http::Method;
 
 <span class="kw">async fn </span>handler(
     <span class="comment">// this doesn&#39;t work since `String` must be the last argument
@@ -166,7 +169,7 @@ handler takes.</p>
 </span>}</code></pre></div>
 <p>This also means you cannot consume the request body twice:</p>
 
-<div class="example-wrap compile_fail"><div class='tooltip'>ⓘ</div><pre class="rust rust-example-rendered"><code><span class="kw">use </span>axum::Json;
+<div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>axum::Json;
 <span class="kw">use </span>serde::Deserialize;
 
 <span class="attr">#[derive(Deserialize)]
@@ -180,8 +183,8 @@ handler takes.</p>
 ) {
     <span class="comment">// ...
 </span>}</code></pre></div>
-<p>axum enforces this by requiring the last extractor implements <a href="trait.FromRequest.html" title="FromRequest"><code>FromRequest</code></a>
-and all others implement <a href="trait.FromRequestParts.html" title="FromRequestParts"><code>FromRequestParts</code></a>.</p>
+<p>axum enforces this by requiring the last extractor implements <a href="trait.FromRequest.html" title="trait axum::extract::FromRequest"><code>FromRequest</code></a>
+and all others implement <a href="trait.FromRequestParts.html" title="trait axum::extract::FromRequestParts"><code>FromRequestParts</code></a>.</p>
 <h2 id="optional-extractors"><a href="#optional-extractors">Optional extractors</a></h2>
 <p>All extractors defined in axum will reject the request if it doesn’t match.
 If you wish to make an extractor optional you can wrap it in <code>Option</code>:</p>
@@ -246,7 +249,7 @@ options:</p>
 <li>Use <code>Result&lt;T, T::Rejection&gt;</code> as your extractor like shown in <a href="#optional-extractors">“Optional
 extractors”</a>. This works well if you’re only using
 the extractor in a single handler.</li>
-<li>Create your own extractor that in its <a href="trait.FromRequest.html" title="FromRequest"><code>FromRequest</code></a> implemention calls
+<li>Create your own extractor that in its <a href="trait.FromRequest.html" title="trait axum::extract::FromRequest"><code>FromRequest</code></a> implemention calls
 one of axum’s built in extractors but returns a different response for
 rejections. See the <a href="https://github.com/tokio-rs/axum/blob/main/examples/customize-extractor-error/src/main.rs">customize-extractor-error</a> example for more details.</li>
 </ol>
@@ -254,10 +257,10 @@ rejections. See the <a href="https://github.com/tokio-rs/axum/blob/main/examples
 <p>axum’s built-in extractors don’t directly expose the inner error. This gives us
 more flexibility and allows us to change internal implementations without
 breaking the public API.</p>
-<p>For example that means while <a href="../struct.Json.html" title="Json"><code>Json</code></a> is implemented using <a href="../../serde_json/index.html" title="serde_json"><code>serde_json</code></a> it
-doesn’t directly expose the <a href="../../serde_json/error/struct.Error.html" title="serde_json::Error"><code>serde_json::Error</code></a> thats contained in
-<a href="rejection/enum.JsonRejection.html#variant.JsonDataError"><code>JsonRejection::JsonDataError</code></a>. However it is still possible to access via
-methods from <a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html" title="std::error::Error"><code>std::error::Error</code></a>:</p>
+<p>For example that means while [<code>Json</code>] is implemented using [<code>serde_json</code>] it
+doesn’t directly expose the [<code>serde_json::Error</code>] thats contained in
+<a href="rejection::JsonRejection::JsonDataError"><code>JsonRejection::JsonDataError</code></a>. However it is still possible to access via
+methods from <a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html" title="trait core::error::Error"><code>std::error::Error</code></a>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::error::Error;
 <span class="kw">use </span>axum::{
@@ -339,7 +342,7 @@ its implementation to use a different error type internally. Such changes might
 happen without major breaking versions.</p>
 <h2 id="defining-custom-extractors"><a href="#defining-custom-extractors">Defining custom extractors</a></h2>
 <p>You can also define your own extractors by implementing either
-<a href="trait.FromRequestParts.html" title="FromRequestParts"><code>FromRequestParts</code></a> or <a href="trait.FromRequest.html" title="FromRequest"><code>FromRequest</code></a>.</p>
+<a href="trait.FromRequestParts.html" title="trait axum::extract::FromRequestParts"><code>FromRequestParts</code></a> or <a href="trait.FromRequest.html" title="trait axum::extract::FromRequest"><code>FromRequest</code></a>.</p>
 <h3 id="implementing-fromrequestparts"><a href="#implementing-fromrequestparts">Implementing <code>FromRequestParts</code></a></h3>
 <p>Implement <code>FromRequestParts</code> if your extractor doesn’t need access to the
 request body:</p>
@@ -380,7 +383,7 @@ request body:</p>
 
 <span class="kw">let </span>app = Router::new().route(<span class="string">&quot;/foo&quot;</span>, get(handler));</code></pre></div>
 <h3 id="implementing-fromrequest"><a href="#implementing-fromrequest">Implementing <code>FromRequest</code></a></h3>
-<p>If your extractor needs to consume the request body you must implement <a href="trait.FromRequest.html" title="FromRequest"><code>FromRequest</code></a></p>
+<p>If your extractor needs to consume the request body you must implement <a href="trait.FromRequest.html" title="trait axum::extract::FromRequest"><code>FromRequest</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>axum::{
     async_trait,
@@ -428,7 +431,7 @@ request body:</p>
 <code>FromRequest</code> and <code>FromRequestParts</code> directly for the same type, unless it is
 wrapping another extractor:</p>
 
-<div class="example-wrap compile_fail"><div class='tooltip'>ⓘ</div><pre class="rust rust-example-rendered"><code><span class="kw">use </span>axum::{
+<div class="example-wrap compile_fail"><a href="#" class="tooltip" title="This example deliberately fails to compile">ⓘ</a><pre class="rust rust-example-rendered"><code><span class="kw">use </span>axum::{
     Router,
     routing::get,
     extract::{FromRequest, FromRequestParts},
@@ -533,13 +536,13 @@ in your implementation.</p>
 
 <span class="kw">let </span>app = Router::new().route(<span class="string">&quot;/&quot;</span>, get(handler)).layer(Extension(state));</code></pre></div>
 <h2 id="request-body-limits"><a href="#request-body-limits">Request body limits</a></h2>
-<p>For security reasons, <a href="../../bytes/bytes/struct.Bytes.html"><code>Bytes</code></a> will, by default, not accept bodies larger than
-2MB. This also applies to extractors that uses <a href="../../bytes/bytes/struct.Bytes.html"><code>Bytes</code></a> internally such as
-<code>String</code>, <a href="../struct.Json.html" title="Json"><code>Json</code></a>, and <a href="../struct.Form.html" title="Form"><code>Form</code></a>.</p>
-<p>For more details, including how to disable this limit, see <a href="struct.DefaultBodyLimit.html" title="DefaultBodyLimit"><code>DefaultBodyLimit</code></a>.</p>
+<p>For security reasons, <a href="../../bytes/bytes/struct.Bytes.html" title="struct bytes::bytes::Bytes"><code>Bytes</code></a> will, by default, not accept bodies larger than
+2MB. This also applies to extractors that uses <a href="../../bytes/bytes/struct.Bytes.html" title="struct bytes::bytes::Bytes"><code>Bytes</code></a> internally such as
+<code>String</code>, [<code>Json</code>], and [<code>Form</code>].</p>
+<p>For more details, including how to disable this limit, see <a href="struct.DefaultBodyLimit.html" title="struct axum::extract::DefaultBodyLimit"><code>DefaultBodyLimit</code></a>.</p>
 <h2 id="request-body-extractors"><a href="#request-body-extractors">Request body extractors</a></h2>
-<p>Most of the time your request body type will be <a href="../../hyper/body/body/struct.Body.html"><code>body::Body</code></a> (a re-export
-of <a href="../../hyper/body/body/struct.Body.html" title="hyper::Body"><code>hyper::Body</code></a>), which is directly supported by all extractors.</p>
+<p>Most of the time your request body type will be <a href="../../hyper/body/body/struct.Body.html" title="struct hyper::body::body::Body"><code>body::Body</code></a> (a re-export
+of <a href="../../hyper/body/body/struct.Body.html" title="struct hyper::body::body::Body"><code>hyper::Body</code></a>), which is directly supported by all extractors.</p>
 <p>However if you’re applying a tower middleware that changes the request body type
 you might have to apply a different body type to some extractors:</p>
 
@@ -649,7 +652,7 @@ you might have to apply a different body type to some extractors:</p>
 <h2 id="wrapping-extractors"><a href="#wrapping-extractors">Wrapping extractors</a></h2>
 <p>If you want write an extractor that generically wraps another extractor (that
 may or may not consume the request body) you should implement both
-<a href="trait.FromRequest.html" title="FromRequest"><code>FromRequest</code></a> and <a href="trait.FromRequestParts.html" title="FromRequestParts"><code>FromRequestParts</code></a>:</p>
+<a href="trait.FromRequest.html" title="trait axum::extract::FromRequest"><code>FromRequest</code></a> and <a href="trait.FromRequestParts.html" title="trait axum::extract::FromRequestParts"><code>FromRequestParts</code></a>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>axum::{
     Router,
@@ -713,6 +716,10 @@ may or may not consume the request body) you should implement both
     <span class="comment">// this uses the `FromRequest` impl
     </span><span class="kw">_</span>: Timing&lt;String&gt;,
 ) {}</code></pre></div>
-</div></details><h2 id="reexports" class="small-section-header"><a href="#reexports">Re-exports</a></h2><div class="item-table"><div class="item-row"><div class="item-left" id="reexport.Json"><code>pub use crate::<a class="struct" href="../struct.Json.html" title="struct axum::Json">Json</a>;</code></div></div><div class="item-row"><div class="item-left" id="reexport.Extension"><code>pub use crate::<a class="struct" href="../struct.Extension.html" title="struct axum::Extension">Extension</a>;</code></div></div><div class="item-row"><div class="item-left" id="reexport.Form"><code>pub use crate::form::<a class="struct" href="../struct.Form.html" title="struct axum::Form">Form</a>;</code></div></div></div><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2><div class="item-table"><div class="item-row"><div class="item-left"><a class="mod" href="connect_info/index.html" title="mod axum::extract::connect_info">connect_info</a></div><div class="item-right docblock-short">Extractor for getting connection information from a client.</div></div><div class="item-row"><div class="item-left"><a class="mod" href="path/index.html" title="mod axum::extract::path">path</a></div><div class="item-right docblock-short">Extractor that will get captures from the URL and parse them using
-<a href="../../serde/index.html" title="serde"><code>serde</code></a>.</div></div><div class="item-row"><div class="item-left"><a class="mod" href="rejection/index.html" title="mod axum::extract::rejection">rejection</a></div><div class="item-right docblock-short">Rejection response types.</div></div><div class="item-row"><div class="item-left"><a class="mod" href="ws/index.html" title="mod axum::extract::ws">ws</a></div><div class="item-right docblock-short">Handle WebSocket connections.</div></div></div><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><div class="item-table"><div class="item-row"><div class="item-left"><a class="struct" href="struct.BodyStream.html" title="struct axum::extract::BodyStream">BodyStream</a></div><div class="item-right docblock-short">Extractor that extracts the request body as a <a href="https://docs.rs/futures/latest/futures/stream/trait.Stream.html"><code>Stream</code></a>.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.ConnectInfo.html" title="struct axum::extract::ConnectInfo">ConnectInfo</a></div><div class="item-right docblock-short">Extractor for getting connection information produced by a <a href="connect_info/trait.Connected.html" title="Connected"><code>Connected</code></a>.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.DefaultBodyLimit.html" title="struct axum::extract::DefaultBodyLimit">DefaultBodyLimit</a></div><div class="item-right docblock-short">Layer for configuring the default request body limit.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.Host.html" title="struct axum::extract::Host">Host</a></div><div class="item-right docblock-short">Extractor that resolves the hostname of the request.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.MatchedPath.html" title="struct axum::extract::MatchedPath">MatchedPath</a></div><div class="item-right docblock-short">Access the path in the router that matches the request.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.OriginalUri.html" title="struct axum::extract::OriginalUri">OriginalUri</a></div><div class="item-right docblock-short">Extractor that gets the original request URI regardless of nesting.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.Path.html" title="struct axum::extract::Path">Path</a></div><div class="item-right docblock-short">Extractor that will get captures from the URL and parse them using
-<a href="https://crates.io/crates/serde"><code>serde</code></a>.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.Query.html" title="struct axum::extract::Query">Query</a></div><div class="item-right docblock-short">Extractor that deserializes query strings into some type.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.RawBody.html" title="struct axum::extract::RawBody">RawBody</a></div><div class="item-right docblock-short">Extractor that extracts the raw request body.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.RawForm.html" title="struct axum::extract::RawForm">RawForm</a></div><div class="item-right docblock-short">Extractor that extracts raw form requests.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.RawPathParams.html" title="struct axum::extract::RawPathParams">RawPathParams</a></div><div class="item-right docblock-short">Extractor that will get captures from the URL without deserializing them.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.RawQuery.html" title="struct axum::extract::RawQuery">RawQuery</a></div><div class="item-right docblock-short">Extractor that extracts the raw query string, without parsing it.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.State.html" title="struct axum::extract::State">State</a></div><div class="item-right docblock-short">Extractor for state.</div></div><div class="item-row"><div class="item-left"><a class="struct" href="struct.WebSocketUpgrade.html" title="struct axum::extract::WebSocketUpgrade">WebSocketUpgrade</a></div><div class="item-right docblock-short">Extractor for establishing WebSocket connections.</div></div></div><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2><div class="item-table"><div class="item-row"><div class="item-left"><a class="trait" href="trait.FromRef.html" title="trait axum::extract::FromRef">FromRef</a></div><div class="item-right docblock-short">Used to do reference-to-value conversions thus not consuming the input value.</div></div><div class="item-row"><div class="item-left"><a class="trait" href="trait.FromRequest.html" title="trait axum::extract::FromRequest">FromRequest</a></div><div class="item-right docblock-short">Types that can be created from requests.</div></div><div class="item-row"><div class="item-left"><a class="trait" href="trait.FromRequestParts.html" title="trait axum::extract::FromRequestParts">FromRequestParts</a></div><div class="item-right docblock-short">Types that can be created from request parts.</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="axum" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (001a77fac 2023-01-30)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-7c23ac01f615ce90.css" ></div></body></html>
+<h2 id="logging-rejections"><a href="#logging-rejections">Logging rejections</a></h2>
+<p>All built-in extractors will log rejections for easier debugging. To see the
+logs, enable the <code>tracing</code> feature for axum and the <code>axum::rejection=trace</code>
+tracing target, for example with <code>RUST_LOG=info,axum::rejection=trace cargo run</code>.</p>
+</div></details><h2 id="reexports" class="small-section-header"><a href="#reexports">Re-exports</a></h2><ul class="item-table"><li><div class="item-name" id="reexport.Extension"><code>pub use crate::<a class="struct" href="../struct.Extension.html" title="struct axum::Extension">Extension</a>;</code></div></li></ul><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2><ul class="item-table"><li><div class="item-name"><a class="mod" href="path/index.html" title="mod axum::extract::path">path</a></div><div class="desc docblock-short">Extractor that will get captures from the URL and parse them using
+<a href="../../serde/index.html" title="mod serde"><code>serde</code></a>.</div></li><li><div class="item-name"><a class="mod" href="rejection/index.html" title="mod axum::extract::rejection">rejection</a></div><div class="desc docblock-short">Rejection response types.</div></li></ul><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.BodyStream.html" title="struct axum::extract::BodyStream">BodyStream</a></div><div class="desc docblock-short">Extractor that extracts the request body as a <a href="https://docs.rs/futures/latest/futures/stream/trait.Stream.html"><code>Stream</code></a>.</div></li><li><div class="item-name"><a class="struct" href="struct.DefaultBodyLimit.html" title="struct axum::extract::DefaultBodyLimit">DefaultBodyLimit</a></div><div class="desc docblock-short">Layer for configuring the default request body limit.</div></li><li><div class="item-name"><a class="struct" href="struct.Host.html" title="struct axum::extract::Host">Host</a></div><div class="desc docblock-short">Extractor that resolves the hostname of the request.</div></li><li><div class="item-name"><a class="struct" href="struct.Path.html" title="struct axum::extract::Path">Path</a></div><div class="desc docblock-short">Extractor that will get captures from the URL and parse them using
+<a href="https://crates.io/crates/serde"><code>serde</code></a>.</div></li><li><div class="item-name"><a class="struct" href="struct.RawBody.html" title="struct axum::extract::RawBody">RawBody</a></div><div class="desc docblock-short">Extractor that extracts the raw request body.</div></li><li><div class="item-name"><a class="struct" href="struct.RawForm.html" title="struct axum::extract::RawForm">RawForm</a></div><div class="desc docblock-short">Extractor that extracts raw form requests.</div></li><li><div class="item-name"><a class="struct" href="struct.RawPathParams.html" title="struct axum::extract::RawPathParams">RawPathParams</a></div><div class="desc docblock-short">Extractor that will get captures from the URL without deserializing them.</div></li><li><div class="item-name"><a class="struct" href="struct.RawQuery.html" title="struct axum::extract::RawQuery">RawQuery</a></div><div class="desc docblock-short">Extractor that extracts the raw query string, without parsing it.</div></li><li><div class="item-name"><a class="struct" href="struct.State.html" title="struct axum::extract::State">State</a></div><div class="desc docblock-short">Extractor for state.</div></li></ul><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2><ul class="item-table"><li><div class="item-name"><a class="trait" href="trait.FromRef.html" title="trait axum::extract::FromRef">FromRef</a></div><div class="desc docblock-short">Used to do reference-to-value conversions thus not consuming the input value.</div></li><li><div class="item-name"><a class="trait" href="trait.FromRequest.html" title="trait axum::extract::FromRequest">FromRequest</a></div><div class="desc docblock-short">Types that can be created from requests.</div></li><li><div class="item-name"><a class="trait" href="trait.FromRequestParts.html" title="trait axum::extract::FromRequestParts">FromRequestParts</a></div><div class="desc docblock-short">Types that can be created from request parts.</div></li></ul></section></div></main></body></html>

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["TcpOutgoing","Hook messages handled by `TcpOutgoingHandler`."]],"struct":[["TcpOutgoingHandler","Responsible for handling hook and daemon messages for the outgoing traffic feature."]]};
+window.SIDEBAR_ITEMS = {"constant":["BRANCHES","UNIX_STREAMS_DIRNAME"],"enum":["TcpOutgoing"],"opaque":[""],"static":["CALLSITE","META"],"struct":["TcpOutgoingHandler"]};

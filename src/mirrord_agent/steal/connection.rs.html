@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/agent/src/steal/connection.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f2fc7b5fd698d27d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../../static.files/storage-ff4706381ddb2707.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-02cbe07fc548e88c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../mirrord_agent/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/agent/src/steal/connection.rs`."><title>connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="mirrord_agent" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (478cbb42b 2023-03-28)" data-search-js="search-bc5a112813b5d712.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../mirrord_agent/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -657,6 +657,22 @@
 <a href="#657" id="657">657</a>
 <a href="#658" id="658">658</a>
 <a href="#659" id="659">659</a>
+<a href="#660" id="660">660</a>
+<a href="#661" id="661">661</a>
+<a href="#662" id="662">662</a>
+<a href="#663" id="663">663</a>
+<a href="#664" id="664">664</a>
+<a href="#665" id="665">665</a>
+<a href="#666" id="666">666</a>
+<a href="#667" id="667">667</a>
+<a href="#668" id="668">668</a>
+<a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
 </pre><pre class="rust"><code><span class="kw">use </span>std::{
     collections::HashSet,
     io,
@@ -773,6 +789,8 @@
 }
 
 <span class="kw">impl </span>TcpConnectionStealer {
+    <span class="kw">pub const </span>TASK_NAME: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;Stealer&quot;</span>;
+
     <span class="doccomment">/// Initializes a new [`TcpConnectionStealer`] fields, but doesn&#39;t start the actual working
     /// task (call [`TcpConnectionStealer::start`] to do so).
     </span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>)]
@@ -784,7 +802,7 @@
             port_subscriptions: HashMap::with_capacity(<span class="number">4</span>),
             command_rx,
             clients: HashMap::with_capacity(<span class="number">8</span>),
-            index_allocator: IndexAllocator::new(),
+            index_allocator: Default::default(),
             stealer: TcpListener::bind((Ipv4Addr::UNSPECIFIED, <span class="number">0</span>)).<span class="kw">await</span><span class="question-mark">?</span>,
             iptables: <span class="prelude-val">None</span>, <span class="comment">// Initialize on first subscription.
             </span>write_streams: HashMap::with_capacity(<span class="number">8</span>),
@@ -835,7 +853,10 @@
             <span class="macro">select! </span>{
                 command = <span class="self">self</span>.command_rx.recv() =&gt; {
                     <span class="kw">if let </span><span class="prelude-val">Some</span>(command) = command {
-                        <span class="self">self</span>.handle_command(command).<span class="kw">await</span><span class="question-mark">?</span>;
+                        <span class="self">self</span>.handle_command(command).<span class="kw">await</span>.map_err(| e | {
+                            <span class="macro">error!</span>(<span class="string">&quot;Failed handling command {e:#?}&quot;</span>);
+                            e
+                        })<span class="question-mark">?</span>;
                     } <span class="kw">else </span>{ <span class="kw">break</span>; }
                 },
                 <span class="comment">// Accepts a connection that we&#39;re going to be stealing traffic from.
@@ -990,8 +1011,8 @@
                 <span class="comment">// Should not happen.
                 </span><span class="macro">debug_assert!</span>(<span class="bool-val">false</span>);
                 <span class="macro">error!</span>(<span class="string">&quot;Internal error: subscriptions of closed client still present.&quot;</span>);
-                <span class="self">self</span>.close_client(client_id)
-            }
+                <span class="self">self</span>.close_client(client_id).<span class="kw">await
+            </span>}
         }
     }
 
@@ -1050,16 +1071,14 @@
     }
 
     <span class="doccomment">/// Initialize iptables member, which creates an iptables chain for our rules.
-    </span><span class="kw">fn </span>init_iptables(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    </span><span class="kw">async fn </span>init_iptables(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="kw">let </span>flush_connections = std::env::var(<span class="string">&quot;MIRRORD_AGENT_STEALER_FLUSH_CONNECTIONS&quot;</span>)
             .ok()
             .and_then(|var| var.parse::&lt;bool&gt;().ok())
             .unwrap_or_default();
+        <span class="kw">let </span>iptables = iptables::new(<span class="bool-val">false</span>).unwrap();
 
-        <span class="self">self</span>.iptables = <span class="prelude-val">Some</span>(SafeIpTables::new(
-            iptables::new(<span class="bool-val">false</span>).unwrap(),
-            flush_connections,
-        )<span class="question-mark">?</span>);
+        <span class="self">self</span>.iptables = <span class="prelude-val">Some</span>(SafeIpTables::create(iptables, flush_connections).<span class="kw">await</span><span class="question-mark">?</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -1071,7 +1090,7 @@
     </span><span class="kw">async fn </span>port_subscribe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, client_id: ClientId, port_steal: StealType) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="kw">if </span><span class="self">self</span>.iptables.is_none() {
             <span class="comment">// TODO: make the initialization internal to SafeIpTables.
-            </span><span class="self">self</span>.init_iptables()<span class="question-mark">?</span>;
+            </span><span class="self">self</span>.init_iptables().<span class="kw">await</span><span class="question-mark">?</span>;
         }
         <span class="kw">let </span><span class="kw-2">mut </span>first_subscriber = <span class="bool-val">false</span>;
 
@@ -1119,7 +1138,7 @@
 
         <span class="kw">if </span>first_subscriber &amp;&amp; <span class="kw">let </span><span class="prelude-val">Ok</span>(port) = steal_port {
             <span class="self">self</span>.iptables()<span class="question-mark">?
-                </span>.add_stealer_iptables_rules(port, <span class="self">self</span>.stealer.local_addr()<span class="question-mark">?</span>.port()).<span class="kw">await</span><span class="question-mark">?</span>;
+                </span>.add_redirect(port, <span class="self">self</span>.stealer.local_addr()<span class="question-mark">?</span>.port()).<span class="kw">await</span><span class="question-mark">?</span>;
         }
 
         <span class="self">self</span>.send_message_to_single_client(<span class="kw-2">&amp;</span>client_id, DaemonTcp::SubscribeResult(steal_port))
@@ -1131,7 +1150,11 @@
     /// Removes `port` from [`TcpConnectionStealer::iptables`] rules, and unsubscribes the layer
     /// with `client_id`.
     </span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>, skip(<span class="self">self</span>))]
-    </span><span class="kw">fn </span>port_unsubscribe(<span class="kw-2">&amp;mut </span><span class="self">self</span>, client_id: ClientId, port: Port) -&gt; <span class="prelude-ty">Result</span>&lt;(), AgentError&gt; {
+    </span><span class="kw">async fn </span>port_unsubscribe(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        client_id: ClientId,
+        port: Port,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), AgentError&gt; {
         <span class="kw">let </span>port_unsubscribed = <span class="kw">match </span><span class="self">self</span>.port_subscriptions.get_mut(<span class="kw-2">&amp;</span>port) {
             <span class="prelude-val">Some</span>(HttpFiltered(manager)) =&gt; {
                 manager.remove_client(<span class="kw-2">&amp;</span>client_id);
@@ -1146,13 +1169,20 @@
         <span class="kw">if </span>port_unsubscribed {
             <span class="comment">// No remaining subscribers on this port.
             </span><span class="self">self</span>.iptables()<span class="question-mark">?
-                </span>.remove_stealer_iptables_rules(port, <span class="self">self</span>.stealer.local_addr()<span class="question-mark">?</span>.port())<span class="question-mark">?</span>;
+                </span>.remove_redirect(port, <span class="self">self</span>.stealer.local_addr()<span class="question-mark">?</span>.port())
+                .<span class="kw">await</span><span class="question-mark">?</span>;
 
             <span class="self">self</span>.port_subscriptions.remove(<span class="kw-2">&amp;</span>port);
-            <span class="kw">if </span><span class="self">self</span>.port_subscriptions.is_empty() {
-                <span class="comment">// Was this the last client?
-                </span><span class="self">self</span>.iptables = <span class="prelude-val">None</span>; <span class="comment">// The Drop impl of iptables cleans up.
-            </span>}
+
+            <span class="comment">// Cleanup iptables if not stealing any ports anymore.
+            </span><span class="kw">if </span><span class="self">self</span>.port_subscriptions.is_empty() {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(safe_iptables) = <span class="self">self</span>.iptables.as_ref() {
+                    <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = safe_iptables.cleanup().<span class="kw">await </span>{
+                        <span class="macro">error!</span>(<span class="string">&quot;Error in iptables cleanup: {e}&quot;</span>);
+                    }
+                }
+                <span class="self">self</span>.iptables = <span class="prelude-val">None</span>;
+            }
         }
         <span class="prelude-val">Ok</span>(())
     }
@@ -1172,10 +1202,10 @@
     /// their redirection rules from [`TcpConnectionStealer::iptables`] and all their open
     /// connections.
     </span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>, skip(<span class="self">self</span>))]
-    </span><span class="kw">fn </span>close_client(<span class="kw-2">&amp;mut </span><span class="self">self</span>, client_id: ClientId) -&gt; <span class="prelude-ty">Result</span>&lt;(), AgentError&gt; {
+    </span><span class="kw">async fn </span>close_client(<span class="kw-2">&amp;mut </span><span class="self">self</span>, client_id: ClientId) -&gt; <span class="prelude-ty">Result</span>&lt;(), AgentError&gt; {
         <span class="kw">let </span>ports = <span class="self">self</span>.get_client_ports(client_id);
         <span class="kw">for </span>port <span class="kw">in </span>ports.iter() {
-            <span class="self">self</span>.port_unsubscribe(client_id, <span class="kw-2">*</span>port)<span class="question-mark">?
+            <span class="self">self</span>.port_unsubscribe(client_id, <span class="kw-2">*</span>port).<span class="kw">await</span><span class="question-mark">?
         </span>}
 
         <span class="comment">// Close and remove all remaining connections of the closed client.
@@ -1197,14 +1227,16 @@
         message: DaemonTcp,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), AgentError&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(sender) = <span class="self">self</span>.clients.get(client_id) {
-            sender.send(message).<span class="kw">await</span>.map_err(|fail| {
+            <span class="kw">if let </span><span class="prelude-val">Err</span>(fail) = sender.send(message).<span class="kw">await </span>{
                 <span class="macro">warn!</span>(
                     <span class="string">&quot;Failed to send message to client {} with {:#?}!&quot;</span>,
                     client_id, fail
                 );
-                <span class="kw">let _ </span>= <span class="self">self</span>.close_client(<span class="kw-2">*</span>client_id);
-                fail
-            })<span class="question-mark">?</span>;
+
+                <span class="kw">let _ </span>= <span class="self">self</span>.close_client(<span class="kw-2">*</span>client_id).<span class="kw">await</span>;
+
+                <span class="kw">return </span><span class="prelude-val">Err</span>(fail.into());
+            }
         }
 
         <span class="prelude-val">Ok</span>(())
@@ -1307,8 +1339,8 @@
             Command::PortSubscribe(port_steal) =&gt; {
                 <span class="self">self</span>.port_subscribe(client_id, port_steal).<span class="kw">await</span><span class="question-mark">?
             </span>}
-            Command::PortUnsubscribe(port) =&gt; <span class="self">self</span>.port_unsubscribe(client_id, port)<span class="question-mark">?</span>,
-            Command::ClientClose =&gt; <span class="self">self</span>.close_client(client_id)<span class="question-mark">?</span>,
+            Command::PortUnsubscribe(port) =&gt; <span class="self">self</span>.port_unsubscribe(client_id, port).<span class="kw">await</span><span class="question-mark">?</span>,
+            Command::ClientClose =&gt; <span class="self">self</span>.close_client(client_id).<span class="kw">await</span><span class="question-mark">?</span>,
             Command::ResponseData(tcp_data) =&gt; <span class="self">self</span>.forward_data(tcp_data).<span class="kw">await</span><span class="question-mark">?</span>,
             Command::HttpResponse(response) =&gt; <span class="self">self</span>.http_response(response).<span class="kw">await</span>,
         }
@@ -1316,5 +1348,4 @@
         <span class="prelude-val">Ok</span>(())
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="mirrord_agent" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (001a77fac 2023-01-30)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-7c23ac01f615ce90.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

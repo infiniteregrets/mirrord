@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/layer/src/tcp.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tcp.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f2fc7b5fd698d27d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../static.files/storage-ff4706381ddb2707.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-02cbe07fc548e88c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../mirrord_layer/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/layer/src/tcp.rs`."><title>tcp.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mirrord_layer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (478cbb42b 2023-03-28)" data-search-js="search-bc5a112813b5d712.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../mirrord_layer/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -173,6 +173,18 @@
 <a href="#173" id="173">173</a>
 <a href="#174" id="174">174</a>
 <a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
 </pre><pre class="rust"><code><span class="doccomment">/// Tcp Traffic management, common code for stealing &amp; mirroring
 </span><span class="kw">use </span>std::{
     borrow::Borrow,
@@ -180,21 +192,20 @@
     hash::{Hash, Hasher},
     net::SocketAddr,
     net::{IpAddr, Ipv4Addr, Ipv6Addr},
-    os::unix::io::RawFd,
 };
 
-<span class="kw">use </span>async_trait::async_trait;
+<span class="kw">use </span>bimap::BiMap;
 <span class="kw">use </span>mirrord_protocol::{
     tcp::{DaemonTcp, HttpRequest, NewTcpConnection, TcpClose, TcpData},
     ClientMessage, Port, ResponseError,
 };
 <span class="kw">use </span>tokio::{net::TcpStream, sync::mpsc::Sender};
-<span class="kw">use </span>tracing::{debug, error};
+<span class="kw">use </span>tracing::{debug, error, log::trace};
 
 <span class="kw">use crate</span>::{
     detour::DetourGuard,
     error::LayerError,
-    socket::{SocketInformation, CONNECTION_QUEUE},
+    socket::{id::SocketId, SocketInformation, CONNECTION_QUEUE},
     LayerError::{PortAlreadyStolen, UnexpectedResponseError},
 };
 
@@ -208,7 +219,7 @@
     <span class="kw">pub </span>mirror_port: Port,
     <span class="kw">pub </span>requested_port: Port,
     <span class="kw">pub </span>ipv6: bool,
-    <span class="kw">pub </span>fd: RawFd,
+    <span class="kw">pub </span>id: SocketId,
 }
 
 <span class="kw">impl </span>PartialEq <span class="kw">for </span>Listen {
@@ -244,10 +255,19 @@
     }
 }
 
-<span class="attr">#[async_trait]
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait </span>TcpHandler {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait </span>TcpHandler {
     <span class="kw">fn </span>ports(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>HashSet&lt;Listen&gt;;
     <span class="kw">fn </span>ports_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>HashSet&lt;Listen&gt;;
+    <span class="kw">fn </span>port_mapping_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>BiMap&lt;u16, u16&gt;;
+
+    <span class="doccomment">/// Modify `Listen` to match local port to remote port based on mapping
+    /// If no mapping is found, the port is not modified
+    </span><span class="kw">fn </span>apply_port_mapping(<span class="kw-2">&amp;</span><span class="self">self</span>, listen: <span class="kw-2">&amp;mut </span>Listen) {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(mapped_port) = <span class="self">self</span>.port_mapping_ref().get_by_left(<span class="kw-2">&amp;</span>listen.requested_port) {
+            <span class="macro">trace!</span>(<span class="string">&quot;mapping port {} to {mapped_port}&quot;</span>, <span class="kw-2">&amp;</span>listen.requested_port);
+            listen.requested_port = <span class="kw-2">*</span>mapped_port;
+        }
+    }
 
     <span class="doccomment">/// Returns true to let caller know to keep running
     </span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>, skip(<span class="self">self</span>))]
@@ -302,26 +322,30 @@
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         tcp_connection: <span class="kw-2">&amp;</span>NewTcpConnection,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;TcpStream, LayerError&gt; {
-        <span class="kw">let </span>destination_port = tcp_connection.destination_port;
+        <span class="kw">let </span>remote_destination_port = tcp_connection.destination_port;
+        <span class="kw">let </span>local_destination_port = <span class="self">self
+            </span>.port_mapping_ref()
+            .get_by_right(<span class="kw-2">&amp;</span>tcp_connection.destination_port)
+            .map(|p| {
+                <span class="macro">trace!</span>(<span class="string">&quot;mapping port {} to {p}&quot;</span>, <span class="kw-2">&amp;</span>tcp_connection.destination_port);
+                <span class="kw-2">*</span>p
+            })
+            .unwrap_or(tcp_connection.destination_port);
 
         <span class="kw">let </span>listen = <span class="self">self
             </span>.ports()
-            .get(<span class="kw-2">&amp;</span>destination_port)
-            .ok_or(LayerError::PortNotFound(destination_port))<span class="question-mark">?</span>;
+            .get(<span class="kw-2">&amp;</span>remote_destination_port)
+            .ok_or(LayerError::PortNotFound(remote_destination_port))<span class="question-mark">?</span>;
 
         <span class="kw">let </span>addr: SocketAddr = listen.into();
 
         <span class="kw">let </span>info = SocketInformation::new(
             SocketAddr::new(tcp_connection.remote_address, tcp_connection.source_port),
-            SocketAddr::new(
-                tcp_connection.local_address,
-                tcp_connection.destination_port,
-            ),
+            <span class="comment">// we want local so app won&#39;t know we did the mapping.
+            </span>SocketAddr::new(tcp_connection.local_address, local_destination_port),
         );
 
-        {
-            CONNECTION_QUEUE.lock().unwrap().add(<span class="kw-2">&amp;</span>listen.fd, info);
-        }
+        CONNECTION_QUEUE.add(listen.id, info);
 
         <span class="attr">#[allow(clippy::let_and_return)]
         </span><span class="kw">let </span>tcp_stream = {
@@ -348,5 +372,4 @@
         tx: <span class="kw-2">&amp;</span>Sender&lt;ClientMessage&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), LayerError&gt;;
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mirrord_layer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (001a77fac 2023-01-30)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-7c23ac01f615ce90.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

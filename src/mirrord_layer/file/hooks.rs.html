@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/layer/src/file/hooks.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>hooks.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f2fc7b5fd698d27d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../../static.files/storage-ff4706381ddb2707.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-02cbe07fc548e88c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../mirrord_layer/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/layer/src/file/hooks.rs`."><title>hooks.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="mirrord_layer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (478cbb42b 2023-03-28)" data-search-js="search-bc5a112813b5d712.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../mirrord_layer/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -805,6 +805,66 @@
 <a href="#805" id="805">805</a>
 <a href="#806" id="806">806</a>
 <a href="#807" id="807">807</a>
+<a href="#808" id="808">808</a>
+<a href="#809" id="809">809</a>
+<a href="#810" id="810">810</a>
+<a href="#811" id="811">811</a>
+<a href="#812" id="812">812</a>
+<a href="#813" id="813">813</a>
+<a href="#814" id="814">814</a>
+<a href="#815" id="815">815</a>
+<a href="#816" id="816">816</a>
+<a href="#817" id="817">817</a>
+<a href="#818" id="818">818</a>
+<a href="#819" id="819">819</a>
+<a href="#820" id="820">820</a>
+<a href="#821" id="821">821</a>
+<a href="#822" id="822">822</a>
+<a href="#823" id="823">823</a>
+<a href="#824" id="824">824</a>
+<a href="#825" id="825">825</a>
+<a href="#826" id="826">826</a>
+<a href="#827" id="827">827</a>
+<a href="#828" id="828">828</a>
+<a href="#829" id="829">829</a>
+<a href="#830" id="830">830</a>
+<a href="#831" id="831">831</a>
+<a href="#832" id="832">832</a>
+<a href="#833" id="833">833</a>
+<a href="#834" id="834">834</a>
+<a href="#835" id="835">835</a>
+<a href="#836" id="836">836</a>
+<a href="#837" id="837">837</a>
+<a href="#838" id="838">838</a>
+<a href="#839" id="839">839</a>
+<a href="#840" id="840">840</a>
+<a href="#841" id="841">841</a>
+<a href="#842" id="842">842</a>
+<a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
+<a href="#849" id="849">849</a>
+<a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
+<a href="#855" id="855">855</a>
+<a href="#856" id="856">856</a>
+<a href="#857" id="857">857</a>
+<a href="#858" id="858">858</a>
+<a href="#859" id="859">859</a>
+<a href="#860" id="860">860</a>
+<a href="#861" id="861">861</a>
+<a href="#862" id="862">862</a>
+<a href="#863" id="863">863</a>
+<a href="#864" id="864">864</a>
+<a href="#865" id="865">865</a>
+<a href="#866" id="866">866</a>
+<a href="#867" id="867">867</a>
 </pre><pre class="rust"><code><span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
 </span><span class="kw">use </span>core::ffi::{c_size_t, c_ssize_t};
 <span class="doccomment">/// FFI functions that override the `libc` calls (see `file` module documentation on how to
@@ -812,24 +872,19 @@
 ///
 /// NOTICE: If a file operation fails, it might be because it depends on some `libc` function
 /// that is not being hooked (`strace` the program to check).
-</span><span class="kw">use </span>std::{
-    ffi::{CStr, CString},
-    os::unix::io::RawFd,
-    ptr, slice,
-    time::Duration,
-};
+</span><span class="kw">use </span>std::{ffi::CString, os::unix::io::RawFd, ptr, slice, time::Duration};
 
 <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
 </span><span class="kw">use </span>errno::{set_errno, Errno};
 <span class="kw">use </span>libc::{
-    <span class="self">self</span>, c_char, c_int, c_void, dirent, off_t, size_t, ssize_t, stat, AT_EACCESS, AT_FDCWD, DIR,
-    FILE,
+    <span class="self">self</span>, c_char, c_int, c_void, dirent, off_t, size_t, ssize_t, stat, statfs, AT_EACCESS,
+    AT_FDCWD, DIR,
 };
 <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
 </span><span class="kw">use </span>libc::{EBADF, EINVAL, ENOENT, ENOTDIR};
 <span class="kw">use </span>mirrord_layer_macro::{hook_fn, hook_guard_fn};
 <span class="kw">use </span>mirrord_protocol::file::{
-    DirEntryInternal, MetadataInternal, OpenOptionsInternal, ReadFileResponse, WriteFileResponse,
+    DirEntryInternal, FsMetadataInternal, MetadataInternal, ReadFileResponse, WriteFileResponse,
 };
 <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
 </span><span class="kw">use </span>mirrord_protocol::ResponseError::{NotDirectory, NotFound};
@@ -838,32 +893,28 @@
 <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
 </span><span class="kw">use </span>tracing::{error, info, warn};
 
-<span class="kw">use super</span>::{ops::<span class="kw-2">*</span>, OpenOptionsInternalExt, OPEN_FILES};
+<span class="kw">use super</span>::{ops::<span class="kw-2">*</span>, OpenOptionsInternalExt};
 <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::error::HookError::ResponseError;
 <span class="kw">use crate</span>::{
-    close_layer_fd,
+    common::CheckedInto,
     detour::{Detour, DetourGuard},
     error::HookError,
     file::ops::{access, lseek, open, read, write},
     hooks::HookManager,
-    replace, FN_CLOSE,
+    replace,
 };
 
 <span class="doccomment">/// Implementation of open_detour, used in open_detour and openat_detour
 /// We ignore mode in case we don&#39;t bypass the call.
 </span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>)]
-</span><span class="kw">unsafe fn </span>open_logic(raw_path: <span class="kw-2">*const </span>c_char, open_flags: c_int, mode: c_int) -&gt; RawFd {
-    <span class="kw">let </span>rawish_path = (!raw_path.is_null()).then(|| CStr::from_ptr(raw_path));
+</span><span class="kw">unsafe fn </span>open_logic(raw_path: <span class="kw-2">*const </span>c_char, open_flags: c_int, mode: c_int) -&gt; Detour&lt;RawFd&gt; {
+    <span class="kw">let </span>path = raw_path.checked_into();
     <span class="kw">let </span>open_options = OpenOptionsInternalExt::from_flags(open_flags);
 
-    <span class="macro">trace!</span>(
-        <span class="string">&quot;rawish_path {:#?} | open_options {:#?}&quot;</span>,
-        rawish_path,
-        open_options
-    );
+    <span class="macro">trace!</span>(<span class="string">&quot;path {:#?} | open_options {:#?}&quot;</span>, path, open_options);
 
-    open(rawish_path, open_options).unwrap_or_bypass_with(|<span class="kw">_</span>| FN_OPEN(raw_path, open_flags, mode))
+    open(path, open_options)
 }
 
 <span class="doccomment">/// Hook for `libc::open`.
@@ -881,32 +932,27 @@
         FN_OPEN(raw_path, open_flags, mode)
     } <span class="kw">else </span>{
         open_logic(raw_path, open_flags, mode)
+            .unwrap_or_bypass_with(|<span class="kw">_</span>| FN_OPEN(raw_path, open_flags, mode))
     }
 }
 
-<span class="doccomment">/// Hook for `libc::fopen`.
+<span class="doccomment">/// Hook for `libc::open$NOCANCEL`.
 ///
 /// **Bypassed** by `raw_path`s that match `IGNORE_FILES` regex.
-</span><span class="attr">#[hook_guard_fn]
-</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>fopen_detour(
+</span><span class="attr">#[hook_fn]
+</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>_open_nocancel_detour(
     raw_path: <span class="kw-2">*const </span>c_char,
-    raw_mode: <span class="kw-2">*const </span>c_char,
-) -&gt; <span class="kw-2">*mut </span>FILE {
-    <span class="kw">let </span>rawish_path = (!raw_path.is_null()).then(|| CStr::from_ptr(raw_path));
-    <span class="kw">let </span>rawish_mode = (!raw_mode.is_null()).then(|| CStr::from_ptr(raw_mode));
-
-    fopen(rawish_path, rawish_mode).unwrap_or_bypass_with(|<span class="kw">_</span>| FN_FOPEN(raw_path, raw_mode))
-}
-
-<span class="doccomment">/// Hook for `libc::fdopen`.
-///
-/// Converts a `RawFd` into `*mut FILE` only for files that are already being managed by
-/// mirrord-layer.
-</span><span class="attr">#[hook_guard_fn]
-</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>fdopen_detour(fd: RawFd, raw_mode: <span class="kw-2">*const </span>c_char) -&gt; <span class="kw-2">*mut </span>FILE {
-    <span class="kw">let </span>rawish_mode = (!raw_mode.is_null()).then(|| CStr::from_ptr(raw_mode));
-
-    fdopen(fd, rawish_mode).unwrap_or_bypass_with(|<span class="kw">_</span>| FN_FDOPEN(fd, raw_mode))
+    open_flags: c_int,
+    <span class="kw-2">mut </span>args: ...
+) -&gt; RawFd {
+    <span class="kw">let </span>mode: c_int = args.arg();
+    <span class="kw">let </span>guard = DetourGuard::new();
+    <span class="kw">if </span>guard.is_none() {
+        FN__OPEN_NOCANCEL(raw_path, open_flags, mode)
+    } <span class="kw">else </span>{
+        open_logic(raw_path, open_flags, mode)
+            .unwrap_or_bypass_with(|<span class="kw">_</span>| FN__OPEN_NOCANCEL(raw_path, open_flags, mode))
+    }
 }
 
 <span class="attr">#[hook_guard_fn]
@@ -931,7 +977,10 @@
 
     <span class="kw">let </span>dir_name = CString::new(in_entry.name)<span class="question-mark">?</span>;
     <span class="kw">let </span>dir_name_bytes = dir_name.as_bytes_with_nul();
-    (<span class="kw-2">*</span>out_entry).d_name[..dir_name_bytes.len()]
+    (<span class="kw-2">*</span>out_entry)
+        .d_name
+        .get_mut(..dir_name_bytes.len())
+        .expect(<span class="string">&quot;directory name length exceeds limit&quot;</span>)
         .copy_from_slice(bytemuck::cast_slice(dir_name_bytes));
 
     <span class="attr">#[cfg(target_os = <span class="string">&quot;macos&quot;</span>)]
@@ -989,11 +1038,22 @@
     raw_path: <span class="kw-2">*const </span>c_char,
     open_flags: c_int,
 ) -&gt; RawFd {
-    <span class="kw">let </span>rawish_path = (!raw_path.is_null()).then(|| CStr::from_ptr(raw_path));
-    <span class="kw">let </span>open_options: OpenOptionsInternal = OpenOptionsInternalExt::from_flags(open_flags);
+    <span class="kw">let </span>open_options = OpenOptionsInternalExt::from_flags(open_flags);
 
-    openat(fd, rawish_path, open_options)
+    openat(fd, raw_path.checked_into(), open_options)
         .unwrap_or_bypass_with(|<span class="kw">_</span>| FN_OPENAT(fd, raw_path, open_flags))
+}
+
+<span class="attr">#[hook_guard_fn]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>_openat_nocancel_detour(
+    fd: RawFd,
+    raw_path: <span class="kw-2">*const </span>c_char,
+    open_flags: c_int,
+) -&gt; RawFd {
+    <span class="kw">let </span>open_options = OpenOptionsInternalExt::from_flags(open_flags);
+
+    openat(fd, raw_path.checked_into(), open_options)
+        .unwrap_or_bypass_with(|<span class="kw">_</span>| FN__OPENAT_NOCANCEL(fd, raw_path, open_flags))
 }
 
 <span class="doccomment">/// Hook for getdents64, for Go&#39;s `os.ReadDir` on Linux.
@@ -1090,22 +1150,13 @@
         .unwrap_or_bypass_with(|<span class="kw">_</span>| FN_READ(fd, out_buffer, count))
 }
 
-<span class="doccomment">/// Hook for `libc::fread`.
-///
-/// Reads `element_size * number_of_elements` bytes into `out_buffer`, only for `*mut FILE`s that
-/// are being managed by mirrord-layer.
-</span><span class="attr">#[hook_guard_fn]
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>fread_detour(
+<span class="attr">#[hook_guard_fn]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>_read_nocancel_detour(
+    fd: RawFd,
     out_buffer: <span class="kw-2">*mut </span>c_void,
-    element_size: size_t,
-    number_of_elements: size_t,
-    file_stream: <span class="kw-2">*mut </span>FILE,
-) -&gt; size_t {
-    <span class="comment">// Extract the fd from stream and check if it&#39;s managed by us, or should be bypassed.
-    </span><span class="kw">let </span>fd = fileno_logic(file_stream);
-    <span class="kw">let </span>read_amount = (element_size * number_of_elements) <span class="kw">as </span>u64;
-
-    read(fd, read_amount)
+    count: size_t,
+) -&gt; ssize_t {
+    read(fd, count <span class="kw">as </span>u64)
         .map(|read_file| {
             <span class="kw">let </span>ReadFileResponse { bytes, read_amount } = read_file;
 
@@ -1117,54 +1168,11 @@
                 ptr::copy(read_ptr, out_buffer, read_amount <span class="kw">as </span>usize);
             }
 
-            <span class="comment">// TODO: The function fread() does not distinguish between end-of-file and error,
-            // and callers must use feof(3) and ferror(3) to determine which occurred.
-            </span>read_amount <span class="kw">as </span>usize
+            <span class="comment">// WARN: Must be careful when it comes to `EOF`, incorrect handling may appear as the
+            // `read` call being repeated.
+            </span>ssize_t::try_from(read_amount).unwrap()
         })
-        .unwrap_or_bypass_with(|<span class="kw">_</span>| {
-            FN_FREAD(out_buffer, element_size, number_of_elements, file_stream)
-        })
-}
-
-<span class="doccomment">/// Reads at most `capacity - 1` characters. Reading stops on `&#39;\n&#39;`, `EOF` or on error. On success,
-/// it appends `&#39;\0&#39;` to the end of the string (thus the limit on `capacity`).
-</span><span class="attr">#[hook_guard_fn]
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>fgets_detour(
-    out_buffer: <span class="kw-2">*mut </span>c_char,
-    capacity: c_int,
-    file_stream: <span class="kw-2">*mut </span>FILE,
-) -&gt; <span class="kw-2">*mut </span>c_char {
-    <span class="comment">// Extract the fd from stream and check if it&#39;s managed by us, or should be bypassed.
-    </span><span class="kw">let </span>fd = fileno_logic(file_stream);
-
-    <span class="comment">// `fgets` reads 1 LESS character than specified by `capacity`, so instead of having
-    // branching code to check if this is an `fgets` call elsewhere, we just subtract 1 from
-    // `capacity` here.
-    </span><span class="kw">let </span>buffer_size = capacity - <span class="number">1</span>;
-
-    fgets(fd, buffer_size <span class="kw">as </span>usize)
-        .map(|read_file| {
-            <span class="kw">let </span>ReadFileResponse { bytes, read_amount } = read_file;
-
-            <span class="comment">// There is no distinction between reading 0 bytes or if we hit EOF, but we only
-            // copy to buffer if we have something to copy.
-            //
-            // Callers can check for EOF by using `ferror`.
-            </span><span class="kw">if </span>read_amount &gt; <span class="number">0 </span>{
-                <span class="kw">let </span>bytes_slice = <span class="kw-2">&amp;</span>bytes[<span class="number">0</span>..buffer_size.min(read_amount <span class="kw">as </span>i32) <span class="kw">as </span>usize];
-                <span class="kw">let </span>eof = <span class="macro">vec!</span>[<span class="number">0</span>; <span class="number">1</span>];
-
-                <span class="comment">// Append &#39;\0&#39; to comply with `fgets`.
-                </span><span class="kw">let </span>read = [bytes_slice, <span class="kw-2">&amp;</span>eof].concat();
-
-                ptr::copy(read.as_ptr().cast(), out_buffer, read.len());
-
-                out_buffer
-            } <span class="kw">else </span>{
-                ptr::null_mut()
-            }
-        })
-        .unwrap_or_bypass_with(|<span class="kw">_</span>| FN_FGETS(out_buffer, capacity, file_stream))
+        .unwrap_or_bypass_with(|<span class="kw">_</span>| FN__READ_NOCANCEL(fd, out_buffer, count))
 }
 
 <span class="attr">#[hook_guard_fn]
@@ -1184,13 +1192,43 @@
             //
             // Callers can check for EOF by using `ferror`.
             </span><span class="kw">if </span>read_amount &gt; <span class="number">0 </span>{
-                <span class="kw">let </span>bytes_slice = <span class="kw-2">&amp;</span>bytes[<span class="number">0</span>..fixed_read <span class="kw">as </span>usize];
+                <span class="kw">let </span>bytes_slice = bytes
+                    .get(..fixed_read <span class="kw">as </span>usize)
+                    .expect(<span class="string">&quot;read_amount exceeds bytes length in ReadFileResponse&quot;</span>);
 
                 ptr::copy(bytes_slice.as_ptr().cast(), out_buffer, bytes_slice.len());
             }
             fixed_read <span class="kw">as </span>ssize_t
         })
         .unwrap_or_bypass_with(|<span class="kw">_</span>| FN_PREAD(fd, out_buffer, amount_to_read, offset))
+}
+
+<span class="attr">#[hook_guard_fn]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>_pread_nocancel_detour(
+    fd: RawFd,
+    out_buffer: <span class="kw-2">*mut </span>c_void,
+    amount_to_read: size_t,
+    offset: off_t,
+) -&gt; ssize_t {
+    pread(fd, amount_to_read <span class="kw">as </span>u64, offset <span class="kw">as </span>u64)
+        .map(|read_file| {
+            <span class="kw">let </span>ReadFileResponse { bytes, read_amount } = read_file;
+            <span class="kw">let </span>fixed_read = (amount_to_read <span class="kw">as </span>u64).min(read_amount);
+
+            <span class="comment">// There is no distinction between reading 0 bytes or if we hit EOF, but we only
+            // copy to buffer if we have something to copy.
+            //
+            // Callers can check for EOF by using `ferror`.
+            </span><span class="kw">if </span>read_amount &gt; <span class="number">0 </span>{
+                <span class="kw">let </span>bytes_slice = bytes
+                    .get(..fixed_read <span class="kw">as </span>usize)
+                    .expect(<span class="string">&quot;read_amount exceeds bytes length in ReadFileResponse&quot;</span>);
+
+                ptr::copy(bytes_slice.as_ptr().cast(), out_buffer, bytes_slice.len());
+            }
+            fixed_read <span class="kw">as </span>ssize_t
+        })
+        .unwrap_or_bypass_with(|<span class="kw">_</span>| FN__PREAD_NOCANCEL(fd, out_buffer, amount_to_read, offset))
 }
 
 <span class="attr">#[hook_guard_fn]
@@ -1209,6 +1247,24 @@
             written_amount <span class="kw">as </span>ssize_t
         })
         .unwrap_or_bypass_with(|<span class="kw">_</span>| FN_PWRITE(fd, in_buffer, amount_to_write, offset))
+}
+
+<span class="attr">#[hook_guard_fn]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>_pwrite_nocancel_detour(
+    fd: RawFd,
+    in_buffer: <span class="kw-2">*const </span>c_void,
+    amount_to_write: size_t,
+    offset: off_t,
+) -&gt; ssize_t {
+    <span class="comment">// Convert the given buffer into a u8 slice, upto the amount to write.
+    </span><span class="kw">let </span>casted_in_buffer: <span class="kw-2">&amp;</span>[u8] = slice::from_raw_parts(in_buffer.cast(), amount_to_write);
+
+    pwrite(fd, casted_in_buffer, offset <span class="kw">as </span>u64)
+        .map(|write_response| {
+            <span class="kw">let </span>WriteFileResponse { written_amount } = write_response;
+            written_amount <span class="kw">as </span>ssize_t
+        })
+        .unwrap_or_bypass_with(|<span class="kw">_</span>| FN__PWRITE_NOCANCEL(fd, in_buffer, amount_to_write, offset))
 }
 
 <span class="doccomment">/// Hook for `libc::lseek`.
@@ -1247,11 +1303,23 @@
     write_logic(fd, buffer, count)
 }
 
+<span class="attr">#[hook_guard_fn]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>_write_nocancel_detour(
+    fd: RawFd,
+    buffer: <span class="kw-2">*const </span>c_void,
+    count: size_t,
+) -&gt; ssize_t {
+    <span class="comment">// WARN: Be veeery careful here, you cannot construct the `Vec` directly, as the buffer
+    // allocation is handled on the C side.
+    </span><span class="kw">let </span>write_bytes =
+        (!buffer.is_null()).then(|| slice::from_raw_parts(buffer <span class="kw">as </span><span class="kw-2">*const </span>u8, count).to_vec());
+
+    write(fd, write_bytes).unwrap_or_bypass_with(|<span class="kw">_</span>| FN__WRITE_NOCANCEL(fd, buffer, count))
+}
+
 <span class="doccomment">/// Implementation of access_detour, used in access_detour and faccessat_detour
 </span><span class="kw">unsafe fn </span>access_logic(raw_path: <span class="kw-2">*const </span>c_char, mode: c_int) -&gt; c_int {
-    <span class="kw">let </span>rawish_path = (!raw_path.is_null()).then(|| CStr::from_ptr(raw_path));
-
-    access(rawish_path, mode <span class="kw">as </span>u8).unwrap_or_bypass_with(|<span class="kw">_</span>| FN_ACCESS(raw_path, mode))
+    access(raw_path.checked_into(), mode <span class="kw">as </span>u8).unwrap_or_bypass_with(|<span class="kw">_</span>| FN_ACCESS(raw_path, mode))
 }
 
 <span class="doccomment">/// Hook for `libc::access`.
@@ -1273,57 +1341,6 @@
     } <span class="kw">else </span>{
         FN_FACCESSAT(dirfd, pathname, mode, flags)
     }
-}
-
-<span class="doccomment">/// Used to distinguish between an error or `EOF` (especially relevant for `fgets`).
-</span><span class="attr">#[hook_guard_fn]
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>ferror_detour(file_stream: <span class="kw-2">*mut </span>FILE) -&gt; c_int {
-    <span class="comment">// Extract the fd from stream and check if it&#39;s managed by us, or should be bypassed.
-    </span><span class="kw">let </span>fd = fileno_logic(file_stream);
-
-    <span class="comment">// We&#39;re only interested in files that are handled by `mirrord-agent`.
-    </span><span class="kw">let </span>remote_fd = OPEN_FILES.lock().unwrap().get(<span class="kw-2">&amp;</span>fd).map(|file| file.fd);
-    <span class="kw">if </span>remote_fd.is_some() {
-        std::io::Error::last_os_error()
-            .raw_os_error()
-            .unwrap_or_default()
-    } <span class="kw">else </span>{
-        FN_FERROR(file_stream)
-    }
-}
-
-<span class="attr">#[hook_guard_fn]
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>fclose_detour(file_stream: <span class="kw-2">*mut </span>FILE) -&gt; c_int {
-    <span class="kw">let </span>(res, fd) = <span class="kw">match </span>open_file_stream_fd(file_stream) {
-        <span class="prelude-val">Some</span>(local_fd) =&gt; (FN_CLOSE(local_fd), local_fd),
-        <span class="prelude-val">None </span>=&gt; (FN_FCLOSE(file_stream), fileno_logic(file_stream)),
-    };
-
-    close_layer_fd(fd);
-    res
-}
-
-<span class="doccomment">/// Hook for `libc::fileno`.
-///
-/// Converts a `*mut FILE` stream into an fd.
-</span><span class="attr">#[hook_guard_fn]
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>fileno_detour(file_stream: <span class="kw-2">*mut </span>FILE) -&gt; c_int {
-    fileno_logic(file_stream)
-}
-
-<span class="doccomment">/// Implementation of fileno_detour, used in fileno_detour and fread_detour
-</span><span class="kw">unsafe fn </span>fileno_logic(file_stream: <span class="kw-2">*mut </span>FILE) -&gt; c_int {
-    open_file_stream_fd(file_stream).unwrap_or_else(|| FN_FILENO(file_stream))
-}
-
-<span class="kw">unsafe fn </span>open_file_stream_fd(file_stream: <span class="kw-2">*mut </span>FILE) -&gt; <span class="prelude-ty">Option</span>&lt;RawFd&gt; {
-    <span class="kw">let </span>local_fd = <span class="kw-2">*</span>(file_stream <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
-
-    OPEN_FILES
-        .lock()
-        .unwrap()
-        .contains_key(<span class="kw-2">&amp;</span>local_fd)
-        .then_some(local_fd)
 }
 
 <span class="doccomment">/// Tries to convert input to type O, if it fails it returns the max value of O.
@@ -1361,11 +1378,30 @@
     out.st_blocks = best_effort_cast(metadata.blocks);
 }
 
+<span class="doccomment">/// Fills the `statfs` struct with the metadata
+</span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>fill_statfs(out_stat: <span class="kw-2">*mut </span>statfs, metadata: <span class="kw-2">&amp;</span>FsMetadataInternal) {
+    <span class="comment">// Acording to linux documentation &quot;Fields that are undefined for a particular file system are
+    // set to 0.&quot;
+    </span>out_stat.write_bytes(<span class="number">0</span>, <span class="number">1</span>);
+    <span class="kw">let </span>out = <span class="kw-2">&amp;mut *</span>out_stat;
+    <span class="comment">// on macOS the types might be different, so we try to cast and do our best..
+    </span>out.f_type = best_effort_cast(metadata.filesystem_type);
+    out.f_bsize = best_effort_cast(metadata.block_size);
+    out.f_blocks = metadata.blocks;
+    out.f_bfree = metadata.blocks_free;
+    out.f_bavail = metadata.blocks_available;
+    out.f_files = metadata.files;
+    out.f_ffree = metadata.files_free;
+}
+
 <span class="doccomment">/// Hook for `libc::lstat`.
 </span><span class="attr">#[hook_guard_fn]
 </span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>lstat_detour(raw_path: <span class="kw-2">*const </span>c_char, out_stat: <span class="kw-2">*mut </span>stat) -&gt; c_int {
-    <span class="kw">let </span>path = (!raw_path.is_null()).then(|| CStr::from_ptr(raw_path));
-    xstat(<span class="prelude-val">Some</span>(path), <span class="prelude-val">None</span>, <span class="bool-val">false</span>)
+    <span class="kw">if </span>out_stat.is_null() {
+        <span class="kw">return </span>HookError::BadPointer.into();
+    }
+
+    xstat(<span class="prelude-val">Some</span>(raw_path.checked_into()), <span class="prelude-val">None</span>, <span class="bool-val">false</span>)
         .map(|res| {
             <span class="kw">let </span>res = res.metadata;
             fill_stat(out_stat, <span class="kw-2">&amp;</span>res);
@@ -1377,6 +1413,10 @@
 <span class="doccomment">/// Hook for `libc::fstat`.
 </span><span class="attr">#[hook_guard_fn]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>fstat_detour(fd: RawFd, out_stat: <span class="kw-2">*mut </span>stat) -&gt; c_int {
+    <span class="kw">if </span>out_stat.is_null() {
+        <span class="kw">return </span>HookError::BadPointer.into();
+    }
+
     xstat(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(fd), <span class="bool-val">true</span>)
         .map(|res| {
             <span class="kw">let </span>res = res.metadata;
@@ -1389,8 +1429,11 @@
 <span class="doccomment">/// Hook for `libc::stat`.
 </span><span class="attr">#[hook_guard_fn]
 </span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>stat_detour(raw_path: <span class="kw-2">*const </span>c_char, out_stat: <span class="kw-2">*mut </span>stat) -&gt; c_int {
-    <span class="kw">let </span>path = (!raw_path.is_null()).then(|| CStr::from_ptr(raw_path));
-    xstat(<span class="prelude-val">Some</span>(path), <span class="prelude-val">None</span>, <span class="bool-val">true</span>)
+    <span class="kw">if </span>out_stat.is_null() {
+        <span class="kw">return </span>HookError::BadPointer.into();
+    }
+
+    xstat(<span class="prelude-val">Some</span>(raw_path.checked_into()), <span class="prelude-val">None</span>, <span class="bool-val">true</span>)
         .map(|res| {
             <span class="kw">let </span>res = res.metadata;
             fill_stat(out_stat, <span class="kw-2">&amp;</span>res);
@@ -1406,11 +1449,14 @@
     raw_path: <span class="kw-2">*const </span>c_char,
     out_stat: <span class="kw-2">*mut </span>stat,
 ) -&gt; c_int {
+    <span class="kw">if </span>out_stat.is_null() {
+        <span class="kw">return </span>HookError::BadPointer.into();
+    }
+
     <span class="kw">if </span>ver != <span class="number">1 </span>{
         <span class="kw">return </span>FN___XSTAT(ver, raw_path, out_stat);
     }
-    <span class="kw">let </span>path = (!raw_path.is_null()).then(|| CStr::from_ptr(raw_path));
-    xstat(<span class="prelude-val">Some</span>(path), <span class="prelude-val">None</span>, <span class="bool-val">true</span>)
+    xstat(<span class="prelude-val">Some</span>(raw_path.checked_into()), <span class="prelude-val">None</span>, <span class="bool-val">true</span>)
         .map(|res| {
             <span class="kw">let </span>res = res.metadata;
             fill_stat(out_stat, <span class="kw-2">&amp;</span>res);
@@ -1426,9 +1472,12 @@
     out_stat: <span class="kw-2">*mut </span>stat,
     flag: c_int,
 ) -&gt; Detour&lt;i32&gt; {
+    <span class="kw">if </span>out_stat.is_null() {
+        <span class="kw">return </span>Detour::Error(HookError::BadPointer);
+    }
+
     <span class="kw">let </span>follow_symlink = (flag &amp; libc::AT_SYMLINK_NOFOLLOW) == <span class="number">0</span>;
-    <span class="kw">let </span>path = (!raw_path.is_null()).then(|| CStr::from_ptr(raw_path));
-    xstat(<span class="prelude-val">Some</span>(path), <span class="prelude-val">Some</span>(fd), follow_symlink).map(|res| {
+    xstat(<span class="prelude-val">Some</span>(raw_path.checked_into()), <span class="prelude-val">Some</span>(fd), follow_symlink).map(|res| {
         <span class="kw">let </span>res = res.metadata;
         fill_stat(out_stat, <span class="kw-2">&amp;</span>res);
         <span class="number">0
@@ -1445,6 +1494,21 @@
 ) -&gt; c_int {
     fstatat_logic(fd, raw_path, out_stat, flag)
         .unwrap_or_bypass_with(|<span class="kw">_</span>| FN_FSTATAT(fd, raw_path, out_stat, flag))
+}
+
+<span class="attr">#[hook_guard_fn]
+</span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>fstatfs_detour(fd: c_int, out_stat: <span class="kw-2">*mut </span>statfs) -&gt; c_int {
+    <span class="kw">if </span>out_stat.is_null() {
+        <span class="kw">return </span>HookError::BadPointer.into();
+    }
+
+    xstatfs(fd)
+        .map(|res| {
+            <span class="kw">let </span>res = res.metadata;
+            fill_statfs(out_stat, <span class="kw-2">&amp;</span>res);
+            <span class="number">0
+        </span>})
+        .unwrap_or_bypass_with(|<span class="kw">_</span>| FN_FSTATFS(fd, out_stat))
 }
 
 <span class="comment">// this requires newer libc which we don&#39;t link with to support old libc..
@@ -1501,11 +1565,31 @@
 </span><span class="doccomment">/// Convenience function to setup file hooks (`x_detour`) with `frida_gum`.
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>enable_file_hooks(hook_manager: <span class="kw-2">&amp;mut </span>HookManager) {
     <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;open&quot;</span>, open_detour, FnOpen, FN_OPEN);
+    <span class="macro">replace!</span>(
+        hook_manager,
+        <span class="string">&quot;_openat$NOCANCEL&quot;</span>,
+        _open_nocancel_detour,
+        Fn_open_nocancel,
+        FN__OPEN_NOCANCEL
+    );
+
     <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;openat&quot;</span>, openat_detour, FnOpenat, FN_OPENAT);
-    <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;fopen&quot;</span>, fopen_detour, FnFopen, FN_FOPEN);
-    <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;fdopen&quot;</span>, fdopen_detour, FnFdopen, FN_FDOPEN);
+    <span class="macro">replace!</span>(
+        hook_manager,
+        <span class="string">&quot;_openat$NOCANCEL&quot;</span>,
+        _openat_nocancel_detour,
+        Fn_openat_nocancel,
+        FN__OPENAT_NOCANCEL
+    );
 
     <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;read&quot;</span>, read_detour, FnRead, FN_READ);
+    <span class="macro">replace!</span>(
+        hook_manager,
+        <span class="string">&quot;_read$NOCANCEL&quot;</span>,
+        _read_nocancel_detour,
+        Fn_read_nocancel,
+        FN__READ_NOCANCEL
+    );
 
     <span class="macro">replace!</span>(
         hook_manager,
@@ -1514,15 +1598,36 @@
         FnClosedir,
         FN_CLOSEDIR
     );
-    <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;fread&quot;</span>, fread_detour, FnFread, FN_FREAD);
-    <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;fgets&quot;</span>, fgets_detour, FnFgets, FN_FGETS);
+
     <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;pread&quot;</span>, pread_detour, FnPread, FN_PREAD);
-    <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;ferror&quot;</span>, ferror_detour, FnFerror, FN_FERROR);
-    <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;fclose&quot;</span>, fclose_detour, FnFclose, FN_FCLOSE);
-    <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;fileno&quot;</span>, fileno_detour, FnFileno, FN_FILENO);
+    <span class="macro">replace!</span>(
+        hook_manager,
+        <span class="string">&quot;_pread$NOCANCEL&quot;</span>,
+        _pread_nocancel_detour,
+        Fn_pread_nocancel,
+        FN__PREAD_NOCANCEL
+    );
+
     <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;lseek&quot;</span>, lseek_detour, FnLseek, FN_LSEEK);
+
     <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;write&quot;</span>, write_detour, FnWrite, FN_WRITE);
+    <span class="macro">replace!</span>(
+        hook_manager,
+        <span class="string">&quot;_write$NOCANCEL&quot;</span>,
+        _write_nocancel_detour,
+        Fn_write_nocancel,
+        FN__WRITE_NOCANCEL
+    );
+
     <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;pwrite&quot;</span>, pwrite_detour, FnPwrite, FN_PWRITE);
+    <span class="macro">replace!</span>(
+        hook_manager,
+        <span class="string">&quot;_pwrite$NOCANCEL&quot;</span>,
+        _pwrite_nocancel_detour,
+        Fn_pwrite_nocancel,
+        FN__PWRITE_NOCANCEL
+    );
+
     <span class="macro">replace!</span>(hook_manager, <span class="string">&quot;access&quot;</span>, access_detour, FnAccess, FN_ACCESS);
     <span class="macro">replace!</span>(
         hook_manager,
@@ -1555,6 +1660,14 @@
             fstatat_detour,
             FnFstatat,
             FN_FSTATAT
+        );
+
+        <span class="macro">replace!</span>(
+            hook_manager,
+            <span class="string">&quot;fstatfs&quot;</span>,
+            fstatfs_detour,
+            FnFstatfs,
+            FN_FSTATFS
         );
         <span class="macro">replace!</span>(
             hook_manager,
@@ -1598,6 +1711,13 @@
         );
         <span class="macro">replace!</span>(
             hook_manager,
+            <span class="string">&quot;fstatfs$INODE64&quot;</span>,
+            fstatfs_detour,
+            FnFstatfs,
+            FN_FSTATFS
+        );
+        <span class="macro">replace!</span>(
+            hook_manager,
             <span class="string">&quot;fdopendir$INODE64&quot;</span>,
             fdopendir_detour,
             FnFdopendir,
@@ -1612,5 +1732,4 @@
         );
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="mirrord_layer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (001a77fac 2023-01-30)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-7c23ac01f615ce90.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

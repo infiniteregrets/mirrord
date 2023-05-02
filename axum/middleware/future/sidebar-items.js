@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["FromExtractorResponseFuture","Response future for [`FromExtractor`]."],["FromFnResponseFuture","Response future for [`FromFn`]."],["MapRequestResponseFuture","Response future for [`MapRequest`]."],["MapResponseResponseFuture","Response future for [`MapResponse`]."]]};
+window.SIDEBAR_ITEMS = {"struct":["FromExtractorResponseFuture","FromFnResponseFuture","MapRequestResponseFuture","MapResponseResponseFuture"]};

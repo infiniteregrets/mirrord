@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/config/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f2fc7b5fd698d27d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../static.files/storage-ff4706381ddb2707.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-02cbe07fc548e88c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../mirrord_config/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/config/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mirrord_config" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (478cbb42b 2023-03-28)" data-search-js="search-bc5a112813b5d712.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../mirrord_config/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -461,9 +461,36 @@
 <a href="#461" id="461">461</a>
 <a href="#462" id="462">462</a>
 <a href="#463" id="463">463</a>
+<a href="#464" id="464">464</a>
+<a href="#465" id="465">465</a>
+<a href="#466" id="466">466</a>
+<a href="#467" id="467">467</a>
+<a href="#468" id="468">468</a>
+<a href="#469" id="469">469</a>
+<a href="#470" id="470">470</a>
+<a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
+<a href="#473" id="473">473</a>
+<a href="#474" id="474">474</a>
+<a href="#475" id="475">475</a>
+<a href="#476" id="476">476</a>
+<a href="#477" id="477">477</a>
+<a href="#478" id="478">478</a>
+<a href="#479" id="479">479</a>
+<a href="#480" id="480">480</a>
+<a href="#481" id="481">481</a>
+<a href="#482" id="482">482</a>
+<a href="#483" id="483">483</a>
+<a href="#484" id="484">484</a>
+<a href="#485" id="485">485</a>
+<a href="#486" id="486">486</a>
+<a href="#487" id="487">487</a>
+<a href="#488" id="488">488</a>
+<a href="#489" id="489">489</a>
 </pre><pre class="rust"><code><span class="attr">#![feature(slice_concat_trait)]
 #![feature(once_cell)]
 #![feature(result_option_inspect)]
+#![warn(clippy::indexing_slicing)]
 
 </span><span class="kw">pub mod </span>agent;
 <span class="kw">pub mod </span>config;
@@ -481,7 +508,7 @@
 ///
 /// Remember to re-generate the `mirrord-schema.json` if you make **ANY** changes to this lib,
 /// including if you only made documentation changes.
-</span><span class="kw">use </span>std::path::{Path, PathBuf};
+</span><span class="kw">use </span>std::path::Path;
 
 <span class="kw">use </span>config::{ConfigError, MirrordConfig};
 <span class="kw">use </span>mirrord_config_derive::MirrordConfig;
@@ -589,12 +616,19 @@
     /// in-cluster config.
     </span><span class="attr">#[config(env = <span class="string">&quot;MIRRORD_KUBECONFIG&quot;</span>)]
     </span><span class="kw">pub </span>kubeconfig: <span class="prelude-ty">Option</span>&lt;String&gt;,
+
+    <span class="doccomment">/// Binaries to patch (macOS SIP).
+    /// Use this when mirrord isn&#39;t loaded to protected binaries
+    /// that weren&#39;t automatically patched.
+    /// Runs `endswith` on the binary path (so `bash` would apply to any binary
+    /// ending with `bash` while `/usr/bin/bash` would apply only for that binary).
+    </span><span class="kw">pub </span>sip_binaries: <span class="prelude-ty">Option</span>&lt;VecOrSingle&lt;String&gt;&gt;,
 }
 
 <span class="kw">impl </span>LayerConfig {
     <span class="kw">pub fn </span>from_env() -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, ConfigError&gt; {
         <span class="kw">if let </span><span class="prelude-val">Ok</span>(path) = std::env::var(<span class="string">&quot;MIRRORD_CONFIG_FILE&quot;</span>) {
-            LayerFileConfig::from_path(<span class="kw-2">&amp;</span>PathBuf::from(path))<span class="question-mark">?</span>.generate_config()
+            LayerFileConfig::from_path(path)<span class="question-mark">?</span>.generate_config()
         } <span class="kw">else </span>{
             LayerFileConfig::default().generate_config()
         }
@@ -602,12 +636,16 @@
 }
 
 <span class="kw">impl </span>LayerFileConfig {
-    <span class="kw">pub fn </span>from_path(path: <span class="kw-2">&amp;</span>Path) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, ConfigError&gt; {
+    <span class="kw">pub fn </span>from_path&lt;P&gt;(path: P) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, ConfigError&gt;
+    <span class="kw">where
+        </span>P: AsRef&lt;Path&gt;,
+    {
+        <span class="kw">let </span>path = path.as_ref();
         <span class="kw">let </span>file = std::fs::read(path)<span class="question-mark">?</span>;
 
         <span class="kw">match </span>path.extension().and_then(|os_val| os_val.to_str()) {
             <span class="prelude-val">Some</span>(<span class="string">&quot;json&quot;</span>) =&gt; <span class="prelude-val">Ok</span>(serde_json::from_slice::&lt;<span class="self">Self</span>&gt;(<span class="kw-2">&amp;</span>file[..])<span class="question-mark">?</span>),
-            <span class="prelude-val">Some</span>(<span class="string">&quot;toml&quot;</span>) =&gt; <span class="prelude-val">Ok</span>(toml::from_slice::&lt;<span class="self">Self</span>&gt;(<span class="kw-2">&amp;</span>file[..])<span class="question-mark">?</span>),
+            <span class="prelude-val">Some</span>(<span class="string">&quot;toml&quot;</span>) =&gt; <span class="prelude-val">Ok</span>(toml::from_str::&lt;<span class="self">Self</span>&gt;(<span class="kw-2">&amp;</span>String::from_utf8_lossy(<span class="kw-2">&amp;</span>file))<span class="question-mark">?</span>),
             <span class="prelude-val">Some</span>(<span class="string">&quot;yaml&quot;</span>) =&gt; <span class="prelude-val">Ok</span>(serde_yaml::from_slice::&lt;<span class="self">Self</span>&gt;(<span class="kw-2">&amp;</span>file[..])<span class="question-mark">?</span>),
             <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(ConfigError::UnsupportedFormat),
         }
@@ -618,6 +656,7 @@
 </span><span class="kw">mod </span>tests {
 
     <span class="kw">use </span>std::{
+        collections::HashMap,
         fs::{File, OpenOptions},
         io::{Read, Write},
     };
@@ -668,6 +707,7 @@
                             &quot;namespace&quot;: &quot;default&quot;,
                             &quot;image&quot;: &quot;&quot;,
                             &quot;image_pull_policy&quot;: &quot;&quot;,
+                            &quot;image_pull_secrets&quot;: [{&quot;name&quot;: &quot;testsecret&quot;}],
                             &quot;ttl&quot;: 60,
                             &quot;ephemeral&quot;: false,
                             &quot;pause&quot;: false,
@@ -703,6 +743,7 @@
                     namespace = &quot;default&quot;
                     image = &quot;&quot;
                     image_pull_policy = &quot;&quot;
+                    image_pull_secrets = [{name = &quot;testsecret&quot;}]
                     ttl = 60
                     ephemeral = false
                     pause = false
@@ -735,6 +776,8 @@
                         namespace: &quot;default&quot;
                         image: &quot;&quot;
                         image_pull_policy: &quot;&quot;
+                        image_pull_secrets:
+                            - name: &quot;testsecret&quot;
                         ttl: 60
                         ephemeral: false
                         pause: false
@@ -805,6 +848,10 @@
                 namespace: <span class="prelude-val">Some</span>(<span class="string">&quot;default&quot;</span>.to_owned()),
                 image: <span class="prelude-val">Some</span>(<span class="string">&quot;&quot;</span>.to_owned()),
                 image_pull_policy: <span class="prelude-val">Some</span>(<span class="string">&quot;&quot;</span>.to_owned()),
+                image_pull_secrets: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[HashMap::from([(
+                    <span class="string">&quot;name&quot;</span>.to_owned(),
+                    <span class="string">&quot;testsecret&quot;</span>.to_owned(),
+                )])]),
                 ttl: <span class="prelude-val">Some</span>(<span class="number">60</span>),
                 ephemeral: <span class="prelude-val">Some</span>(<span class="bool-val">false</span>),
                 communication_timeout: <span class="prelude-val">None</span>,
@@ -822,17 +869,22 @@
                         IncomingAdvancedFileConfig {
                             mode: <span class="prelude-val">Some</span>(IncomingMode::Mirror),
                             http_header_filter: <span class="prelude-val">None</span>,
+                            port_mapping: <span class="prelude-val">None</span>,
+                            ignore_localhost: <span class="prelude-val">None</span>,
+                            ignore_ports: <span class="prelude-val">None</span>,
                         },
                     ))),
                     outgoing: <span class="prelude-val">Some</span>(ToggleableConfig::Config(OutgoingFileConfig {
                         tcp: <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
                         udp: <span class="prelude-val">Some</span>(<span class="bool-val">false</span>),
+                        ..Default::default()
                     })),
                 })),
                 capture_error_trace: <span class="prelude-val">None</span>,
             }),
             connect_tcp: <span class="prelude-val">None</span>,
             operator: <span class="prelude-val">None</span>,
+            sip_binaries: <span class="prelude-val">None</span>,
         };
 
         <span class="macro">assert_eq!</span>(config, expect);
@@ -906,12 +958,12 @@
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_schema_file_exists() {
+    </span><span class="kw">fn </span>schema_file_exists() {
         <span class="kw">let _ </span>= File::open(SCHEMA_FILE_PATH).expect(<span class="string">&quot;Schema file doesn&#39;t exist!&quot;</span>);
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_schema_file_is_up_to_date() {
+    </span><span class="kw">fn </span>schema_file_is_up_to_date() {
         <span class="kw">let </span>compare_schema = <span class="macro">schemars::schema_for!</span>(LayerFileConfig);
         <span class="kw">let </span>compare_content =
             serde_json::to_string_pretty(<span class="kw-2">&amp;</span>compare_schema).expect(<span class="string">&quot;Failed generating schema!&quot;</span>);
@@ -924,5 +976,4 @@
         <span class="macro">assert_eq!</span>(existing_content.replace(<span class="string">&quot;\r\n&quot;</span>, <span class="string">&quot;\n&quot;</span>), compare_content);
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mirrord_config" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (001a77fac 2023-01-30)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-7c23ac01f615ce90.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

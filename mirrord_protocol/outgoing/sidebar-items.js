@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["tcp",""],["udp",""]],"struct":[["DaemonConnect",""],["DaemonRead",""],["LayerClose","`layer` interceptor socket closed or failed."],["LayerConnect","`user` wants to connect to `remote_address`."],["LayerWrite","`user` wants to write `bytes` to remote host identified by `connection_id`."]]};
+window.SIDEBAR_ITEMS = {"enum":["SocketAddress","UnixAddr"],"mod":["tcp","udp"],"struct":["DaemonConnect","DaemonRead","LayerClose","LayerConnect","LayerWrite"]};

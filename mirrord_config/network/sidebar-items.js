@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["NetworkConfig","Controls mirrord network operations."],["NetworkFileConfig","Controls mirrord network operations."]]};
+window.SIDEBAR_ITEMS = {"struct":["NetworkConfig","NetworkFileConfig"]};

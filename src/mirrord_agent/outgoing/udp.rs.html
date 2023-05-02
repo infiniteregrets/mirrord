@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/agent/src/outgoing/udp.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>udp.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f2fc7b5fd698d27d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../../static.files/storage-ff4706381ddb2707.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-02cbe07fc548e88c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../mirrord_agent/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/agent/src/outgoing/udp.rs`."><title>udp.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="mirrord_agent" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (478cbb42b 2023-03-28)" data-search-js="search-bc5a112813b5d712.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../mirrord_agent/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -266,6 +266,22 @@
 <a href="#266" id="266">266</a>
 <a href="#267" id="267">267</a>
 <a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
 </pre><pre class="rust"><code><span class="kw">use </span>std::{
     collections::HashMap,
     net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr},
@@ -295,8 +311,9 @@
 <span class="kw">use </span>tracing::{debug, trace, warn};
 
 <span class="kw">use crate</span>::{
-    error::{AgentError, <span class="prelude-ty">Result</span>},
+    error::Result,
     util::{run_thread_in_namespace, IndexAllocator},
+    watched_task::{TaskStatus, WatchedTask},
 };
 
 <span class="kw">type </span>Layer = LayerUdpOutgoing;
@@ -309,7 +326,10 @@
 /// passing of these messages to the `interceptor_task` thread.
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>UdpOutgoingApi {
     <span class="doccomment">/// Holds the `interceptor_task`.
-    </span>_task: thread::JoinHandle&lt;<span class="prelude-ty">Result</span>&lt;()&gt;&gt;,
+    </span>_task: thread::JoinHandle&lt;()&gt;,
+
+    <span class="doccomment">/// Status of the `interceptor_task`.
+    </span>task_status: TaskStatus,
 
     <span class="doccomment">/// Sends the `Layer` message to the `interceptor_task`.
     </span>layer_tx: Sender&lt;Layer&gt;,
@@ -364,19 +384,25 @@
 }
 
 <span class="kw">impl </span>UdpOutgoingApi {
+    <span class="kw">const </span>TASK_NAME: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;UdpOutgoing&quot;</span>;
+
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(pid: <span class="prelude-ty">Option</span>&lt;u64&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(layer_tx, layer_rx) = mpsc::channel(<span class="number">1000</span>);
         <span class="kw">let </span>(daemon_tx, daemon_rx) = mpsc::channel(<span class="number">1000</span>);
 
+        <span class="kw">let </span>watched_task =
+            WatchedTask::new(<span class="self">Self</span>::TASK_NAME, <span class="self">Self</span>::interceptor_task(layer_rx, daemon_tx));
+        <span class="kw">let </span>task_status = watched_task.status();
         <span class="kw">let </span>task = run_thread_in_namespace(
-            <span class="self">Self</span>::interceptor_task(layer_rx, daemon_tx),
-            <span class="string">&quot;UdpOutgoing&quot;</span>.to_string(),
+            watched_task.start(),
+            <span class="self">Self</span>::TASK_NAME.to_string(),
             pid,
             <span class="string">&quot;net&quot;</span>,
         );
 
         <span class="self">Self </span>{
             _task: task,
+            task_status,
             layer_tx,
             daemon_rx,
         }
@@ -414,7 +440,7 @@
                         <span class="comment">// [user] -&gt; [layer] -&gt; [agent] -&gt; [layer]
                         // `user` is asking us to connect to some remote host.
                         </span>LayerUdpOutgoing::Connect(LayerConnect { remote_address }) =&gt; {
-                            <span class="kw">let </span>daemon_connect = connect(remote_address)
+                            <span class="kw">let </span>daemon_connect = connect(remote_address.clone().try_into()<span class="question-mark">?</span>)
                                     .<span class="kw">await
                                     </span>.and_then(|mirror_socket| {
                                         <span class="kw">let </span>connection_id = allocator
@@ -425,6 +451,7 @@
                                         <span class="macro">debug!</span>(<span class="string">&quot;interceptor_task -&gt; mirror_socket {:#?}&quot;</span>, mirror_socket);
                                         <span class="kw">let </span>peer_address = mirror_socket.peer_addr()<span class="question-mark">?</span>;
                                         <span class="kw">let </span>local_address = mirror_socket.local_addr()<span class="question-mark">?</span>;
+                                        <span class="kw">let </span>local_address = SocketAddress::Ip(local_address);
                                         <span class="kw">let </span>framed = UdpFramed::new(mirror_socket, BytesCodec::new());
                                         <span class="macro">debug!</span>(<span class="string">&quot;interceptor_task -&gt; framed {:#?}&quot;</span>, framed);
                                         <span class="kw">let </span>(sink, stream): (
@@ -523,16 +550,20 @@
             <span class="string">&quot;UdpOutgoingApi::layer_message -&gt; layer_message {:#?}&quot;</span>,
             message
         );
-        <span class="prelude-val">Ok</span>(<span class="self">self</span>.layer_tx.send(message).<span class="kw">await</span><span class="question-mark">?</span>)
+
+        <span class="kw">if </span><span class="self">self</span>.layer_tx.send(message).<span class="kw">await</span>.is_ok() {
+            <span class="prelude-val">Ok</span>(())
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(<span class="self">self</span>.task_status.unwrap_err().<span class="kw">await</span>)
+        }
     }
 
     <span class="doccomment">/// Receives a `UdpOutgoingResponse` from the `interceptor_task`.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>daemon_message(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;DaemonUdpOutgoing&gt; {
-        <span class="self">self</span>.daemon_rx
-            .recv()
-            .<span class="kw">await
-            </span>.ok_or(AgentError::ReceiverClosed)
+        <span class="kw">match </span><span class="self">self</span>.daemon_rx.recv().<span class="kw">await </span>{
+            <span class="prelude-val">Some</span>(msg) =&gt; <span class="prelude-val">Ok</span>(msg),
+            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Err</span>(<span class="self">self</span>.task_status.unwrap_err().<span class="kw">await</span>),
+        }
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="mirrord_agent" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (001a77fac 2023-01-30)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-7c23ac01f615ce90.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

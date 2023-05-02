@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/axum-0.6.4/src/routing/method_routing.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>method_routing.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f2fc7b5fd698d27d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../../static.files/storage-ff4706381ddb2707.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-02cbe07fc548e88c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../axum/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/github/home/.cargo/registry/src/index.crates.io-6f17d22bba15001f/axum-0.6.15/src/routing/method_routing.rs`."><title>method_routing.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="axum" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (478cbb42b 2023-03-28)" data-search-js="search-bc5a112813b5d712.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../axum/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1572,9 +1572,30 @@
 <a href="#1572" id="1572">1572</a>
 <a href="#1573" id="1573">1573</a>
 <a href="#1574" id="1574">1574</a>
+<a href="#1575" id="1575">1575</a>
+<a href="#1576" id="1576">1576</a>
+<a href="#1577" id="1577">1577</a>
+<a href="#1578" id="1578">1578</a>
+<a href="#1579" id="1579">1579</a>
+<a href="#1580" id="1580">1580</a>
+<a href="#1581" id="1581">1581</a>
+<a href="#1582" id="1582">1582</a>
+<a href="#1583" id="1583">1583</a>
+<a href="#1584" id="1584">1584</a>
+<a href="#1585" id="1585">1585</a>
+<a href="#1586" id="1586">1586</a>
+<a href="#1587" id="1587">1587</a>
+<a href="#1588" id="1588">1588</a>
+<a href="#1589" id="1589">1589</a>
+<a href="#1590" id="1590">1590</a>
+<a href="#1591" id="1591">1591</a>
+<a href="#1592" id="1592">1592</a>
+<a href="#1593" id="1593">1593</a>
+<a href="#1594" id="1594">1594</a>
+<a href="#1595" id="1595">1595</a>
 </pre><pre class="rust"><code><span class="doccomment">//! Route to services and handlers based on HTTP methods.
 
-</span><span class="kw">use </span><span class="kw">super</span>::IntoMakeService;
+</span><span class="kw">use super</span>::{future::InfallibleRouteFuture, IntoMakeService};
 <span class="attr">#[cfg(feature = <span class="string">&quot;tokio&quot;</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::extract::connect_info::IntoMakeServiceWithConnectInfo;
 <span class="kw">use crate</span>::{
@@ -2087,6 +2108,7 @@
 ///     S: Service&lt;Request&lt;Body&gt;&gt;,
 /// {}
 /// ```
+</span><span class="attr">#[must_use]
 </span><span class="kw">pub struct </span>MethodRouter&lt;S = (), B = Body, E = Infallible&gt; {
     get: MethodEndpoint&lt;S, B, E&gt;,
     head: MethodEndpoint&lt;S, B, E&gt;,
@@ -2308,14 +2330,14 @@
     <span class="doccomment">/// Provide the state for the router.
     </span><span class="kw">pub fn </span>with_state&lt;S2&gt;(<span class="self">self</span>, state: S) -&gt; MethodRouter&lt;S2, B, E&gt; {
         MethodRouter {
-            get: <span class="self">self</span>.get.with_state(state.clone()),
-            head: <span class="self">self</span>.head.with_state(state.clone()),
-            delete: <span class="self">self</span>.delete.with_state(state.clone()),
-            options: <span class="self">self</span>.options.with_state(state.clone()),
-            patch: <span class="self">self</span>.patch.with_state(state.clone()),
-            post: <span class="self">self</span>.post.with_state(state.clone()),
-            put: <span class="self">self</span>.put.with_state(state.clone()),
-            trace: <span class="self">self</span>.trace.with_state(state.clone()),
+            get: <span class="self">self</span>.get.with_state(<span class="kw-2">&amp;</span>state),
+            head: <span class="self">self</span>.head.with_state(<span class="kw-2">&amp;</span>state),
+            delete: <span class="self">self</span>.delete.with_state(<span class="kw-2">&amp;</span>state),
+            options: <span class="self">self</span>.options.with_state(<span class="kw-2">&amp;</span>state),
+            patch: <span class="self">self</span>.patch.with_state(<span class="kw-2">&amp;</span>state),
+            post: <span class="self">self</span>.post.with_state(<span class="kw-2">&amp;</span>state),
+            put: <span class="self">self</span>.put.with_state(<span class="kw-2">&amp;</span>state),
+            trace: <span class="self">self</span>.trace.with_state(<span class="kw-2">&amp;</span>state),
             allow_header: <span class="self">self</span>.allow_header,
             fallback: <span class="self">self</span>.fallback.with_state(state),
         }
@@ -2791,12 +2813,12 @@
         }
     }
 
-    <span class="kw">fn </span>with_state&lt;S2&gt;(<span class="self">self</span>, state: S) -&gt; MethodEndpoint&lt;S2, B, E&gt; {
+    <span class="kw">fn </span>with_state&lt;S2&gt;(<span class="self">self</span>, state: <span class="kw-2">&amp;</span>S) -&gt; MethodEndpoint&lt;S2, B, E&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             MethodEndpoint::None =&gt; MethodEndpoint::None,
             MethodEndpoint::Route(route) =&gt; MethodEndpoint::Route(route),
             MethodEndpoint::BoxedHandler(handler) =&gt; {
-                MethodEndpoint::Route(handler.into_route(state))
+                MethodEndpoint::Route(handler.into_route(state.clone()))
             }
         }
     }
@@ -2841,6 +2863,18 @@
     }
 }
 
+<span class="kw">impl</span>&lt;S, B&gt; Handler&lt;(), S, B&gt; <span class="kw">for </span>MethodRouter&lt;S, B&gt;
+<span class="kw">where
+    </span>S: Clone + <span class="lifetime">&#39;static</span>,
+    B: HttpBody + Send + <span class="lifetime">&#39;static</span>,
+{
+    <span class="kw">type </span>Future = InfallibleRouteFuture&lt;B&gt;;
+
+    <span class="kw">fn </span>call(<span class="kw-2">mut </span><span class="self">self</span>, req: Request&lt;B&gt;, state: S) -&gt; <span class="self">Self</span>::Future {
+        InfallibleRouteFuture::new(<span class="self">self</span>.call_with_state(req, state))
+    }
+}
+
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
@@ -2852,7 +2886,7 @@
     <span class="kw">use </span>http::{header::ALLOW, HeaderMap};
     <span class="kw">use </span>std::time::Duration;
     <span class="kw">use </span>tower::{timeout::TimeoutLayer, Service, ServiceBuilder, ServiceExt};
-    <span class="kw">use </span>tower_http::{auth::RequireAuthorizationLayer, services::fs::ServeDir};
+    <span class="kw">use </span>tower_http::{services::fs::ServeDir, validate_request::ValidateRequestHeaderLayer};
 
     <span class="attr">#[<span class="kw">crate</span>::test]
     </span><span class="kw">async fn </span>method_not_allowed_by_default() {
@@ -2914,7 +2948,7 @@
     </span><span class="kw">async fn </span>layer() {
         <span class="kw">let </span><span class="kw-2">mut </span>svc = MethodRouter::new()
             .get(|| <span class="kw">async </span>{ std::future::pending::&lt;()&gt;().<span class="kw">await </span>})
-            .layer(RequireAuthorizationLayer::bearer(<span class="string">&quot;password&quot;</span>));
+            .layer(ValidateRequestHeaderLayer::bearer(<span class="string">&quot;password&quot;</span>));
 
         <span class="comment">// method with route
         </span><span class="kw">let </span>(status, <span class="kw">_</span>, <span class="kw">_</span>) = call(Method::GET, <span class="kw-2">&amp;mut </span>svc).<span class="kw">await</span>;
@@ -2929,7 +2963,7 @@
     </span><span class="kw">async fn </span>route_layer() {
         <span class="kw">let </span><span class="kw-2">mut </span>svc = MethodRouter::new()
             .get(|| <span class="kw">async </span>{ std::future::pending::&lt;()&gt;().<span class="kw">await </span>})
-            .route_layer(RequireAuthorizationLayer::bearer(<span class="string">&quot;password&quot;</span>));
+            .route_layer(ValidateRequestHeaderLayer::bearer(<span class="string">&quot;password&quot;</span>));
 
         <span class="comment">// method with route
         </span><span class="kw">let </span>(status, <span class="kw">_</span>, <span class="kw">_</span>) = call(Method::GET, <span class="kw-2">&amp;mut </span>svc).<span class="kw">await</span>;
@@ -2947,11 +2981,8 @@
             <span class="comment">// use the all the things :bomb:
             </span>get(ok)
                 .post(ok)
-                .route_layer(RequireAuthorizationLayer::bearer(<span class="string">&quot;password&quot;</span>))
-                .merge(
-                    delete_service(ServeDir::new(<span class="string">&quot;.&quot;</span>))
-                        .handle_error(|<span class="kw">_</span>| <span class="kw">async </span>{ StatusCode::NOT_FOUND }),
-                )
+                .route_layer(ValidateRequestHeaderLayer::bearer(<span class="string">&quot;password&quot;</span>))
+                .merge(delete_service(ServeDir::new(<span class="string">&quot;.&quot;</span>)))
                 .fallback(|| <span class="kw">async </span>{ StatusCode::NOT_FOUND })
                 .put(ok)
                 .layer(
@@ -3047,6 +3078,17 @@
         <span class="kw">let </span>(status, headers, <span class="kw">_</span>) = call(Method::DELETE, <span class="kw-2">&amp;mut </span>svc).<span class="kw">await</span>;
         <span class="macro">assert_eq!</span>(status, StatusCode::METHOD_NOT_ALLOWED);
         <span class="macro">assert_eq!</span>(headers[ALLOW], <span class="string">&quot;GET,POST&quot;</span>);
+    }
+
+    <span class="attr">#[<span class="kw">crate</span>::test]
+    </span><span class="kw">async fn </span>allow_header_noop_middleware() {
+        <span class="kw">let </span><span class="kw-2">mut </span>svc = MethodRouter::new()
+            .get(ok)
+            .layer(tower::layer::util::Identity::new());
+
+        <span class="kw">let </span>(status, headers, <span class="kw">_</span>) = call(Method::DELETE, <span class="kw-2">&amp;mut </span>svc).<span class="kw">await</span>;
+        <span class="macro">assert_eq!</span>(status, StatusCode::METHOD_NOT_ALLOWED);
+        <span class="macro">assert_eq!</span>(headers[ALLOW], <span class="string">&quot;GET,HEAD&quot;</span>);
     }
 
     <span class="attr">#[<span class="kw">crate</span>::test]
@@ -3146,5 +3188,4 @@
         (StatusCode::CREATED, <span class="string">&quot;created&quot;</span>)
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="axum" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (001a77fac 2023-01-30)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-7c23ac01f615ce90.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

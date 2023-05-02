@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/layer/src/socket.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>socket.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f2fc7b5fd698d27d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../static.files/storage-ff4706381ddb2707.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-02cbe07fc548e88c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../mirrord_layer/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/layer/src/socket.rs`."><title>socket.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mirrord_layer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (478cbb42b 2023-03-28)" data-search-js="search-bc5a112813b5d712.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../mirrord_layer/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -205,34 +205,99 @@
 <a href="#205" id="205">205</a>
 <a href="#206" id="206">206</a>
 <a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
 </pre><pre class="rust"><code><span class="doccomment">//! We implement each hook function in a safe function as much as possible, having the unsafe do the
 //! absolute minimum
 </span><span class="kw">use </span>std::{
-    collections::{HashMap, VecDeque},
+    collections::VecDeque,
     net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr},
     os::unix::io::RawFd,
-    sync::{Arc, LazyLock, Mutex},
+    sync::{Arc, LazyLock},
 };
 
+<span class="kw">use </span>dashmap::DashMap;
 <span class="kw">use </span>libc::{c_int, sockaddr, socklen_t};
-<span class="kw">use </span>mirrord_protocol::Port;
+<span class="kw">use </span>mirrord_protocol::outgoing::SocketAddress;
 <span class="kw">use </span>socket2::SockAddr;
 <span class="kw">use </span>tracing::warn;
 <span class="kw">use </span>trust_dns_resolver::config::Protocol;
 
+<span class="kw">use </span><span class="self">self</span>::id::SocketId;
 <span class="kw">use crate</span>::{
     detour::{Bypass, Detour, OptionExt},
     error::{HookError, HookResult},
+    INCOMING_IGNORE_PORTS,
 };
 
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">mod </span>hooks;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>id;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>ops;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static </span>SOCKETS: LazyLock&lt;Mutex&lt;HashMap&lt;RawFd, Arc&lt;UserSocket&gt;&gt;&gt;&gt; =
-    LazyLock::new(|| Mutex::new(HashMap::new()));
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static </span>SOCKETS: LazyLock&lt;DashMap&lt;RawFd, Arc&lt;UserSocket&gt;&gt;&gt; = LazyLock::new(DashMap::new);
 
-<span class="kw">pub static </span>CONNECTION_QUEUE: LazyLock&lt;Mutex&lt;ConnectionQueue&gt;&gt; =
-    LazyLock::new(|| Mutex::new(ConnectionQueue::default()));
+<span class="doccomment">/// Holds the connections that have yet to be [`accept`](ops::accept)ed.
+///
+/// ## Details
+///
+/// The connections here are added by
+/// [`TcpHandler::create_local_stream`](crate::tcp::TcpHandler::create_local_stream) when the agent
+/// sends us a [`NewTcpConnection`](mirrord_protocol::tcp::NewTcpConnection).
+///
+/// And they become part of the [`UserSocket`]&#39;s [`SocketState`] when [`ops::accept`] is called.
+///
+/// Finally, we remove a socket&#39;s queue when the socket&#39;s `fd` is closed in
+/// [`close_layer_fd`](crate::close_layer_fd).
+</span><span class="kw">pub static </span>CONNECTION_QUEUE: LazyLock&lt;ConnectionQueue&gt; = LazyLock::new(ConnectionQueue::default);
 
 <span class="doccomment">/// Struct sent over the socket once created to pass metadata to the hook
 </span><span class="attr">#[derive(Debug)]
@@ -246,28 +311,38 @@
 <span class="doccomment">/// poll_agent loop inserts connection data into this queue, and accept reads it.
 </span><span class="attr">#[derive(Debug, Default)]
 </span><span class="kw">pub struct </span>ConnectionQueue {
-    connections: HashMap&lt;RawFd, VecDeque&lt;SocketInformation&gt;&gt;,
+    connections: DashMap&lt;SocketId, VecDeque&lt;SocketInformation&gt;&gt;,
 }
 
 <span class="kw">impl </span>ConnectionQueue {
-    <span class="kw">pub fn </span>add(<span class="kw-2">&amp;mut </span><span class="self">self</span>, fd: <span class="kw-2">&amp;</span>RawFd, info: SocketInformation) {
-        <span class="self">self</span>.connections.entry(<span class="kw-2">*</span>fd).or_default().push_back(info);
+    <span class="doccomment">/// Adds a connection.
+    ///
+    /// See [`TcpHandler::create_local_stream`](crate::tcp::TcpHandler::create_local_stream).
+    </span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>, skip(<span class="self">self</span>))]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>add(<span class="kw-2">&amp;</span><span class="self">self</span>, id: SocketId, info: SocketInformation) {
+        <span class="self">self</span>.connections.entry(id).or_default().push_back(info);
     }
-    <span class="kw">pub fn </span>get(<span class="kw-2">&amp;mut </span><span class="self">self</span>, fd: <span class="kw-2">&amp;</span>RawFd) -&gt; <span class="prelude-ty">Option</span>&lt;SocketInformation&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>queue = <span class="self">self</span>.connections.remove(fd)<span class="question-mark">?</span>;
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(info) = queue.pop_front() {
-            <span class="kw">if </span>!queue.is_empty() {
-                <span class="self">self</span>.connections.insert(<span class="kw-2">*</span>fd, queue);
-            }
-            <span class="prelude-val">Some</span>(info)
-        } <span class="kw">else </span>{
-            <span class="prelude-val">None
-        </span>}
+
+    <span class="doccomment">/// Pops the next connection to be handled from `Self`.
+    ///
+    /// See [`ops::accept].
+    </span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>, skip(<span class="self">self</span>))]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>pop_front(<span class="kw-2">&amp;</span><span class="self">self</span>, id: SocketId) -&gt; <span class="prelude-ty">Option</span>&lt;SocketInformation&gt; {
+        <span class="self">self</span>.connections.get_mut(<span class="kw-2">&amp;</span>id)<span class="question-mark">?</span>.pop_front()
+    }
+
+    <span class="doccomment">/// Removes the [`ConnectionQueue`] associated with the [`UserSocket`].
+    ///
+    /// See [`crate::close_layer_fd].
+    </span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>, skip(<span class="self">self</span>))]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, id: SocketId) -&gt; <span class="prelude-ty">Option</span>&lt;VecDeque&lt;SocketInformation&gt;&gt; {
+        <span class="self">self</span>.connections.remove(<span class="kw-2">&amp;</span>id).map(|(<span class="kw">_</span>, v)| v)
     }
 }
 
 <span class="kw">impl </span>SocketInformation {
-    <span class="kw">pub fn </span>new(remote_address: SocketAddr, local_address: SocketAddr) -&gt; <span class="self">Self </span>{
+    <span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>)]
+    </span><span class="kw">pub fn </span>new(remote_address: SocketAddr, local_address: SocketAddr) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             remote_address,
             local_address,
@@ -278,14 +353,14 @@
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>Connected {
     <span class="doccomment">/// Remote address we&#39;re connected to
-    </span>remote_address: SocketAddr,
+    </span>remote_address: SocketAddress,
     <span class="doccomment">/// Local address (pod-wise)
-    </span>local_address: SocketAddr,
+    </span>local_address: SocketAddress,
 }
 
 <span class="attr">#[derive(Debug, Clone, Copy)]
 </span><span class="kw">pub struct </span>Bound {
-    requested_port: Port,
+    requested_address: SocketAddr,
     address: SocketAddr,
 }
 
@@ -320,7 +395,8 @@
 
 <span class="attr">#[derive(Debug)]
 #[allow(dead_code)]
-</span><span class="kw">pub struct </span>UserSocket {
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>UserSocket {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) id: SocketId,
     domain: c_int,
     type_: c_int,
     protocol: c_int,
@@ -328,8 +404,27 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) kind: SocketKind,
 }
 
+<span class="kw">impl </span>UserSocket {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(
+        domain: c_int,
+        type_: c_int,
+        protocol: c_int,
+        state: SocketState,
+        kind: SocketKind,
+    ) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            id: Default::default(),
+            domain,
+            type_,
+            protocol,
+            state,
+            kind,
+        }
+    }
+}
+
 <span class="attr">#[inline]
-</span><span class="kw">fn </span>is_ignored_port(addr: SocketAddr) -&gt; bool {
+</span><span class="kw">fn </span>is_ignored_port(addr: <span class="kw-2">&amp;</span>SocketAddr) -&gt; bool {
     <span class="kw">let </span>(ip, port) = (addr.ip(), addr.port());
     <span class="kw">let </span>ignored_ip = ip == IpAddr::V4(Ipv4Addr::LOCALHOST) || ip == IpAddr::V6(Ipv6Addr::LOCALHOST);
     port == <span class="number">0 </span>|| ignored_ip &amp;&amp; (port &gt; <span class="number">50000 </span>&amp;&amp; port &lt; <span class="number">60000</span>)
@@ -340,24 +435,22 @@
 </span><span class="kw">fn </span>fill_address(
     address: <span class="kw-2">*mut </span>sockaddr,
     address_len: <span class="kw-2">*mut </span>socklen_t,
-    new_address: SocketAddr,
+    new_address: SockAddr,
 ) -&gt; Detour&lt;i32&gt; {
     <span class="kw">let </span>result = <span class="kw">if </span>address.is_null() {
         <span class="prelude-val">Ok</span>(<span class="number">0</span>)
     } <span class="kw">else if </span>address_len.is_null() {
         <span class="prelude-val">Err</span>(HookError::NullPointer)
     } <span class="kw">else </span>{
-        <span class="kw">let </span>os_address = SockAddr::from(new_address);
-
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>len = std::cmp::min(<span class="kw-2">*</span>address_len <span class="kw">as </span>usize, os_address.len() <span class="kw">as </span>usize);
+            <span class="kw">let </span>len = std::cmp::min(<span class="kw-2">*</span>address_len <span class="kw">as </span>usize, new_address.len() <span class="kw">as </span>usize);
 
             std::ptr::copy_nonoverlapping(
-                os_address.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>u8,
+                new_address.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>u8,
                 address <span class="kw">as </span><span class="kw-2">*mut </span>u8,
                 len,
             );
-            <span class="kw-2">*</span>address_len = os_address.len();
+            <span class="kw-2">*</span>address_len = new_address.len();
         }
 
         <span class="prelude-val">Ok</span>(<span class="number">0</span>)
@@ -394,13 +487,15 @@
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait </span>SocketAddrExt {
-    <span class="kw">fn </span>try_from_raw(raw_address: <span class="kw-2">*const </span>sockaddr, address_length: socklen_t) -&gt; Detour&lt;SocketAddr&gt;;
+    <span class="kw">fn </span>try_from_raw(raw_address: <span class="kw-2">*const </span>sockaddr, address_length: socklen_t) -&gt; Detour&lt;<span class="self">Self</span>&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: Sized;
 }
 
-<span class="kw">impl </span>SocketAddrExt <span class="kw">for </span>SocketAddr {
-    <span class="kw">fn </span>try_from_raw(raw_address: <span class="kw-2">*const </span>sockaddr, address_length: socklen_t) -&gt; Detour&lt;SocketAddr&gt; {
+<span class="kw">impl </span>SocketAddrExt <span class="kw">for </span>SockAddr {
+    <span class="kw">fn </span>try_from_raw(raw_address: <span class="kw-2">*const </span>sockaddr, address_length: socklen_t) -&gt; Detour&lt;SockAddr&gt; {
         <span class="kw">unsafe </span>{
-            SockAddr::init(|storage, len| {
+            SockAddr::try_init(|storage, len| {
                 storage.copy_from_nonoverlapping(raw_address.cast(), <span class="number">1</span>);
                 len.copy_from_nonoverlapping(<span class="kw-2">&amp;</span>address_length, <span class="number">1</span>);
 
@@ -408,9 +503,15 @@
             })
         }
         .ok()
-        .and_then(|((), address)| address.as_socket())
+        .map(|((), address)| address)
         .bypass(Bypass::AddressConversion)
     }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mirrord_layer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (001a77fac 2023-01-30)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-7c23ac01f615ce90.css" ></div></body></html>
+
+<span class="kw">impl </span>SocketAddrExt <span class="kw">for </span>SocketAddr {
+    <span class="kw">fn </span>try_from_raw(raw_address: <span class="kw-2">*const </span>sockaddr, address_length: socklen_t) -&gt; Detour&lt;SocketAddr&gt; {
+        SockAddr::try_from_raw(raw_address, address_length)
+            .and_then(|address| address.as_socket().bypass(Bypass::AddressConversion))
+    }
+}
+</code></pre></div></section></main></body></html>

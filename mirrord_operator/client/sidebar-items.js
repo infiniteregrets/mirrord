@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":[["OperatorApiError",""]],"fn":[["wrap_connection",""]],"static":[["CONNECTION_CHANNEL_SIZE",""]],"struct":[["OperatorApi",""]],"type":[["Result",""]]};
+window.SIDEBAR_ITEMS = {"constant":["BRANCHES"],"enum":["OperatorApiError"],"opaque":[""],"static":["CALLSITE","CONNECTION_CHANNEL_SIZE","META"],"struct":["ConnectionWrapper","OperatorApi"],"type":["Result"]};

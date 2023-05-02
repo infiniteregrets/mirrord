@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/layer/src/socket/ops.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>ops.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f2fc7b5fd698d27d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../../static.files/storage-ff4706381ddb2707.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-02cbe07fc548e88c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../mirrord_layer/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/layer/src/socket/ops.rs`."><title>ops.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="mirrord_layer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (478cbb42b 2023-03-28)" data-search-js="search-bc5a112813b5d712.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../mirrord_layer/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -667,34 +667,109 @@
 <a href="#667" id="667">667</a>
 <a href="#668" id="668">668</a>
 <a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
+<a href="#721" id="721">721</a>
+<a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
+<a href="#727" id="727">727</a>
+<a href="#728" id="728">728</a>
+<a href="#729" id="729">729</a>
+<a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
+<a href="#732" id="732">732</a>
+<a href="#733" id="733">733</a>
+<a href="#734" id="734">734</a>
+<a href="#735" id="735">735</a>
+<a href="#736" id="736">736</a>
+<a href="#737" id="737">737</a>
+<a href="#738" id="738">738</a>
+<a href="#739" id="739">739</a>
+<a href="#740" id="740">740</a>
 </pre><pre class="rust"><code><span class="kw">use </span>alloc::ffi::CString;
 <span class="kw">use </span>core::{ffi::CStr, mem};
 <span class="kw">use </span>std::{
     io,
     net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr},
     os::unix::io::RawFd,
+    path::PathBuf,
     ptr,
     sync::{Arc, OnceLock},
 };
 
 <span class="kw">use </span>libc::{c_int, sockaddr, socklen_t};
-<span class="kw">use </span>mirrord_protocol::{dns::LookupRecord, file::OpenOptionsInternal};
+<span class="kw">use </span>mirrord_protocol::{
+    dns::LookupRecord,
+    file::{OpenFileResponse, OpenOptionsInternal, ReadFileResponse},
+};
 <span class="kw">use </span>socket2::SockAddr;
 <span class="kw">use </span>tokio::sync::oneshot;
 <span class="kw">use </span>tracing::{debug, error, trace};
 
 <span class="kw">use super</span>::{hooks::<span class="kw-2">*</span>, <span class="kw-2">*</span>};
 <span class="kw">use crate</span>::{
-    close_layer_fd,
     common::{blocking_send_hook_message, HookMessage},
     detour::{Detour, OnceLockExt, OptionExt},
     dns::GetAddrInfo,
     error::HookError,
     file::{<span class="self">self</span>, OPEN_FILES},
+    is_debugger_port,
     outgoing::{tcp::TcpOutgoing, udp::UdpOutgoing, Connect, RemoteConnection},
-    port_debug_patch,
     tcp::{Listen, TcpIncoming},
-    ENABLED_TCP_OUTGOING, ENABLED_UDP_OUTGOING,
+    ENABLED_TCP_OUTGOING, ENABLED_UDP_OUTGOING, INCOMING_IGNORE_LOCALHOST,
+    OUTGOING_IGNORE_LOCALHOST, REMOTE_UNIX_STREAMS,
 };
 
 <span class="doccomment">/// Hostname initialized from the agent with [`gethostname`].
@@ -754,6 +829,10 @@
         <span class="prelude-val">Ok</span>(())
     }<span class="question-mark">?</span>;
 
+    <span class="kw">if </span>domain == libc::AF_INET6 {
+        <span class="kw">return </span>Detour::Error(HookError::SocketUnsuportedIpv6);
+    }
+
     <span class="kw">let </span>socket_result = <span class="kw">unsafe </span>{ FN_SOCKET(domain, type_, protocol) };
 
     <span class="kw">let </span>socket_fd = <span class="kw">if </span>socket_result == -<span class="number">1 </span>{
@@ -762,15 +841,9 @@
         <span class="prelude-val">Ok</span>(socket_result)
     }<span class="question-mark">?</span>;
 
-    <span class="kw">let </span>new_socket = UserSocket {
-        domain,
-        type_,
-        protocol,
-        state: SocketState::default(),
-        kind: socket_kind,
-    };
+    <span class="kw">let </span>new_socket = UserSocket::new(domain, type_, protocol, Default::default(), socket_kind);
 
-    SOCKETS.lock()<span class="question-mark">?</span>.insert(socket_fd, Arc::new(new_socket));
+    SOCKETS.insert(socket_fd, Arc::new(new_socket));
 
     Detour::Success(socket_fd)
 }
@@ -786,16 +859,16 @@
     <span class="kw">let </span>requested_address = SocketAddr::try_from_raw(raw_address, address_length)<span class="question-mark">?</span>;
     <span class="kw">let </span>requested_port = requested_address.port();
 
-    <span class="kw">if </span>is_ignored_port(requested_address) || port_debug_patch(requested_address) {
-        <span class="prelude-val">Err</span>(Bypass::Port(requested_address.port()))<span class="question-mark">?</span>;
-    }
+    <span class="kw">let </span>ignore_localhost = INCOMING_IGNORE_LOCALHOST
+        .get()
+        .copied()
+        .expect(<span class="string">&quot;Should be set during initialization!&quot;</span>);
 
     <span class="kw">let </span><span class="kw-2">mut </span>socket = {
         SOCKETS
-            .lock()<span class="question-mark">?
-            </span>.remove(<span class="kw-2">&amp;</span>sockfd)
+            .remove(<span class="kw-2">&amp;</span>sockfd)
             .ok_or(Bypass::LocalFdNotFound(sockfd))
-            .and_then(|socket| {
+            .and_then(|(<span class="kw">_</span>, socket)| {
                 <span class="kw">if </span>!<span class="macro">matches!</span>(socket.state, SocketState::Initialized) {
                     <span class="prelude-val">Err</span>(Bypass::InvalidState(sockfd))
                 } <span class="kw">else </span>{
@@ -803,6 +876,20 @@
                 }
             })<span class="question-mark">?
     </span>};
+
+    <span class="kw">if </span>ignore_localhost &amp;&amp; requested_address.ip().is_loopback() {
+        <span class="kw">return </span>Detour::Bypass(Bypass::IgnoreLocalhost(requested_port));
+    }
+
+    <span class="kw">if </span>is_ignored_port(<span class="kw-2">&amp;</span>requested_address)
+        || is_debugger_port(<span class="kw-2">&amp;</span>requested_address)
+        || INCOMING_IGNORE_PORTS
+            .get()
+            .expect(<span class="string">&quot;`INCOMING_IGNORE_PORTS` not set. Please report a bug&quot;</span>)
+            .contains(<span class="kw-2">&amp;</span>requested_port)
+    {
+        <span class="prelude-val">Err</span>(Bypass::Port(requested_address.port()))<span class="question-mark">?</span>;
+    }
 
     <span class="kw">let </span>unbound_address = <span class="kw">match </span>socket.domain {
         libc::AF_INET =&gt; <span class="prelude-val">Ok</span>(SockAddr::from(SocketAddr::new(
@@ -832,7 +919,7 @@
     <span class="comment">// We need to find out what&#39;s the port we bound to, that&#39;ll be used by `poll_agent` to
     // connect to.
     </span><span class="kw">let </span>address = <span class="kw">unsafe </span>{
-        SockAddr::init(|storage, len| {
+        SockAddr::try_init(|storage, len| {
             <span class="kw">if </span>FN_GETSOCKNAME(sockfd, storage.cast(), len) == -<span class="number">1 </span>{
                 <span class="macro">error!</span>(<span class="string">&quot;bind -&gt; Failed `getsockname` sockfd {:#?}&quot;</span>, sockfd);
 
@@ -847,11 +934,11 @@
     .bypass(Bypass::AddressConversion)<span class="question-mark">?</span>;
 
     Arc::get_mut(<span class="kw-2">&amp;mut </span>socket).unwrap().state = SocketState::Bound(Bound {
-        requested_port,
+        requested_address,
         address,
     });
 
-    SOCKETS.lock()<span class="question-mark">?</span>.insert(sockfd, socket);
+    SOCKETS.insert(sockfd, socket);
 
     Detour::Success(bind_result)
 }
@@ -860,16 +947,16 @@
 /// later be routed to the fake local port.
 </span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>)]
 </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>listen(sockfd: RawFd, backlog: c_int) -&gt; Detour&lt;i32&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>socket: Arc&lt;UserSocket&gt; = {
+    <span class="kw">let </span><span class="kw-2">mut </span>socket = {
         SOCKETS
-            .lock()<span class="question-mark">?
-            </span>.remove(<span class="kw-2">&amp;</span>sockfd)
+            .remove(<span class="kw-2">&amp;</span>sockfd)
+            .map(|(<span class="kw">_</span>, socket)| socket)
             .bypass(Bypass::LocalFdNotFound(sockfd))<span class="question-mark">?
     </span>};
 
     <span class="kw">match </span>socket.state {
         SocketState::Bound(Bound {
-            requested_port,
+            requested_address,
             address,
         }) =&gt; {
             <span class="kw">let </span>listen_result = <span class="kw">unsafe </span>{ FN_LISTEN(sockfd, backlog) };
@@ -881,17 +968,17 @@
 
             blocking_send_hook_message(HookMessage::Tcp(TcpIncoming::Listen(Listen {
                 mirror_port: address.port(),
-                requested_port,
+                requested_port: requested_address.port(),
                 ipv6: address.is_ipv6(),
-                fd: sockfd,
+                id: socket.id,
             })))<span class="question-mark">?</span>;
 
             Arc::get_mut(<span class="kw-2">&amp;mut </span>socket).unwrap().state = SocketState::Listening(Bound {
-                requested_port,
+                requested_address,
                 address,
             });
 
-            SOCKETS.lock()<span class="question-mark">?</span>.insert(sockfd, socket);
+            SOCKETS.insert(sockfd, socket);
 
             Detour::Success(listen_result)
         }
@@ -914,14 +1001,14 @@
 </span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>)]
 </span><span class="kw">fn </span>connect_outgoing&lt;<span class="kw">const </span>TYPE: ConnectType&gt;(
     sockfd: RawFd,
-    remote_address: SocketAddr,
+    remote_address: SockAddr,
     <span class="kw-2">mut </span>user_socket_info: Arc&lt;UserSocket&gt;,
 ) -&gt; Detour&lt;ConnectResult&gt; {
     <span class="comment">// Prepare this socket to be intercepted.
     </span><span class="kw">let </span>(mirror_tx, mirror_rx) = oneshot::channel();
 
     <span class="kw">let </span>connect = Connect {
-        remote_address,
+        remote_address: remote_address.clone(),
         channel_tx: mirror_tx,
     };
 
@@ -938,15 +1025,13 @@
 
     blocking_send_hook_message(hook_message)<span class="question-mark">?</span>;
     <span class="kw">let </span>RemoteConnection {
-        mirror_address,
-        local_address,
+        layer_address,
+        user_app_address,
     } = mirror_rx.blocking_recv()<span class="question-mark">??</span>;
-
-    <span class="kw">let </span>connect_to = SockAddr::from(mirror_address);
 
     <span class="comment">// Connect to the interceptor socket that is listening.
     </span><span class="kw">let </span>connect_result: ConnectResult =
-        <span class="kw">unsafe </span>{ FN_CONNECT(sockfd, connect_to.as_ptr(), connect_to.len()) }.into();
+        <span class="kw">unsafe </span>{ FN_CONNECT(sockfd, layer_address.as_ptr(), layer_address.len()) }.into();
 
     <span class="kw">if </span>connect_result.is_failure() {
         <span class="macro">error!</span>(
@@ -957,12 +1042,12 @@
     }
 
     <span class="kw">let </span>connected = Connected {
-        remote_address,
-        local_address,
+        remote_address: remote_address.try_into()<span class="question-mark">?</span>,
+        local_address: user_app_address.try_into()<span class="question-mark">?</span>,
     };
 
     Arc::get_mut(<span class="kw-2">&amp;mut </span>user_socket_info).unwrap().state = SocketState::Connected(connected);
-    SOCKETS.lock()<span class="question-mark">?</span>.insert(sockfd, user_socket_info);
+    SOCKETS.insert(sockfd, user_socket_info);
 
     Detour::Success(connect_result)
 }
@@ -982,18 +1067,89 @@
     raw_address: <span class="kw-2">*const </span>sockaddr,
     address_length: socklen_t,
 ) -&gt; Detour&lt;ConnectResult&gt; {
-    <span class="kw">let </span>remote_address = SocketAddr::try_from_raw(raw_address, address_length)<span class="question-mark">?</span>;
+    <span class="kw">let </span>remote_address = SockAddr::try_from_raw(raw_address, address_length)<span class="question-mark">?</span>;
+    <span class="kw">let </span>optional_ip_address = remote_address.as_socket();
 
-    <span class="kw">if </span>is_ignored_port(remote_address) || port_debug_patch(remote_address) {
-        <span class="prelude-val">Err</span>(Bypass::Port(remote_address.port()))<span class="question-mark">?
-    </span>}
+    <span class="kw">let </span>unix_streams = REMOTE_UNIX_STREAMS
+        .get()
+        .expect(<span class="string">&quot;Should be set during initialization!&quot;</span>);
 
-    <span class="kw">let </span>user_socket_info = {
+    <span class="kw">let </span>(<span class="kw">_</span>, user_socket_info) = {
         SOCKETS
-            .lock()<span class="question-mark">?
-            </span>.remove(<span class="kw-2">&amp;</span>sockfd)
+            .remove(<span class="kw-2">&amp;</span>sockfd)
             .ok_or(Bypass::LocalFdNotFound(sockfd))<span class="question-mark">?
     </span>};
+
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(ip_address) = optional_ip_address.as_ref() {
+        <span class="kw">let </span>ignore_localhost = OUTGOING_IGNORE_LOCALHOST
+            .get()
+            .copied()
+            .expect(<span class="string">&quot;Should be set during initialization!&quot;</span>);
+
+        <span class="kw">if </span>ip_address.ip().is_loopback() {
+            <span class="kw">if </span>ignore_localhost {
+                <span class="kw">return </span>Detour::Bypass(Bypass::IgnoreLocalhost(ip_address.port()));
+            }
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(res) =
+                <span class="comment">// Iterate through sockets, if any of them has the requested port that the
+                // application is now trying to connect to - then don&#39;t forward this connection
+                // to the agent, and instead of connecting to the requested address, connect to
+                // the actual address where the application is locally listening.
+                </span>SOCKETS.iter().find_map(|entry| {
+                    <span class="kw">let </span>socket = entry.value();
+                    <span class="kw">if let </span>SocketState::Listening(Bound {
+                        requested_address,
+                        address,
+                    }) = socket.state
+                    {
+                        <span class="kw">if </span>requested_address.port() == ip_address.port()
+                            &amp;&amp; socket.protocol == user_socket_info.protocol
+                        {
+                            <span class="kw">let </span>rawish_remote_address = SockAddr::from(address);
+                            <span class="kw">let </span>result = <span class="kw">unsafe </span>{
+                                FN_CONNECT(
+                                    sockfd,
+                                    rawish_remote_address.as_ptr(),
+                                    rawish_remote_address.len(),
+                                )
+                            };
+
+                            <span class="kw">return </span><span class="prelude-val">Some</span>(<span class="kw">if </span>result != <span class="number">0 </span>{
+                                Detour::Error(io::Error::last_os_error().into())
+                            } <span class="kw">else </span>{
+                                Detour::Success(result.into())
+                            });
+                        }
+                    }
+                    <span class="prelude-val">None
+                </span>})
+            {
+                <span class="kw">return </span>res;
+            }
+        }
+
+        <span class="kw">if </span>is_ignored_port(ip_address) || is_debugger_port(ip_address) {
+            <span class="kw">return </span>Detour::Bypass(Bypass::Port(ip_address.port()));
+        }
+    } <span class="kw">else if </span>remote_address.is_unix() {
+        <span class="kw">let </span>address = remote_address
+            .as_pathname()
+            .map(|path| path.to_string_lossy())
+            .or(remote_address
+                .as_abstract_namespace()
+                .map(String::from_utf8_lossy))
+            .map(String::from);
+        <span class="kw">if </span>!address.as_ref().is_some_and(|address_name| {
+            unix_streams
+                .as_ref()
+                .is_some_and(|regex_set| regex_set.is_match(address_name))
+        }) {
+            <span class="kw">return </span>Detour::Bypass(Bypass::UnixSocket(address));
+        }
+    } <span class="kw">else </span>{
+        <span class="comment">// We do not hijack connections of this address type - Bypass!
+        </span><span class="kw">return </span>Detour::Bypass(Bypass::Domain(remote_address.domain().into()));
+    }
 
     <span class="kw">let </span>enabled_tcp_outgoing = ENABLED_TCP_OUTGOING
         .get()
@@ -1005,49 +1161,18 @@
         .copied()
         .expect(<span class="string">&quot;Should be set during initialization!&quot;</span>);
 
-    <span class="kw">let </span>raw_connect = |remote_address| {
-        <span class="kw">let </span>rawish_remote_address = SockAddr::from(remote_address);
-        <span class="kw">let </span>result = <span class="kw">unsafe </span>{
-            FN_CONNECT(
-                sockfd,
-                rawish_remote_address.as_ptr(),
-                rawish_remote_address.len(),
-            )
-        };
-
-        <span class="kw">if </span>result != <span class="number">0 </span>{
-            Detour::Error(<span class="prelude-val">Err</span>(io::Error::last_os_error())<span class="question-mark">?</span>)<span class="question-mark">?
-        </span>} <span class="kw">else </span>{
-            Detour::Success(result.into())
-        }
-    };
-
-    <span class="comment">// if it&#39;s loopback, check if it&#39;s a port we&#39;re listening to and if so, just let it connect
-    // locally.
-    </span><span class="kw">if </span>remote_address.ip().is_loopback() &amp;&amp; <span class="kw">let </span><span class="prelude-val">Some</span>(res) =
-        SOCKETS.lock()<span class="question-mark">?</span>.values().find_map(|socket| {
-            <span class="kw">if let </span>SocketState::Listening(Bound {
-                requested_port,
-                address,
-            }) = socket.state
-            {
-                <span class="kw">if </span>requested_port == remote_address.port()
-                    &amp;&amp; socket.protocol == user_socket_info.protocol
-                {
-                    <span class="kw">return </span><span class="prelude-val">Some</span>(raw_connect(address));
-                }
-            }
-            <span class="prelude-val">None
-        </span>}) {
-        <span class="kw">return </span>res;
-    };
-
     <span class="kw">match </span>user_socket_info.kind {
         SocketKind::Udp(<span class="kw">_</span>) <span class="kw">if </span>enabled_udp_outgoing =&gt; {
             connect_outgoing::&lt;UDP&gt;(sockfd, remote_address, user_socket_info)
         }
         SocketKind::Tcp(<span class="kw">_</span>) =&gt; <span class="kw">match </span>user_socket_info.state {
-            SocketState::Initialized <span class="kw">if </span>enabled_tcp_outgoing =&gt; {
+            SocketState::Initialized
+                <span class="kw">if </span>(optional_ip_address.is_some() &amp;&amp; enabled_tcp_outgoing)
+                    || (remote_address.is_unix()
+                        &amp;&amp; unix_streams
+                            .as_ref()
+                            .is_some_and(|streams| !streams.is_empty())) =&gt;
+            {
                 connect_outgoing::&lt;TCP&gt;(sockfd, remote_address, user_socket_info)
             }
             SocketState::Bound(Bound { address, .. }) =&gt; {
@@ -1058,18 +1183,18 @@
 
                 <span class="kw">if </span>bind_result != <span class="number">0 </span>{
                     <span class="macro">error!</span>(
-                    <span class="string">&quot;connect -&gt; Failed to bind socket result {:?}, address: {:?}, sockfd: {:?}!&quot;</span>,
-                    bind_result, address, sockfd
-                );
+                        <span class="string">&quot;connect -&gt; Failed to bind socket result {:?}, address: {:?}, sockfd: {:?}!&quot;</span>,
+                        bind_result, address, sockfd
+                    );
 
                     <span class="prelude-val">Err</span>(io::Error::last_os_error())<span class="question-mark">?
                 </span>} <span class="kw">else </span>{
-                    raw_connect(remote_address)
+                    Detour::Bypass(Bypass::MirrorConnect)
                 }
             }
-            <span class="kw">_ </span>=&gt; raw_connect(remote_address),
+            <span class="kw">_ </span>=&gt; Detour::Bypass(Bypass::DisabledOutgoing),
         },
-        <span class="kw">_ </span>=&gt; raw_connect(remote_address),
+        <span class="kw">_ </span>=&gt; Detour::Bypass(Bypass::DisabledOutgoing),
     }
 }
 
@@ -1083,18 +1208,19 @@
 ) -&gt; Detour&lt;i32&gt; {
     <span class="kw">let </span>remote_address = {
         SOCKETS
-            .lock()<span class="question-mark">?
-            </span>.get(<span class="kw-2">&amp;</span>sockfd)
+            .get(<span class="kw-2">&amp;</span>sockfd)
             .bypass(Bypass::LocalFdNotFound(sockfd))
-            .and_then(|socket| <span class="kw">match </span><span class="kw-2">&amp;</span>socket.state {
-                SocketState::Connected(connected) =&gt; Detour::Success(connected.remote_address),
+            .and_then(|entry| <span class="kw">match </span><span class="kw-2">&amp;</span>entry.value().state {
+                SocketState::Connected(connected) =&gt; {
+                    Detour::Success(connected.remote_address.clone())
+                }
                 <span class="kw">_ </span>=&gt; Detour::Bypass(Bypass::InvalidState(sockfd)),
             })<span class="question-mark">?
     </span>};
 
     <span class="macro">debug!</span>(<span class="string">&quot;getpeername -&gt; remote_address {:#?}&quot;</span>, remote_address);
 
-    fill_address(address, address_len, remote_address)
+    fill_address(address, address_len, remote_address.try_into()<span class="question-mark">?</span>)
 }
 <span class="doccomment">/// Resolve the fake local address to the real local address.
 </span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>, skip(address, address_len))]
@@ -1105,25 +1231,27 @@
 ) -&gt; Detour&lt;i32&gt; {
     <span class="kw">let </span>local_address = {
         SOCKETS
-            .lock()<span class="question-mark">?
-            </span>.get(<span class="kw-2">&amp;</span>sockfd)
+            .get(<span class="kw-2">&amp;</span>sockfd)
             .bypass(Bypass::LocalFdNotFound(sockfd))
-            .and_then(|socket| <span class="kw">match </span><span class="kw-2">&amp;</span>socket.state {
-                SocketState::Connected(connected) =&gt; Detour::Success(connected.local_address),
-                SocketState::Bound(bound) =&gt; Detour::Success(bound.address),
-                SocketState::Listening(bound) =&gt; Detour::Success(bound.address),
+            .and_then(|entry| <span class="kw">match </span><span class="kw-2">&amp;</span>entry.value().state {
+                SocketState::Connected(connected) =&gt; {
+                    Detour::Success(connected.local_address.clone())
+                }
+                SocketState::Bound(bound) =&gt; Detour::Success(bound.requested_address.into()),
+                SocketState::Listening(bound) =&gt; Detour::Success(bound.requested_address.into()),
                 <span class="kw">_ </span>=&gt; Detour::Bypass(Bypass::InvalidState(sockfd)),
             })<span class="question-mark">?
     </span>};
 
     <span class="macro">debug!</span>(<span class="string">&quot;getsockname -&gt; local_address {:#?}&quot;</span>, local_address);
 
-    fill_address(address, address_len, local_address)
+    fill_address(address, address_len, local_address.try_into()<span class="question-mark">?</span>)
 }
 
 <span class="doccomment">/// When the fd is &quot;ours&quot;, we accept and recv the first bytes that contain metadata on the
-/// connection to be set in our lock This enables us to have a safe way to get &quot;remote&quot; information
-/// (remote ip, port, etc).
+/// connection to be set in our lock.
+///
+/// This enables us to have a safe way to get &quot;remote&quot; information (remote ip, port, etc).
 </span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>, skip(address, address_len))]
 </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>accept(
     sockfd: RawFd,
@@ -1131,14 +1259,13 @@
     address_len: <span class="kw-2">*mut </span>socklen_t,
     new_fd: RawFd,
 ) -&gt; Detour&lt;RawFd&gt; {
-    <span class="kw">let </span>(domain, protocol, type_) = {
+    <span class="kw">let </span>(id, domain, protocol, type_) = {
         SOCKETS
-            .lock()<span class="question-mark">?
-            </span>.get(<span class="kw-2">&amp;</span>sockfd)
+            .get(<span class="kw-2">&amp;</span>sockfd)
             .bypass(Bypass::LocalFdNotFound(sockfd))
             .and_then(|socket| <span class="kw">match </span><span class="kw-2">&amp;</span>socket.state {
                 SocketState::Listening(<span class="kw">_</span>) =&gt; {
-                    Detour::Success((socket.domain, socket.protocol, socket.type_))
+                    Detour::Success((socket.id, socket.domain, socket.protocol, socket.type_))
                 }
                 <span class="kw">_ </span>=&gt; Detour::Bypass(Bypass::InvalidState(sockfd)),
             })<span class="question-mark">?
@@ -1146,25 +1273,25 @@
 
     <span class="kw">let </span>(local_address, remote_address) = {
         CONNECTION_QUEUE
-            .lock()<span class="question-mark">?
-            </span>.get(<span class="kw-2">&amp;</span>sockfd)
+            .pop_front(id)
             .bypass(Bypass::LocalFdNotFound(sockfd))
-            .map(|socket| (socket.local_address, socket.remote_address))<span class="question-mark">?
+            .map(|socket| {
+                (
+                    SocketAddress::Ip(socket.local_address),
+                    SocketAddress::Ip(socket.remote_address),
+                )
+            })<span class="question-mark">?
     </span>};
 
-    <span class="kw">let </span>new_socket = UserSocket {
-        domain,
-        protocol,
-        type_,
-        state: SocketState::Connected(Connected {
-            remote_address,
-            local_address,
-        }),
-        kind: type_.try_into()<span class="question-mark">?</span>,
-    };
-    fill_address(address, address_len, remote_address)<span class="question-mark">?</span>;
+    <span class="kw">let </span>state = SocketState::Connected(Connected {
+        remote_address: remote_address.clone(),
+        local_address,
+    });
+    <span class="kw">let </span>new_socket = UserSocket::new(domain, type_, protocol, state, type_.try_into()<span class="question-mark">?</span>);
 
-    SOCKETS.lock()<span class="question-mark">?</span>.insert(new_fd, Arc::new(new_socket));
+    fill_address(address, address_len, remote_address.try_into()<span class="question-mark">?</span>)<span class="question-mark">?</span>;
+
+    SOCKETS.insert(new_fd, Arc::new(new_socket));
 
     Detour::Success(new_fd)
 }
@@ -1172,25 +1299,40 @@
 <span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>)]
 </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>fcntl(orig_fd: c_int, cmd: c_int, fcntl_fd: i32) -&gt; <span class="prelude-ty">Result</span>&lt;(), HookError&gt; {
     <span class="kw">match </span>cmd {
-        libc::F_DUPFD | libc::F_DUPFD_CLOEXEC =&gt; dup(orig_fd, fcntl_fd),
+        libc::F_DUPFD | libc::F_DUPFD_CLOEXEC =&gt; dup::&lt;<span class="bool-val">true</span>&gt;(orig_fd, fcntl_fd),
         <span class="kw">_ </span>=&gt; <span class="prelude-val">Ok</span>(()),
     }
 }
 
-<span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>)]
-</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>dup(fd: c_int, dup_fd: i32) -&gt; <span class="prelude-ty">Result</span>&lt;(), HookError&gt; {
-    {
-        <span class="kw">let </span><span class="kw-2">mut </span>sockets = SOCKETS.lock()<span class="question-mark">?</span>;
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(socket) = sockets.get(<span class="kw-2">&amp;</span>fd).cloned() {
-            sockets.insert(dup_fd <span class="kw">as </span>RawFd, socket);
-            <span class="kw">return </span><span class="prelude-val">Ok</span>(());
-        }
-    } <span class="comment">// Drop sockets, free Mutex.
+<span class="doccomment">/// Managed part of our [`dup_detour`], that clones the `Arc&lt;T&gt;` thing we have keyed by `fd`
+/// ([`UserSocket`], or [`RemoteFile`]).
+///
+/// - `SWITCH_MAP`:
+///
+/// Indicates that we&#39;re switching the `fd` from [`SOCKETS`] to [`OPEN_FILES`] (or vice-versa).
+///
+/// We need this to properly handle some cases in [`fcntl`], [`dup2_detour`], and [`dup3_detour`].
+/// Extra relevant for node on macos.
+</span><span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>)]
+</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>dup&lt;<span class="kw">const </span>SWITCH_MAP: bool&gt;(fd: c_int, dup_fd: i32) -&gt; <span class="prelude-ty">Result</span>&lt;(), HookError&gt; {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(socket) = SOCKETS.get(<span class="kw-2">&amp;</span>fd).map(|entry| entry.value().clone()) {
+        SOCKETS.insert(dup_fd <span class="kw">as </span>RawFd, socket);
 
-    </span><span class="kw">let </span><span class="kw-2">mut </span>files = OPEN_FILES.lock()<span class="question-mark">?</span>;
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(file) = files.get(<span class="kw-2">&amp;</span>fd).cloned() {
-        files.insert(dup_fd <span class="kw">as </span>RawFd, file);
+        <span class="kw">if </span>SWITCH_MAP {
+            OPEN_FILES.remove(<span class="kw-2">&amp;</span>dup_fd);
+        }
+
+        <span class="kw">return </span><span class="prelude-val">Ok</span>(());
     }
+
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(file) = OPEN_FILES.view(<span class="kw-2">&amp;</span>fd, |<span class="kw">_</span>, file| file.clone()) {
+        OPEN_FILES.insert(dup_fd <span class="kw">as </span>RawFd, file);
+
+        <span class="kw">if </span>SWITCH_MAP {
+            SOCKETS.remove(<span class="kw-2">&amp;</span>dup_fd);
+        }
+    }
+
     <span class="prelude-val">Ok</span>(())
 }
 
@@ -1260,7 +1402,6 @@
 
     <span class="comment">// Convert `service` into a port.
     </span><span class="kw">let </span>service = service.map_or(<span class="number">0</span>, |s| s.parse().unwrap_or_default());
-    <span class="kw">let </span><span class="kw-2">mut </span>addrinfo_set = MANAGED_ADDRINFO.lock()<span class="question-mark">?</span>;
     <span class="comment">// Only care about: `ai_family`, `ai_socktype`, `ai_protocol`.
     </span><span class="kw">let </span>result = addr_info_list
         .into_iter()
@@ -1289,7 +1430,7 @@
         .map(Box::new)
         .map(Box::into_raw)
         .map(|raw| {
-            addrinfo_set.insert(raw <span class="kw">as </span>usize);
+            MANAGED_ADDRINFO.insert(raw <span class="kw">as </span>usize);
             raw
         })
         .reduce(|current, <span class="kw-2">mut </span>previous| {
@@ -1307,25 +1448,26 @@
 
 <span class="doccomment">/// Retrieves the `hostname` from the agent&#39;s `/etc/hostname` to be used by [`gethostname`]
 </span><span class="kw">fn </span>remote_hostname_string() -&gt; Detour&lt;CString&gt; {
-    <span class="kw">let </span>hostname_path = CString::new(<span class="string">&quot;/etc/hostname&quot;</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span>hostname_path = PathBuf::from(<span class="string">&quot;/etc/hostname&quot;</span>);
 
-    <span class="kw">let </span>hostname_fd = file::ops::open(
-        <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>hostname_path),
+    <span class="kw">let </span>OpenFileResponse { fd } = file::ops::RemoteFile::remote_open(
+        hostname_path,
         OpenOptionsInternal {
             read: <span class="bool-val">true</span>,
             ..Default::default()
         },
     )<span class="question-mark">?</span>;
 
-    <span class="kw">let </span>hostname_file = file::ops::read(hostname_fd, <span class="number">256</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span>ReadFileResponse { bytes, read_amount } = file::ops::RemoteFile::remote_read(fd, <span class="number">256</span>)<span class="question-mark">?</span>;
 
-    close_layer_fd(hostname_fd);
+    <span class="kw">let _ </span>= file::ops::RemoteFile::remote_close(fd).inspect_err(|fail| {
+        <span class="macro">trace!</span>(<span class="string">&quot;Leaking remote file fd (should be harmless) due to {fail:#?}!&quot;</span>)
+    });
 
     CString::new(
-        hostname_file
-            .bytes
+        bytes
             .into_iter()
-            .take(hostname_file.read_amount <span class="kw">as </span>usize - <span class="number">1</span>)
+            .take(read_amount <span class="kw">as </span>usize - <span class="number">1</span>)
             .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;(),
     )
     .map(Detour::Success)<span class="question-mark">?
@@ -1336,5 +1478,4 @@
 </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>gethostname() -&gt; Detour&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>CString&gt; {
     HOSTNAME.get_or_detour_init(remote_hostname_string)
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="mirrord_layer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (001a77fac 2023-01-30)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-7c23ac01f615ce90.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

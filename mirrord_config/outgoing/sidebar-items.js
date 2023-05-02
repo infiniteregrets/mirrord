@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["OutgoingConfig",""],["OutgoingFileConfig",""]]};
+window.SIDEBAR_ITEMS = {"struct":["OutgoingConfig","OutgoingFileConfig"]};

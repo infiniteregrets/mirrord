@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["HandleErrorFuture","Response future for [`HandleError`]."]]};
+window.SIDEBAR_ITEMS = {"struct":["HandleErrorFuture"]};

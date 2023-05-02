@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"static":[["LICENSE_SERVER",""]],"struct":[["License",""],["LicenseCheckRequest",""],["LicenseCheckResponse",""]]};
+window.SIDEBAR_ITEMS = {"opaque":[""],"static":["LICENSE_SERVER"],"struct":["License","LicenseCheckRequest","LicenseCheckResponse"]};

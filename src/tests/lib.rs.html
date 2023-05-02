@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `tests/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f2fc7b5fd698d27d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../static.files/storage-ff4706381ddb2707.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-02cbe07fc548e88c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../tests/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `tests/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tests" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (478cbb42b 2023-03-28)" data-search-js="search-bc5a112813b5d712.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../tests/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -840,7 +840,108 @@
 <a href="#840" id="840">840</a>
 <a href="#841" id="841">841</a>
 <a href="#842" id="842">842</a>
+<a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
+<a href="#849" id="849">849</a>
+<a href="#850" id="850">850</a>
+<a href="#851" id="851">851</a>
+<a href="#852" id="852">852</a>
+<a href="#853" id="853">853</a>
+<a href="#854" id="854">854</a>
+<a href="#855" id="855">855</a>
+<a href="#856" id="856">856</a>
+<a href="#857" id="857">857</a>
+<a href="#858" id="858">858</a>
+<a href="#859" id="859">859</a>
+<a href="#860" id="860">860</a>
+<a href="#861" id="861">861</a>
+<a href="#862" id="862">862</a>
+<a href="#863" id="863">863</a>
+<a href="#864" id="864">864</a>
+<a href="#865" id="865">865</a>
+<a href="#866" id="866">866</a>
+<a href="#867" id="867">867</a>
+<a href="#868" id="868">868</a>
+<a href="#869" id="869">869</a>
+<a href="#870" id="870">870</a>
+<a href="#871" id="871">871</a>
+<a href="#872" id="872">872</a>
+<a href="#873" id="873">873</a>
+<a href="#874" id="874">874</a>
+<a href="#875" id="875">875</a>
+<a href="#876" id="876">876</a>
+<a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+<a href="#925" id="925">925</a>
+<a href="#926" id="926">926</a>
+<a href="#927" id="927">927</a>
+<a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
 </pre><pre class="rust"><code><span class="attr">#![feature(stmt_expr_attributes)]
+#![warn(clippy::indexing_slicing)]
+
 </span><span class="kw">mod </span>env;
 <span class="kw">mod </span>file_ops;
 <span class="kw">mod </span>http;
@@ -850,46 +951,50 @@
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>utils {
-
     <span class="kw">use </span>std::{
         collections::HashMap,
         fmt::Debug,
         net::Ipv4Addr,
         process::Stdio,
-        sync::{Arc, Mutex},
+        sync::{Arc, Condvar, Mutex},
         time::Duration,
     };
 
-    <span class="kw">use </span>bytes::Bytes;
     <span class="kw">use </span>chrono::Utc;
-    <span class="kw">use </span>futures::Stream;
-    <span class="kw">use </span>futures_util::stream::{StreamExt, TryStreamExt};
+    <span class="kw">use </span>futures_util::stream::TryStreamExt;
     <span class="kw">use </span>k8s_openapi::api::{
         apps::v1::Deployment,
-        core::v1::{Pod, Service},
+        core::v1::{Namespace, Pod, Service},
     };
     <span class="kw">use </span>kube::{
         api::{DeleteParams, ListParams, PostParams},
         core::WatchEvent,
         runtime::wait::{await_condition, conditions::is_pod_running},
-        Api, Client, Config,
+        Api, Client, Config, Error,
     };
     <span class="kw">use </span>rand::{distributions::Alphanumeric, Rng};
     <span class="kw">use </span>reqwest::{RequestBuilder, StatusCode};
     <span class="kw">use </span>rstest::<span class="kw-2">*</span>;
     <span class="kw">use </span>serde::{de::DeserializeOwned, Serialize};
     <span class="kw">use </span>serde_json::json;
-    <span class="kw">use </span>tempdir::TempDir;
+    <span class="kw">use </span>tempfile::{tempdir, TempDir};
     <span class="kw">use </span>tokio::{
         io::{AsyncReadExt, BufReader},
         process::{Child, Command},
-        task::JoinHandle,
+        sync::oneshot::{<span class="self">self</span>, Sender},
     };
-    <span class="comment">// 0.8
-    </span><span class="kw">use </span>tokio_util::sync::{CancellationToken, DropGuard};
 
-    <span class="kw">static </span>TEXT: <span class="kw-2">&amp;</span>str = <span class="string">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&quot;</span>;
+    <span class="kw">const </span>TEXT: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&quot;</span>;
     <span class="kw">pub const </span>CONTAINER_NAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;test&quot;</span>;
+
+    <span class="doccomment">/// Name of the environment variable used to control cleanup after failed tests.
+    /// By default, resources from failed tests are deleted.
+    /// However, if this variable is set, resources will always be preserved.
+    </span><span class="kw">pub const </span>PRESERVE_FAILED_ENV_NAME: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;MIRRORD_E2E_PRESERVE_FAILED&quot;</span>;
+
+    <span class="doccomment">/// All Kubernetes resources created for testing purposes share this label.
+    </span><span class="kw">pub const </span>TEST_RESOURCE_LABEL: (<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) =
+        (<span class="string">&quot;mirrord-e2e-test-resource&quot;</span>, <span class="string">&quot;true&quot;</span>);
 
     <span class="kw">pub async fn </span>watch_resource_exists&lt;K: Debug + Clone + DeserializeOwned&gt;(
         api: <span class="kw-2">&amp;</span>Api&lt;K&gt;,
@@ -898,7 +1003,8 @@
         <span class="kw">let </span>params = ListParams::default()
             .fields(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;metadata.name={name}&quot;</span>))
             .timeout(<span class="number">10</span>);
-        <span class="kw">let </span><span class="kw-2">mut </span>stream = api.watch(<span class="kw-2">&amp;</span>params, <span class="string">&quot;0&quot;</span>).<span class="kw">await</span>.unwrap().boxed();
+        <span class="kw">let </span>stream = api.watch(<span class="kw-2">&amp;</span>params, <span class="string">&quot;0&quot;</span>).<span class="kw">await</span>.unwrap();
+        <span class="macro">tokio::pin!</span>(stream);
         <span class="kw">while let </span><span class="prelude-val">Some</span>(status) = stream.try_next().<span class="kw">await</span>.unwrap() {
             <span class="kw">match </span>status {
                 WatchEvent::Modified(<span class="kw">_</span>) =&gt; <span class="kw">break</span>,
@@ -910,25 +1016,26 @@
         }
     }
 
-    <span class="kw">fn </span>random_string() -&gt; String {
-        <span class="kw">let </span><span class="kw-2">mut </span>rand_str: String = rand::thread_rng()
+    <span class="doccomment">/// Creates a random string of 7 alphanumeric lowercase characters.
+    </span><span class="kw">fn </span>random_string() -&gt; String {
+        rand::thread_rng()
             .sample_iter(<span class="kw-2">&amp;</span>Alphanumeric)
             .take(<span class="number">7</span>)
             .map(char::from)
-            .collect();
-        rand_str.make_ascii_lowercase();
-        rand_str
+            .collect::&lt;String&gt;()
+            .to_ascii_lowercase()
     }
 
     <span class="attr">#[derive(Debug)]
+    #[allow(dead_code)]
     </span><span class="kw">pub enum </span>Application {
         PythonFlaskHTTP,
         PythonFastApiHTTP,
         NodeHTTP,
+        NodeHTTP2,
         Go18HTTP,
         Go19HTTP,
         Go20HTTP,
-        NodeTcpEcho,
     }
 
     <span class="attr">#[derive(Debug)]
@@ -939,8 +1046,10 @@
 
     <span class="attr">#[derive(Debug)]
     </span><span class="kw">pub enum </span>FileOps {
-        Python,
-        Rust,
+        <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
+        </span>Python,
+        <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
+        </span>Rust,
         GoDir18,
         GoDir19,
         GoDir20,
@@ -1063,10 +1172,12 @@
                     ]
                 }
                 Application::NodeHTTP =&gt; <span class="macro">vec!</span>[<span class="string">&quot;node&quot;</span>, <span class="string">&quot;node-e2e/app.js&quot;</span>],
+                Application::NodeHTTP2 =&gt; {
+                    <span class="macro">vec!</span>[<span class="string">&quot;node&quot;</span>, <span class="string">&quot;node-e2e/http2/test_http2_traffic_steal.mjs&quot;</span>]
+                }
                 Application::Go18HTTP =&gt; <span class="macro">vec!</span>[<span class="string">&quot;go-e2e/18&quot;</span>],
                 Application::Go19HTTP =&gt; <span class="macro">vec!</span>[<span class="string">&quot;go-e2e/19&quot;</span>],
                 Application::Go20HTTP =&gt; <span class="macro">vec!</span>[<span class="string">&quot;go-e2e/20&quot;</span>],
-                Application::NodeTcpEcho =&gt; <span class="macro">vec!</span>[<span class="string">&quot;node&quot;</span>, <span class="string">&quot;node-e2e/tcp-echo/app.js&quot;</span>],
             }
         }
 
@@ -1105,17 +1216,20 @@
     <span class="kw">impl </span>FileOps {
         <span class="kw">pub fn </span>command(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<span class="kw-2">&amp;</span>str&gt; {
             <span class="kw">match </span><span class="self">self </span>{
-                FileOps::Python =&gt; {
+                <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
+                </span>FileOps::Python =&gt; {
                     <span class="macro">vec!</span>[<span class="string">&quot;python3&quot;</span>, <span class="string">&quot;-B&quot;</span>, <span class="string">&quot;-m&quot;</span>, <span class="string">&quot;unittest&quot;</span>, <span class="string">&quot;-f&quot;</span>, <span class="string">&quot;python-e2e/ops.py&quot;</span>]
                 }
-                FileOps::Rust =&gt; <span class="macro">vec!</span>[<span class="string">&quot;../target/debug/rust-e2e-fileops&quot;</span>],
+                <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
+                </span>FileOps::Rust =&gt; <span class="macro">vec!</span>[<span class="string">&quot;../target/debug/rust-e2e-fileops&quot;</span>],
                 FileOps::GoDir18 =&gt; <span class="macro">vec!</span>[<span class="string">&quot;go-e2e-dir/18&quot;</span>],
                 FileOps::GoDir19 =&gt; <span class="macro">vec!</span>[<span class="string">&quot;go-e2e-dir/19&quot;</span>],
                 FileOps::GoDir20 =&gt; <span class="macro">vec!</span>[<span class="string">&quot;go-e2e-dir/20&quot;</span>],
             }
         }
 
-        <span class="kw">pub fn </span>assert(<span class="kw-2">&amp;</span><span class="self">self</span>, process: TestProcess) {
+        <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
+        </span><span class="kw">pub fn </span>assert(<span class="kw-2">&amp;</span><span class="self">self</span>, process: TestProcess) {
             <span class="kw">match </span><span class="self">self </span>{
                 FileOps::Python =&gt; process.assert_python_fileops_stderr(),
                 <span class="kw">_ </span>=&gt; {}
@@ -1163,7 +1277,7 @@
             <span class="prelude-val">None </span>=&gt; <span class="macro">env!</span>(<span class="string">&quot;CARGO_BIN_FILE_MIRRORD&quot;</span>),
             <span class="prelude-val">Some</span>(binary_path) =&gt; binary_path,
         };
-        <span class="kw">let </span>temp_dir = tempdir::TempDir::new(<span class="string">&quot;test&quot;</span>).unwrap();
+        <span class="kw">let </span>temp_dir = tempdir().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>mirrord_args = <span class="macro">vec!</span>[<span class="string">&quot;exec&quot;</span>, <span class="string">&quot;--target&quot;</span>, target, <span class="string">&quot;-c&quot;</span>];
         <span class="kw">if let </span><span class="prelude-val">Some</span>(namespace) = namespace {
             mirrord_args.extend([<span class="string">&quot;--target-namespace&quot;</span>, namespace].into_iter());
@@ -1213,7 +1327,7 @@
             <span class="prelude-val">None </span>=&gt; <span class="macro">env!</span>(<span class="string">&quot;CARGO_BIN_FILE_MIRRORD&quot;</span>),
             <span class="prelude-val">Some</span>(binary_path) =&gt; binary_path,
         };
-        <span class="kw">let </span>temp_dir = tempdir::TempDir::new(<span class="string">&quot;test&quot;</span>).unwrap();
+        <span class="kw">let </span>temp_dir = tempdir().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>mirrord_args = <span class="macro">vec!</span>[<span class="string">&quot;ls&quot;</span>];
         <span class="kw">if let </span><span class="prelude-val">Some</span>(args) = args {
             mirrord_args.extend(args);
@@ -1243,99 +1357,151 @@
         Client::try_from(config).unwrap()
     }
 
-    <span class="kw">struct </span>ResourceGuard {
-        guard: <span class="prelude-ty">Option</span>&lt;DropGuard&gt;,
-        barrier: std::sync::Arc&lt;std::sync::Barrier&gt;,
-        handle: JoinHandle&lt;()&gt;,
-        delete_on_fail: bool,
+    <span class="doccomment">/// RAII-style guard for deleting kube resources after tests.
+    /// This guard spawns a background task to delete the kube resource.
+    </span><span class="kw">struct </span>ResourceGuard {
+        <span class="doccomment">/// Used in the implementation of [`Drop`] for this struct to block until the background
+        /// task exits.
+        </span>task_finished: Arc&lt;(Mutex&lt;bool&gt;, Condvar)&gt;,
+        <span class="doccomment">/// Used to inform the background task whether this guard was dropped during panic.
+        </span>panic_tx: <span class="prelude-ty">Option</span>&lt;Sender&lt;bool&gt;&gt;,
     }
 
     <span class="kw">impl </span>ResourceGuard {
-        <span class="doccomment">/// Creates a resource and spawns a task to delete it when dropped
-        /// I&#39;m not sure why I have to add the `static here but this works?
+        <span class="doccomment">/// Create a kube resource and spawn a task to delete it when this guard is dropped.
+        /// Return [`Error`] if creating the resource failed.
         </span><span class="kw">pub async fn </span>create&lt;K: Debug + Clone + DeserializeOwned + Serialize + <span class="lifetime">&#39;static</span>&gt;(
-            api: <span class="kw-2">&amp;</span>Api&lt;K&gt;,
+            api: Api&lt;K&gt;,
             name: String,
             data: <span class="kw-2">&amp;</span>K,
             delete_on_fail: bool,
-        ) -&gt; ResourceGuard {
-            api.create(<span class="kw-2">&amp;</span>PostParams::default(), data).<span class="kw">await</span>.unwrap();
-            <span class="kw">let </span>cancel_token = CancellationToken::new();
-            <span class="kw">let </span>resource_token = cancel_token.clone();
-            <span class="kw">let </span>barrier = std::sync::Arc::new(std::sync::Barrier::new(<span class="number">2</span>));
-            <span class="kw">let </span>guard_barrier = barrier.clone();
-            <span class="kw">let </span>name = name.clone();
-            <span class="kw">let </span>cloned_api = api.clone();
-            <span class="kw">let </span>handle = tokio::spawn(<span class="kw">async move </span>{
-                cancel_token.cancelled().<span class="kw">await</span>;
-                <span class="comment">// Don&#39;t clean pods on failure, so that we can debug
-                </span><span class="macro">println!</span>(<span class="string">&quot;deleting {:?}&quot;</span>, <span class="kw-2">&amp;</span>name);
-                cloned_api
-                    .delete(<span class="kw-2">&amp;</span>name, <span class="kw-2">&amp;</span>DeleteParams::default())
-                    .<span class="kw">await
-                    </span>.unwrap();
-                barrier.wait();
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;ResourceGuard, Error&gt; {
+            api.create(<span class="kw-2">&amp;</span>PostParams::default(), data).<span class="kw">await</span><span class="question-mark">?</span>;
+
+            <span class="kw">let </span>(panic_tx, panic_rx) = oneshot::channel::&lt;bool&gt;();
+            <span class="kw">let </span>task_finished = Arc::new((Mutex::new(<span class="bool-val">false</span>), Condvar::new()));
+            <span class="kw">let </span>finished = task_finished.clone();
+
+            tokio::spawn(<span class="kw">async move </span>{
+                <span class="kw">let </span>panic = panic_rx.<span class="kw">await</span>.unwrap_or(<span class="bool-val">true</span>);
+
+                <span class="kw">if </span>!panic || delete_on_fail {
+                    <span class="macro">println!</span>(<span class="string">&quot;Deleting resource `{name}`&quot;</span>,);
+                    <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = api.delete(<span class="kw-2">&amp;</span>name, <span class="kw-2">&amp;</span>DeleteParams::default()).<span class="kw">await </span>{
+                        <span class="macro">println!</span>(<span class="string">&quot;Failed to delete resource `{name}`: {e:?}&quot;</span>);
+                    }
+                }
+
+                <span class="kw-2">*</span>finished.<span class="number">0</span>.lock().expect(<span class="string">&quot;ResourceGuard lock poisoned&quot;</span>) = <span class="bool-val">true</span>;
+                finished.<span class="number">1</span>.notify_one();
             });
-            <span class="self">Self </span>{
-                guard: <span class="prelude-val">Some</span>(resource_token.drop_guard()),
-                barrier: guard_barrier,
-                handle,
-                delete_on_fail,
-            }
+
+            <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
+                task_finished,
+                panic_tx: <span class="prelude-val">Some</span>(panic_tx),
+            })
         }
     }
 
     <span class="kw">impl </span>Drop <span class="kw">for </span>ResourceGuard {
         <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-            <span class="kw">if </span>!<span class="self">self</span>.delete_on_fail &amp;&amp; std::thread::panicking() {
-                <span class="comment">// If we&#39;re panicking and we shouldn&#39;t delete the resources on fail (to allow for
-                // inspection) then abort the cleaning task.
-                </span><span class="self">self</span>.handle.abort();
-            } <span class="kw">else </span>{
-                <span class="kw">let </span>guard = <span class="self">self</span>.guard.take();
-                drop(guard);
-                <span class="self">self</span>.barrier.wait();
+            <span class="kw">let </span>task_alive = <span class="self">self
+                </span>.panic_tx
+                .take()
+                .expect(<span class="string">&quot;ResourceGuard holds empty panic_tx&quot;</span>)
+                .send(std::thread::panicking())
+                .is_ok();
+
+            <span class="kw">if </span>task_alive {
+                <span class="kw">let </span>lock = <span class="self">self
+                    </span>.task_finished
+                    .<span class="number">0
+                    </span>.lock()
+                    .expect(<span class="string">&quot;ResourceGuard lock poisoned&quot;</span>);
+                <span class="kw">let </span>_lock = <span class="self">self
+                    </span>.task_finished
+                    .<span class="number">1
+                    </span>.wait_while(lock, |deleted| !<span class="kw-2">*</span>deleted)
+                    .expect(<span class="string">&quot;ResourceGuard lock poisoned&quot;</span>);
             }
         }
     }
 
-    <span class="kw">pub struct </span>KubeService {
+    <span class="doccomment">/// A service deployed to the kubernetes cluster.
+    /// Service is meant as in &quot;Microservice&quot;, not as in the Kubernetes resource called Service.
+    /// This includes a Deployment resource, a Service resource and optionally a Namespace.
+    </span><span class="kw">pub struct </span>KubeService {
         <span class="kw">pub </span>name: String,
         <span class="kw">pub </span>namespace: String,
         <span class="kw">pub </span>target: String,
         _pod: ResourceGuard,
         _service: ResourceGuard,
+        _namespace: <span class="prelude-ty">Option</span>&lt;ResourceGuard&gt;,
     }
 
-    <span class="doccomment">/// randomize_name: should a random suffix be added to the end of resource names? e.g.
-    ///                 for `echo-service`, should we create as `echo-service-ybtdb`.
-    /// delete_after_fail: delete resources even if the test fails.
+    <span class="doccomment">/// Create a new [`KubeService`] and related Kubernetes resources. The resources will be deleted
+    /// when the returned service is dropped, unless it is dropped during panic.
+    /// This behavior can be changed, see [`FORCE_CLEANUP_ENV_NAME`].
+    /// * `randomize_name` - whether a random suffix should be added to the end of the resource
+    ///   names
     </span><span class="attr">#[fixture]
     </span><span class="kw">pub async fn </span>service(
-        <span class="attr">#[future] </span>kube_client: Client,
         <span class="attr">#[default(<span class="string">&quot;default&quot;</span>)] </span>namespace: <span class="kw-2">&amp;</span>str,
         <span class="attr">#[default(<span class="string">&quot;NodePort&quot;</span>)] </span>service_type: <span class="kw-2">&amp;</span>str,
         <span class="attr">#[default(<span class="string">&quot;ghcr.io/metalbear-co/mirrord-pytest:latest&quot;</span>)] </span>image: <span class="kw-2">&amp;</span>str,
         <span class="attr">#[default(<span class="string">&quot;http-echo&quot;</span>)] </span>service_name: <span class="kw-2">&amp;</span>str,
         <span class="attr">#[default(<span class="bool-val">true</span>)] </span>randomize_name: bool,
-        <span class="attr">#[default(<span class="bool-val">false</span>)] </span>delete_after_fail: bool,
+        <span class="attr">#[future] </span>kube_client: Client,
     ) -&gt; KubeService {
+        <span class="kw">let </span>delete_after_fail = std::env::var_os(PRESERVE_FAILED_ENV_NAME).is_none();
+
+        <span class="macro">println!</span>(
+            <span class="string">&quot;{:?} creating service {service_name:?} in namespace {namespace:?}&quot;</span>,
+            Utc::now()
+        );
+
         <span class="kw">let </span>kube_client = kube_client.<span class="kw">await</span>;
+        <span class="kw">let </span>namespace_api: Api&lt;Namespace&gt; = Api::all(kube_client.clone());
         <span class="kw">let </span>deployment_api: Api&lt;Deployment&gt; = Api::namespaced(kube_client.clone(), namespace);
         <span class="kw">let </span>service_api: Api&lt;Service&gt; = Api::namespaced(kube_client.clone(), namespace);
-        <span class="kw">let </span>name;
-        <span class="kw">if </span>randomize_name {
-            name = <span class="macro">format!</span>(<span class="string">&quot;{}-{}&quot;</span>, service_name, random_string());
+
+        <span class="kw">let </span>name = <span class="kw">if </span>randomize_name {
+            <span class="macro">format!</span>(<span class="string">&quot;{}-{}&quot;</span>, service_name, random_string())
         } <span class="kw">else </span>{
-            <span class="comment">// if using non-random name, delete existing resources first.
+            <span class="comment">// If using a non-random name, delete existing resources first.
             // Just continue if they don&#39;t exist.
-            </span><span class="kw">let </span>_res = service_api
+            </span><span class="kw">let _ </span>= service_api
                 .delete(service_name, <span class="kw-2">&amp;</span>DeleteParams::default())
                 .<span class="kw">await</span>;
-            <span class="kw">let </span>_res = deployment_api
+            <span class="kw">let _ </span>= deployment_api
                 .delete(service_name, <span class="kw-2">&amp;</span>DeleteParams::default())
                 .<span class="kw">await</span>;
-            name = service_name.to_string();
+
+            service_name.to_string()
+        };
+
+        <span class="kw">let </span>namespace_resource: Namespace = serde_json::from_value(<span class="macro">json!</span>({
+            <span class="string">&quot;apiVersion&quot;</span>: <span class="string">&quot;v1&quot;</span>,
+            <span class="string">&quot;kind&quot;</span>: <span class="string">&quot;Namespace&quot;</span>,
+            <span class="string">&quot;metadata&quot;</span>: {
+                <span class="string">&quot;name&quot;</span>: namespace,
+                <span class="string">&quot;labels&quot;</span>: {
+                    TEST_RESOURCE_LABEL.<span class="number">0</span>: TEST_RESOURCE_LABEL.<span class="number">1</span>,
+                }
+            },
+        }))
+        .unwrap();
+        <span class="comment">// Create namespace and wrap it in ResourceGuard if it does not yet exist.
+        </span><span class="kw">let </span>namespace_guard = ResourceGuard::create(
+            namespace_api.clone(),
+            namespace.to_string(),
+            <span class="kw-2">&amp;</span>namespace_resource,
+            delete_after_fail,
+        )
+        .<span class="kw">await
+        </span>.ok();
+        <span class="kw">if </span>namespace_guard.is_some() {
+            watch_resource_exists(<span class="kw-2">&amp;</span>namespace_api, namespace).<span class="kw">await</span>;
         }
 
         <span class="kw">let </span>deployment: Deployment = serde_json::from_value(<span class="macro">json!</span>({
@@ -1344,7 +1510,8 @@
             <span class="string">&quot;metadata&quot;</span>: {
                 <span class="string">&quot;name&quot;</span>: <span class="kw-2">&amp;</span>name,
                 <span class="string">&quot;labels&quot;</span>: {
-                    <span class="string">&quot;app&quot;</span>: <span class="kw-2">&amp;</span>name
+                    <span class="string">&quot;app&quot;</span>: <span class="kw-2">&amp;</span>name,
+                    TEST_RESOURCE_LABEL.<span class="number">0</span>: TEST_RESOURCE_LABEL.<span class="number">1</span>,
                 }
             },
             <span class="string">&quot;spec&quot;</span>: {
@@ -1392,12 +1559,13 @@
         }))
         .unwrap();
         <span class="kw">let </span>pod_guard = ResourceGuard::create(
-            <span class="kw-2">&amp;</span>deployment_api,
+            deployment_api.clone(),
             name.to_string(),
             <span class="kw-2">&amp;</span>deployment,
             delete_after_fail,
         )
-        .<span class="kw">await</span>;
+        .<span class="kw">await
+        </span>.unwrap();
         watch_resource_exists(<span class="kw-2">&amp;</span>deployment_api, <span class="kw-2">&amp;</span>name).<span class="kw">await</span>;
 
         <span class="kw">let </span>service: Service = serde_json::from_value(<span class="macro">json!</span>({
@@ -1406,7 +1574,8 @@
             <span class="string">&quot;metadata&quot;</span>: {
                 <span class="string">&quot;name&quot;</span>: <span class="kw-2">&amp;</span>name,
                 <span class="string">&quot;labels&quot;</span>: {
-                    <span class="string">&quot;app&quot;</span>: <span class="kw-2">&amp;</span>name
+                    <span class="string">&quot;app&quot;</span>: <span class="kw-2">&amp;</span>name,
+                    TEST_RESOURCE_LABEL.<span class="number">0</span>: TEST_RESOURCE_LABEL.<span class="number">1</span>,
                 }
             },
             <span class="string">&quot;spec&quot;</span>: {
@@ -1431,13 +1600,17 @@
             }
         }))
         .unwrap();
-
-        <span class="kw">let </span>service_guard =
-            ResourceGuard::create(<span class="kw-2">&amp;</span>service_api, name.to_string(), <span class="kw-2">&amp;</span>service, delete_after_fail)
-                .<span class="kw">await</span>;
+        <span class="kw">let </span>service_guard = ResourceGuard::create(
+            service_api.clone(),
+            name.clone(),
+            <span class="kw-2">&amp;</span>service,
+            delete_after_fail,
+        )
+        .<span class="kw">await
+        </span>.unwrap();
         watch_resource_exists(<span class="kw-2">&amp;</span>service_api, <span class="string">&quot;default&quot;</span>).<span class="kw">await</span>;
 
-        <span class="kw">let </span>target = get_pod_instance(<span class="kw-2">&amp;</span>kube_client, <span class="kw-2">&amp;</span>name, namespace)
+        <span class="kw">let </span>target = get_pod_instance(kube_client.clone(), <span class="kw-2">&amp;</span>name, namespace)
             .<span class="kw">await
             </span>.unwrap();
         <span class="kw">let </span>pod_api: Api&lt;Pod&gt; = Api::namespaced(kube_client.clone(), namespace);
@@ -1445,12 +1618,18 @@
             .<span class="kw">await
             </span>.unwrap();
 
+        <span class="macro">println!</span>(
+            <span class="string">&quot;{:?} done creating service {service_name:?} in namespace {namespace:?}&quot;</span>,
+            Utc::now()
+        );
+
         KubeService {
-            name: name.to_string(),
+            name,
             namespace: namespace.to_string(),
             target: <span class="macro">format!</span>(<span class="string">&quot;pod/{target}/container/{CONTAINER_NAME}&quot;</span>),
             _pod: pod_guard,
             _service: service_guard,
+            _namespace: namespace_guard,
         }
     }
 
@@ -1460,13 +1639,12 @@
     </span><span class="attr">#[fixture]
     </span><span class="kw">pub async fn </span>udp_logger_service(<span class="attr">#[future] </span>kube_client: Client) -&gt; KubeService {
         service(
-            kube_client,
             <span class="string">&quot;default&quot;</span>,
             <span class="string">&quot;ClusterIP&quot;</span>,
             <span class="string">&quot;ghcr.io/metalbear-co/mirrord-node-udp-logger:latest&quot;</span>,
             <span class="string">&quot;udp-logger&quot;</span>,
             <span class="bool-val">true</span>,
-            <span class="bool-val">false</span>,
+            kube_client,
         )
         .<span class="kw">await
     </span>}
@@ -1474,13 +1652,12 @@
     <span class="attr">#[fixture]
     </span><span class="kw">pub async fn </span>http_logger_service(<span class="attr">#[future] </span>kube_client: Client) -&gt; KubeService {
         service(
-            kube_client,
             <span class="string">&quot;default&quot;</span>,
             <span class="string">&quot;ClusterIP&quot;</span>,
             <span class="string">&quot;ghcr.io/metalbear-co/mirrord-http-logger:latest&quot;</span>,
             <span class="string">&quot;mirrord-tests-http-logger&quot;</span>,
             <span class="bool-val">false</span>, <span class="comment">// So that requester can reach logger by name.
-            </span><span class="bool-val">true</span>,
+            </span>kube_client,
         )
         .<span class="kw">await
     </span>}
@@ -1488,7 +1665,6 @@
     <span class="attr">#[fixture]
     </span><span class="kw">pub async fn </span>http_log_requester_service(<span class="attr">#[future] </span>kube_client: Client) -&gt; KubeService {
         service(
-            kube_client,
             <span class="string">&quot;default&quot;</span>,
             <span class="string">&quot;ClusterIP&quot;</span>,
             <span class="string">&quot;ghcr.io/metalbear-co/mirrord-http-log-requester:latest&quot;</span>,
@@ -1496,8 +1672,8 @@
             <span class="comment">// Have a non-random name, so that there can only be one requester at any point in time
             // so that another requester does not send requests while this one is paused.
             </span><span class="bool-val">false</span>,
-            <span class="bool-val">true</span>, <span class="comment">// Delete also on fail, cause this service constantly does work.
-        </span>)
+            kube_client,
+        )
         .<span class="kw">await
     </span>}
 
@@ -1506,13 +1682,12 @@
     </span><span class="attr">#[fixture]
     </span><span class="kw">pub async fn </span>tcp_echo_service(<span class="attr">#[future] </span>kube_client: Client) -&gt; KubeService {
         service(
-            kube_client,
             <span class="string">&quot;default&quot;</span>,
             <span class="string">&quot;NodePort&quot;</span>,
             <span class="string">&quot;ghcr.io/metalbear-co/mirrord-tcp-echo:latest&quot;</span>,
             <span class="string">&quot;tcp-echo&quot;</span>,
             <span class="bool-val">true</span>,
-            <span class="bool-val">false</span>,
+            kube_client,
         )
         .<span class="kw">await
     </span>}
@@ -1523,13 +1698,25 @@
     </span><span class="attr">#[fixture]
     </span><span class="kw">pub async fn </span>websocket_service(<span class="attr">#[future] </span>kube_client: Client) -&gt; KubeService {
         service(
-            kube_client,
             <span class="string">&quot;default&quot;</span>,
             <span class="string">&quot;NodePort&quot;</span>,
             <span class="string">&quot;ghcr.io/metalbear-co/mirrord-websocket:latest&quot;</span>,
             <span class="string">&quot;websocket&quot;</span>,
             <span class="bool-val">true</span>,
-            <span class="bool-val">false</span>,
+            kube_client,
+        )
+        .<span class="kw">await
+    </span>}
+
+    <span class="attr">#[fixture]
+    </span><span class="kw">pub async fn </span>http2_service(<span class="attr">#[future] </span>kube_client: Client) -&gt; KubeService {
+        service(
+            <span class="string">&quot;default&quot;</span>,
+            <span class="string">&quot;NodePort&quot;</span>,
+            <span class="string">&quot;ghcr.io/metalbear-co/mirrord-pytest:latest&quot;</span>,
+            <span class="string">&quot;http2-echo&quot;</span>,
+            <span class="bool-val">true</span>,
+            kube_client,
         )
         .<span class="kw">await
     </span>}
@@ -1539,13 +1726,28 @@
     </span><span class="attr">#[fixture]
     </span><span class="kw">pub async fn </span>hostname_service(<span class="attr">#[future] </span>kube_client: Client) -&gt; KubeService {
         service(
-            kube_client,
             <span class="string">&quot;default&quot;</span>,
             <span class="string">&quot;NodePort&quot;</span>,
             <span class="string">&quot;ghcr.io/metalbear-co/mirrord-pytest:latest&quot;</span>,
             <span class="string">&quot;hostname-echo&quot;</span>,
             <span class="bool-val">true</span>,
+            kube_client,
+        )
+        .<span class="kw">await
+    </span>}
+
+    <span class="attr">#[fixture]
+    </span><span class="kw">pub async fn </span>random_namespace_self_deleting_service(
+        <span class="attr">#[future] </span>kube_client: Client,
+    ) -&gt; KubeService {
+        <span class="kw">let </span>namespace = <span class="macro">format!</span>(<span class="string">&quot;random-namespace-{}&quot;</span>, random_string());
+        service(
+            <span class="kw-2">&amp;</span>namespace,
+            <span class="string">&quot;NodePort&quot;</span>,
+            <span class="string">&quot;ghcr.io/metalbear-co/mirrord-pytest:latest&quot;</span>,
+            <span class="string">&quot;pytest-echo&quot;</span>,
             <span class="bool-val">true</span>,
+            kube_client,
         )
         .<span class="kw">await
     </span>}
@@ -1602,18 +1804,19 @@
         <span class="macro">format!</span>(<span class="string">&quot;http://{host_ip}:{port}&quot;</span>)
     }
 
-    <span class="kw">pub async fn </span>get_pod_instance(
-        client: <span class="kw-2">&amp;</span>Client,
+    <span class="doccomment">/// Returns a name of any pod belonging to the given app.
+    </span><span class="kw">pub async fn </span>get_pod_instance(
+        client: Client,
         app_name: <span class="kw-2">&amp;</span>str,
         namespace: <span class="kw-2">&amp;</span>str,
     ) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
-        <span class="kw">let </span>pod_api: Api&lt;Pod&gt; = Api::namespaced(client.clone(), namespace);
-        <span class="kw">let </span>pods = pod_api
+        <span class="kw">let </span>pod_api: Api&lt;Pod&gt; = Api::namespaced(client, namespace);
+        pod_api
             .list(<span class="kw-2">&amp;</span>ListParams::default().labels(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;app={app_name}&quot;</span>)))
             .<span class="kw">await
-            </span>.unwrap();
-        <span class="kw">let </span>pod = pods.iter().next().and_then(|pod| pod.metadata.name.clone());
-        pod
+            </span>.unwrap()
+            .into_iter()
+            .find_map(|pod| pod.metadata.name)
     }
 
     <span class="doccomment">/// Take a request builder of any method, add headers, send the request, verify success, and
@@ -1639,6 +1842,7 @@
         <span class="comment">// Create client for each request until we have a match between local app and remote app
         // as connection state is flaky
         </span><span class="macro">println!</span>(<span class="string">&quot;{url}&quot;</span>);
+
         <span class="kw">let </span>client = reqwest::Client::new();
         <span class="kw">let </span>req_builder = client.get(url);
         send_request(
@@ -1675,12 +1879,5 @@
         )
         .<span class="kw">await</span>;
     }
-
-    <span class="kw">pub async fn </span>get_next_log&lt;T: Stream&lt;Item = <span class="prelude-ty">Result</span>&lt;Bytes, kube::Error&gt;&gt; + Unpin&gt;(
-        stream: <span class="kw-2">&amp;mut </span>T,
-    ) -&gt; String {
-        String::from_utf8_lossy(<span class="kw-2">&amp;</span>stream.try_next().<span class="kw">await</span>.unwrap().unwrap()).to_string()
-    }
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tests" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (001a77fac 2023-01-30)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-7c23ac01f615ce90.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

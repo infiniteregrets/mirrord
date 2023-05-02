@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/layer/src/file.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>file.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f2fc7b5fd698d27d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-5f7299aa2b503fb1.css"><link rel="stylesheet" disabled href="../../static.files/dark-dfb18ef8114bb428.css"><link rel="stylesheet" disabled href="../../static.files/ayu-4047a6aaddd3789d.css"><script id="default-settings" ></script><script src="../../static.files/storage-ff4706381ddb2707.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-02cbe07fc548e88c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../mirrord_layer/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `mirrord/layer/src/file.rs`."><title>file.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-fbd14db5c88ed452.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mirrord_layer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0-nightly (478cbb42b 2023-03-28)" data-search-js="search-bc5a112813b5d712.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" data-theme-light-css="light-db279b6232be9c13.css" data-theme-dark-css="dark-cf923f49f397b216.css" data-theme-ayu-css="ayu-be46fdc453a55015.css" ></div><script src="../../static.files/storage-d4a1a279bad1a0c0.js"></script><script defer src="../../static.files/source-script-1b95b7cca98b26e5.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-9ade54abd4bd73c8.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-db279b6232be9c13.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-cf923f49f397b216.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../mirrord_layer/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -688,23 +688,17 @@
 <a href="#688" id="688">688</a>
 <a href="#689" id="689">689</a>
 <a href="#690" id="690">690</a>
-<a href="#691" id="691">691</a>
-<a href="#692" id="692">692</a>
-<a href="#693" id="693">693</a>
-<a href="#694" id="694">694</a>
-<a href="#695" id="695">695</a>
-<a href="#696" id="696">696</a>
-<a href="#697" id="697">697</a>
-<a href="#698" id="698">698</a>
-<a href="#699" id="699">699</a>
-<a href="#700" id="700">700</a>
-<a href="#701" id="701">701</a>
-<a href="#702" id="702">702</a>
-<a href="#703" id="703">703</a>
-<a href="#704" id="704">704</a>
-<a href="#705" id="705">705</a>
-<a href="#706" id="706">706</a>
-</pre><pre class="rust"><code><span class="doccomment">/// File operations on remote pod.
+</pre><pre class="rust"><code><span class="kw">use </span>core::fmt;
+<span class="kw">use </span>std::{
+    io::SeekFrom,
+    os::unix::io::RawFd,
+    path::PathBuf,
+    sync::{Arc, LazyLock},
+};
+
+<span class="kw">use </span>dashmap::DashMap;
+<span class="kw">use </span>libc::{c_int, O_ACCMODE, O_APPEND, O_CREAT, O_RDONLY, O_RDWR, O_TRUNC, O_WRONLY};
+<span class="doccomment">/// File operations on remote pod.
 ///
 /// Read-only file operations are enabled by default, you can turn it off by setting
 /// `MIRRORD_FILE_RO_OPS` to `false`.
@@ -713,26 +707,16 @@
 /// Some file paths and types are ignored by default (bypassed by mirrord, meaning they are
 /// opened locally), these are controlled by configuring the [`filter::FileFilter`] with
 /// `[FsConfig]`.
-</span><span class="kw">use </span>core::fmt;
-<span class="kw">use </span>std::{
-    collections::HashMap,
-    io::SeekFrom,
-    os::unix::io::RawFd,
-    path::PathBuf,
-    sync::{Arc, LazyLock, Mutex},
-};
-
-<span class="kw">use </span>libc::{c_int, O_ACCMODE, O_APPEND, O_CREAT, O_RDONLY, O_RDWR, O_TRUNC, O_WRONLY};
-<span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
+</span><span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
 </span><span class="kw">use </span>mirrord_protocol::file::{GetDEnts64Request, GetDEnts64Response};
 <span class="kw">use </span>mirrord_protocol::{
     file::{
         AccessFileRequest, AccessFileResponse, CloseDirRequest, CloseFileRequest, DirEntryInternal,
         FdOpenDirRequest, OpenDirResponse, OpenFileRequest, OpenFileResponse, OpenOptionsInternal,
         OpenRelativeFileRequest, ReadDirRequest, ReadDirResponse, ReadFileRequest,
-        ReadFileResponse, ReadLimitedFileRequest, ReadLineFileRequest, SeekFileRequest,
-        SeekFileResponse, WriteFileRequest, WriteFileResponse, WriteLimitedFileRequest,
-        XstatRequest, XstatResponse,
+        ReadFileResponse, ReadLimitedFileRequest, SeekFileRequest, SeekFileResponse,
+        WriteFileRequest, WriteFileResponse, WriteLimitedFileRequest, XstatFsRequest,
+        XstatFsResponse, XstatRequest, XstatResponse,
     },
     ClientMessage, FileRequest, FileResponse, RemoteResult,
 };
@@ -761,11 +745,11 @@
 /// We use Arc so we can support dup more nicely, this means that if user
 /// Opens file `A`, receives fd 1, then dups, receives 2 - both stay open, until both are closed.
 /// Previously in such scenario we would close the remote, causing issues.
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static </span>OPEN_FILES: LazyLock&lt;Mutex&lt;HashMap&lt;LocalFd, Arc&lt;ops::RemoteFile&gt;&gt;&gt;&gt; =
-    LazyLock::new(|| Mutex::new(HashMap::with_capacity(<span class="number">4</span>)));
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static </span>OPEN_FILES: LazyLock&lt;DashMap&lt;LocalFd, Arc&lt;ops::RemoteFile&gt;&gt;&gt; =
+    LazyLock::new(|| DashMap::with_capacity(<span class="number">4</span>));
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static </span>OPEN_DIRS: LazyLock&lt;Mutex&lt;HashMap&lt;DirStreamFd, RemoteFd&gt;&gt;&gt; =
-    LazyLock::new(|| Mutex::new(HashMap::with_capacity(<span class="number">4</span>)));
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">static </span>OPEN_DIRS: LazyLock&lt;DashMap&lt;DirStreamFd, RemoteFd&gt;&gt; =
+    LazyLock::new(|| DashMap::with_capacity(<span class="number">4</span>));
 
 <span class="doccomment">/// Extension trait for [`OpenOptionsInternal`], used to convert between `libc`-ish open options and
 /// Rust&#39;s [`std::fs::OpenOptions`]
@@ -826,13 +810,13 @@
     <span class="doccomment">/// idea: Replace all VecDeque with HashMap, the assumption order will remain is dangerous :O
     </span>open_queue: ResponseDeque&lt;OpenFileResponse&gt;,
     read_queue: ResponseDeque&lt;ReadFileResponse&gt;,
-    read_line_queue: ResponseDeque&lt;ReadFileResponse&gt;,
     read_limited_queue: ResponseDeque&lt;ReadFileResponse&gt;,
     seek_queue: ResponseDeque&lt;SeekFileResponse&gt;,
     write_queue: ResponseDeque&lt;WriteFileResponse&gt;,
     write_limited_queue: ResponseDeque&lt;WriteFileResponse&gt;,
     access_queue: ResponseDeque&lt;AccessFileResponse&gt;,
     xstat_queue: ResponseDeque&lt;XstatResponse&gt;,
+    xstatfs_queue: ResponseDeque&lt;XstatFsResponse&gt;,
     opendir_queue: ResponseDeque&lt;OpenDirResponse&gt;,
     readdir_queue: ResponseDeque&lt;ReadDirResponse&gt;,
     <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
@@ -868,20 +852,6 @@
                     .inspect_err(|fail| <span class="macro">trace!</span>(<span class="string">&quot;DaemonMessage::ReadFileResponse {:#?}&quot;</span>, fail));
 
                 pop_send(<span class="kw-2">&amp;mut </span><span class="self">self</span>.read_queue, read)
-            }
-            ReadLine(read) =&gt; {
-                <span class="comment">// The debug message is too big if we just log it directly.
-                </span><span class="kw">let _ </span>= read
-                    .as_ref()
-                    .inspect(|success| <span class="macro">trace!</span>(<span class="string">&quot;DaemonMessage::ReadLineFileResponse {:#?}&quot;</span>, success))
-                    .inspect_err(|fail| <span class="macro">trace!</span>(<span class="string">&quot;DaemonMessage::ReadLineFileResponse {:#?}&quot;</span>, fail));
-
-                pop_send(<span class="kw-2">&amp;mut </span><span class="self">self</span>.read_line_queue, read).inspect_err(|fail| {
-                    <span class="macro">error!</span>(
-                        <span class="string">&quot;handle_daemon_message -&gt; Failed `pop_send` with {:#?}&quot;</span>,
-                        fail,
-                    )
-                })
             }
             ReadLimited(read) =&gt; {
                 <span class="comment">// The debug message is too big if we just log it directly.
@@ -924,24 +894,25 @@
                     });
 
                 pop_send(<span class="kw-2">&amp;mut </span><span class="self">self</span>.write_limited_queue, write).inspect_err(|fail| {
-                    <span class="macro">error!</span>(
-                        <span class="string">&quot;handle_daemon_message -&gt; Failed `pop_send` with {:#?}&quot;</span>,
-                        fail,
-                    )
+                    <span class="macro">error!</span>(<span class="string">&quot;handle_daemon_message -&gt; Failed `pop_send` with {fail:#?}&quot;</span>)
                 })
             }
             Xstat(xstat) =&gt; {
-                <span class="macro">trace!</span>(<span class="string">&quot;DaemonMessage::XstatResponse {:#?}!&quot;</span>, xstat);
+                <span class="macro">trace!</span>(<span class="string">&quot;DaemonMessage::XstatResponse {xstat:#?}!&quot;</span>);
                 pop_send(<span class="kw-2">&amp;mut </span><span class="self">self</span>.xstat_queue, xstat)
             }
+            XstatFs(xstatfs) =&gt; {
+                <span class="macro">trace!</span>(<span class="string">&quot;DaemonMessage::XstatFsResponse {xstatfs:#?}!&quot;</span>);
+                pop_send(<span class="kw-2">&amp;mut </span><span class="self">self</span>.xstatfs_queue, xstatfs)
+            }
             ReadDir(read_dir) =&gt; {
-                <span class="macro">trace!</span>(<span class="string">&quot;DaemonMessage::ReadDirResponse {:#?}!&quot;</span>, read_dir);
+                <span class="macro">trace!</span>(<span class="string">&quot;DaemonMessage::ReadDirResponse {read_dir:#?}!&quot;</span>);
                 pop_send(<span class="kw-2">&amp;mut </span><span class="self">self</span>.readdir_queue, read_dir)
             }
             OpenDir(open_dir) =&gt; pop_send(<span class="kw-2">&amp;mut </span><span class="self">self</span>.opendir_queue, open_dir),
             <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
             </span>GetDEnts64(getdents64) =&gt; {
-                <span class="macro">trace!</span>(<span class="string">&quot;DaemonMessage::GetDEnts64Response {:#?}!&quot;</span>, getdents64);
+                <span class="macro">trace!</span>(<span class="string">&quot;DaemonMessage::GetDEnts64Response {getdents64:#?}!&quot;</span>);
                 pop_send(<span class="kw-2">&amp;mut </span><span class="self">self</span>.getdents64_queue, getdents64)
             }
         }
@@ -959,7 +930,6 @@
             OpenRelative(open_relative) =&gt; <span class="self">self</span>.handle_hook_open_relative(open_relative, tx).<span class="kw">await</span>,
 
             Read(read) =&gt; <span class="self">self</span>.handle_hook_read(read, tx).<span class="kw">await</span>,
-            ReadLine(read) =&gt; <span class="self">self</span>.handle_hook_read_line(read, tx).<span class="kw">await</span>,
             ReadLimited(read) =&gt; <span class="self">self</span>.handle_hook_read_limited(read, tx).<span class="kw">await</span>,
             Seek(seek) =&gt; <span class="self">self</span>.handle_hook_seek(seek, tx).<span class="kw">await</span>,
             Write(write) =&gt; <span class="self">self</span>.handle_hook_write(write, tx).<span class="kw">await</span>,
@@ -967,6 +937,7 @@
             Close(close) =&gt; <span class="self">self</span>.handle_hook_close(close, tx).<span class="kw">await</span>,
             Access(access) =&gt; <span class="self">self</span>.handle_hook_access(access, tx).<span class="kw">await</span>,
             Xstat(xstat) =&gt; <span class="self">self</span>.handle_hook_xstat(xstat, tx).<span class="kw">await</span>,
+            XstatFs(xstatfs) =&gt; <span class="self">self</span>.handle_hook_xstatfs(xstatfs, tx).<span class="kw">await</span>,
             ReadDir(read_dir) =&gt; <span class="self">self</span>.handle_hook_read_dir(read_dir, tx).<span class="kw">await</span>,
             FdOpenDir(open_dir) =&gt; <span class="self">self</span>.handle_hook_fdopen_dir(open_dir, tx).<span class="kw">await</span>,
             CloseDir(close_dir) =&gt; <span class="self">self</span>.handle_hook_close_dir(close_dir, tx).<span class="kw">await</span>,
@@ -1049,30 +1020,6 @@
         };
 
         <span class="kw">let </span>request = ClientMessage::FileRequest(FileRequest::Read(read_file_request));
-        tx.send(request).<span class="kw">await</span>.map_err(From::from)
-    }
-
-    <span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>, skip(<span class="self">self</span>, tx))]
-    </span><span class="kw">async fn </span>handle_hook_read_line(
-        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        read_line: Read&lt;ReadFileResponse&gt;,
-        tx: <span class="kw-2">&amp;</span>Sender&lt;ClientMessage&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="kw">let </span>Read {
-            remote_fd,
-            buffer_size,
-            file_channel_tx,
-            ..
-        } = read_line;
-
-        <span class="self">self</span>.read_line_queue.push_back(file_channel_tx);
-
-        <span class="kw">let </span>read_file_request = ReadLineFileRequest {
-            remote_fd,
-            buffer_size,
-        };
-
-        <span class="kw">let </span>request = ClientMessage::FileRequest(FileRequest::ReadLine(read_file_request));
         tx.send(request).<span class="kw">await</span>.map_err(From::from)
     }
 
@@ -1243,6 +1190,21 @@
         tx.send(request).<span class="kw">await</span>.map_err(From::from)
     }
 
+    <span class="kw">async fn </span>handle_hook_xstatfs(
+        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+        xstat: XstatFs,
+        tx: <span class="kw-2">&amp;</span>Sender&lt;ClientMessage&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+        <span class="kw">let </span>XstatFs { fd, fs_channel_tx } = xstat;
+
+        <span class="self">self</span>.xstatfs_queue.push_back(fs_channel_tx);
+
+        <span class="kw">let </span>xstatfs_request = XstatFsRequest { fd };
+
+        <span class="kw">let </span>request = ClientMessage::FileRequest(FileRequest::XstatFs(xstatfs_request));
+        tx.send(request).<span class="kw">await</span>.map_err(From::from)
+    }
+
     <span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>, skip(<span class="self">self</span>, tx))]
     </span><span class="kw">async fn </span>handle_hook_fdopen_dir(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
@@ -1367,6 +1329,12 @@
 }
 
 <span class="attr">#[derive(Debug)]
+</span><span class="kw">pub struct </span>XstatFs {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) fd: RemoteFd,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) fs_channel_tx: ResponseChannel&lt;XstatFsResponse&gt;,
+}
+
+<span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>ReadDir {
     <span class="kw">pub</span>(<span class="kw">crate</span>) remote_fd: u64,
     <span class="kw">pub</span>(<span class="kw">crate</span>) dir_channel_tx: ResponseChannel&lt;ReadDirResponse&gt;,
@@ -1396,7 +1364,6 @@
     Open(Open),
     OpenRelative(OpenRelative),
     Read(Read&lt;ReadFileResponse&gt;),
-    ReadLine(Read&lt;ReadFileResponse&gt;),
     ReadLimited(Read&lt;ReadFileResponse&gt;),
     Write(Write&lt;WriteFileResponse&gt;),
     WriteLimited(Write&lt;WriteFileResponse&gt;),
@@ -1404,11 +1371,11 @@
     Close(Close),
     Access(Access),
     Xstat(Xstat),
+    XstatFs(XstatFs),
     ReadDir(ReadDir),
     FdOpenDir(FdOpenDir),
     CloseDir(CloseDir),
     <span class="attr">#[cfg(target_os = <span class="string">&quot;linux&quot;</span>)]
     </span>GetDEnts64(GetDEnts64),
 }
-</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="mirrord_layer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (001a77fac 2023-01-30)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-7c23ac01f615ce90.css" ></div></body></html>
+</code></pre></div></section></main></body></html>

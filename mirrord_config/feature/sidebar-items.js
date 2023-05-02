@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["FeatureConfig","Configuration for mirrord features."],["FeatureFileConfig","Configuration for mirrord features."]]};
+window.SIDEBAR_ITEMS = {"struct":["FeatureConfig","FeatureFileConfig"]};
