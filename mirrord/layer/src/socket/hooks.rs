@@ -1,20 +1,14 @@
 use alloc::ffi::CString;
 use core::{cmp, ffi::CStr, mem};
-use std::{net::IpAddr, os::unix::io::RawFd, sync::LazyLock};
+use std::{os::unix::io::RawFd, sync::LazyLock};
 
 use dashmap::DashSet;
 use errno::{set_errno, Errno};
 use libc::{c_char, c_int, sockaddr, socklen_t, ssize_t, EINVAL};
 use mirrord_layer_macro::{hook_fn, hook_guard_fn};
-use mirrord_protocol::outgoing::SocketAddress;
 
-use super::{ops::*, SocketKind};
-use crate::{
-    detour::DetourGuard,
-    hooks::HookManager,
-    replace,
-    socket::{Connected, SocketState, SOCKETS},
-};
+use super::ops::*;
+use crate::{detour::DetourGuard, hooks::HookManager, replace};
 
 /// Here we keep addr infos that we allocated so we'll know when to use the original
 /// freeaddrinfo function and when to use our implementation
@@ -308,6 +302,9 @@ unsafe extern "C" fn freeaddrinfo_detour(addrinfo: *mut libc::addrinfo) {
         })
 }
 
+/// Hook for libc::recvfrom.
+/// This hook currently just helps some udp flows to go through by filling in
+/// original address for the caller.
 #[hook_guard_fn]
 unsafe extern "C" fn recv_from_detour(
     sockfd: i32,
@@ -317,33 +314,13 @@ unsafe extern "C" fn recv_from_detour(
     src_addr: *mut libc::sockaddr,
     addrlen: *mut libc::socklen_t,
 ) -> ssize_t {
-    let socket_state = SOCKETS.get(&sockfd).unwrap().clone();    
-    let sockaddr_in_test = &mut *(src_addr as *mut libc::sockaddr_in);
-    println!("src_addr: {:?}", sockaddr_in_test.sin_port);
-    println!("src_addr: {:?}", sockaddr_in_test.sin_addr);
-
-    if let SocketKind::Udp(_) = &socket_state.kind && let SocketState::Connected(Connected { remote_address, .. }) = &socket_state.state {
-        if let SocketAddress::Ip(addr) = remote_address {
-            match addr.ip() {
-                IpAddr::V4(ipv4) => {
-                    let sockaddr_in = &mut *(src_addr as *mut libc::sockaddr_in);
-                    (sockaddr_in).sin_port = addr.port();
-                    (sockaddr_in).sin_addr.s_addr =  u32::from_ne_bytes(ipv4.octets());
-                },
-                IpAddr::V6(ipv6) => {
-                    let sockaddr_in6 = &mut *(src_addr as *mut libc::sockaddr_in6);
-                    (sockaddr_in6).sin6_addr.s6_addr =  ipv6.octets();
-                }
-            }
-        }
+    let recv_from_result = FN_RECV_FROM(sockfd, buf, len, flags, src_addr, addrlen);
+    if recv_from_result == -1 {
+        recv_from_result
+    } else {
+        recv_from(sockfd, src_addr, addrlen);
+        recv_from_result
     }
-    
-    // check if the replacement happened 
-    let sockaddr_in_test = &mut *(src_addr as *mut libc::sockaddr_in);
-    println!("src_addr: {:?}", sockaddr_in_test.sin_port);
-    println!("src_addr: {:?}", sockaddr_in_test.sin_addr);
-    
-    FN_RECV_FROM(sockfd, buf, len, flags, src_addr, addrlen)
 }
 
 pub(crate) unsafe fn enable_socket_hooks(hook_manager: &mut HookManager, enabled_remote_dns: bool) {

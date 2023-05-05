@@ -288,7 +288,7 @@ fn connect_outgoing<const TYPE: ConnectType>(
         layer_address,
         user_app_address,
     } = mirror_rx.blocking_recv()??;
-    
+
     println!(
         "connect_outgoing -> user_app_address {:#?}",
         user_app_address.as_socket().unwrap().ip()
@@ -336,7 +336,7 @@ pub(super) fn connect(
     raw_address: *const sockaddr,
     address_length: socklen_t,
 ) -> Detour<ConnectResult> {
-    let remote_address = SockAddr::try_from_raw(raw_address, address_length)?;    
+    let remote_address = SockAddr::try_from_raw(raw_address, address_length)?;
     let optional_ip_address = remote_address.as_socket();
     println!(
         "connect -> remote_address: {:?} - {:?}",
@@ -751,4 +751,15 @@ fn remote_hostname_string() -> Detour<CString> {
 #[tracing::instrument(level = "trace")]
 pub(super) fn gethostname() -> Detour<&'static CString> {
     HOSTNAME.get_or_detour_init(remote_hostname_string)
+}
+
+/// libraries like `c-ares` expect messages to be from the address they were sent to.
+/// currently this function just fills in the address expected by the caller.
+#[tracing::instrument(level = "trace")]
+pub(super) fn recv_from(sockfd: i32, sockaddr: *mut sockaddr, addrlen: *mut u32) -> Detour<()> {
+    let socket_state = SOCKETS.get(&sockfd)?.clone();
+    if let SocketState::Connected(Connected { remote_address, .. }) = &socket_state.state {
+        fill_address(sockaddr, addrlen, (remote_address.clone()).try_into()?)?;
+    }
+    Detour::Success(())
 }
