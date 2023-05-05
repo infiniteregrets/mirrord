@@ -320,11 +320,17 @@ unsafe extern "C" fn recv_from_detour(
     let socket_state = SOCKETS.get(&sockfd).unwrap().clone();
 
     if let SocketKind::Udp(_) = &socket_state.kind && let SocketState::Connected(Connected { local_address, .. }) = &socket_state.state {
-        let sockaddr_in = &mut *(src_addr as *mut libc::sockaddr_in);
         if let SocketAddress::Ip(addr) = local_address {
-            (*sockaddr_in).sin_port = addr.port() as u16;
-            if addr.is_ipv4() && let IpAddr::V4(ipv4) = addr.ip() {
-                (*sockaddr_in).sin_addr.s_addr =  u32::from_ne_bytes(ipv4.octets());
+            match addr.ip() {
+                IpAddr::V4(ipv4) => {
+                    let sockaddr_in = &mut *(src_addr as *mut libc::sockaddr_in);
+                    (*sockaddr_in).sin_port = addr.port() as u16;
+                    (*sockaddr_in).sin_addr.s_addr =  u32::from_ne_bytes(ipv4.octets());
+                },
+                IpAddr::V6(ipv6) => {
+                    let sockaddr_in6 = &mut *(src_addr as *mut libc::sockaddr_in6);
+                    (*sockaddr_in6).sin6_addr.s6_addr =  ipv6.octets();
+                }
             }
         }
     }

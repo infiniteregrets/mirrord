@@ -288,8 +288,7 @@ fn connect_outgoing<const TYPE: ConnectType>(
         layer_address,
         user_app_address,
     } = mirror_rx.blocking_recv()??;
-
-    println!("connect_outgoing -> layer_address {:#?}", layer_address);
+    
     println!(
         "connect_outgoing -> user_app_address {:#?}",
         user_app_address.as_socket().unwrap().ip()
@@ -337,8 +336,7 @@ pub(super) fn connect(
     raw_address: *const sockaddr,
     address_length: socklen_t,
 ) -> Detour<ConnectResult> {
-    let remote_address = SockAddr::try_from_raw(raw_address, address_length)?;
-    println!("connect -> remote_address: {:?}", remote_address);
+    let remote_address = SockAddr::try_from_raw(raw_address, address_length)?;    
     let optional_ip_address = remote_address.as_socket();
     println!(
         "connect -> remote_address: {:?} - {:?}",
