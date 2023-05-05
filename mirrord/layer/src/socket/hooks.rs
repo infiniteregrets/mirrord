@@ -4,7 +4,7 @@ use std::{os::unix::io::RawFd, sync::LazyLock};
 
 use dashmap::DashSet;
 use errno::{set_errno, Errno};
-use libc::{c_char, c_int, sockaddr, socklen_t, ssize_t, EINVAL};
+use libc::{c_char, c_int, c_void, size_t, sockaddr, socklen_t, ssize_t, EINVAL};
 use mirrord_layer_macro::{hook_fn, hook_guard_fn};
 
 use super::ops::*;
@@ -308,11 +308,11 @@ unsafe extern "C" fn freeaddrinfo_detour(addrinfo: *mut libc::addrinfo) {
 #[hook_guard_fn]
 unsafe extern "C" fn recv_from_detour(
     sockfd: i32,
-    buf: *mut libc::c_void,
-    len: libc::size_t,
-    flags: libc::c_int,
-    src_addr: *mut libc::sockaddr,
-    addrlen: *mut libc::socklen_t,
+    buf: *mut c_void,
+    len: size_t,
+    flags: c_int,
+    src_addr: *mut sockaddr,
+    addrlen: *mut socklen_t,
 ) -> ssize_t {
     let recv_from_result = FN_RECV_FROM(sockfd, buf, len, flags, src_addr, addrlen);
     if recv_from_result == -1 {
