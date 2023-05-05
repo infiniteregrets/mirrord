@@ -324,12 +324,12 @@ unsafe extern "C" fn recv_from_detour(
             match addr.ip() {
                 IpAddr::V4(ipv4) => {
                     let sockaddr_in = &mut *(src_addr as *mut libc::sockaddr_in);
-                    (*sockaddr_in).sin_port = addr.port() as u16;
-                    (*sockaddr_in).sin_addr.s_addr =  u32::from_ne_bytes(ipv4.octets());
+                    (sockaddr_in).sin_port = addr.port();
+                    (sockaddr_in).sin_addr.s_addr =  u32::from_ne_bytes(ipv4.octets());
                 },
                 IpAddr::V6(ipv6) => {
                     let sockaddr_in6 = &mut *(src_addr as *mut libc::sockaddr_in6);
-                    (*sockaddr_in6).sin6_addr.s6_addr =  ipv6.octets();
+                    (sockaddr_in6).sin6_addr.s6_addr =  ipv6.octets();
                 }
             }
         }
