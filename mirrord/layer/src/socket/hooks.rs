@@ -317,10 +317,13 @@ unsafe extern "C" fn recv_from_detour(
     src_addr: *mut libc::sockaddr,
     addrlen: *mut libc::socklen_t,
 ) -> ssize_t {
-    let socket_state = SOCKETS.get(&sockfd).unwrap().clone();
+    let socket_state = SOCKETS.get(&sockfd).unwrap().clone();    
+    let sockaddr_in_test = &mut *(src_addr as *mut libc::sockaddr_in);
+    println!("src_addr: {:?}", sockaddr_in_test.sin_port);
+    println!("src_addr: {:?}", sockaddr_in_test.sin_addr);
 
-    if let SocketKind::Udp(_) = &socket_state.kind && let SocketState::Connected(Connected { local_address, .. }) = &socket_state.state {
-        if let SocketAddress::Ip(addr) = local_address {
+    if let SocketKind::Udp(_) = &socket_state.kind && let SocketState::Connected(Connected { remote_address, .. }) = &socket_state.state {
+        if let SocketAddress::Ip(addr) = remote_address {
             match addr.ip() {
                 IpAddr::V4(ipv4) => {
                     let sockaddr_in = &mut *(src_addr as *mut libc::sockaddr_in);
@@ -334,7 +337,12 @@ unsafe extern "C" fn recv_from_detour(
             }
         }
     }
-
+    
+    // check if the replacement happened 
+    let sockaddr_in_test = &mut *(src_addr as *mut libc::sockaddr_in);
+    println!("src_addr: {:?}", sockaddr_in_test.sin_port);
+    println!("src_addr: {:?}", sockaddr_in_test.sin_addr);
+    
     FN_RECV_FROM(sockfd, buf, len, flags, src_addr, addrlen)
 }
 
