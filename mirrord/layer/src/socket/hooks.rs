@@ -1,14 +1,20 @@
 use alloc::ffi::CString;
 use core::{cmp, ffi::CStr, mem};
-use std::{os::unix::io::RawFd, sync::LazyLock};
+use std::{net::IpAddr, os::unix::io::RawFd, sync::LazyLock};
 
 use dashmap::DashSet;
 use errno::{set_errno, Errno};
-use libc::{c_char, c_int, sockaddr, socklen_t, EINVAL};
+use libc::{c_char, c_int, sockaddr, socklen_t, ssize_t, EINVAL};
 use mirrord_layer_macro::{hook_fn, hook_guard_fn};
+use mirrord_protocol::outgoing::SocketAddress;
 
-use super::ops::*;
-use crate::{detour::DetourGuard, hooks::HookManager, replace};
+use super::{ops::*, SocketKind};
+use crate::{
+    detour::DetourGuard,
+    hooks::HookManager,
+    replace,
+    socket::{Connected, SocketState, SOCKETS},
+};
 
 /// Here we keep addr infos that we allocated so we'll know when to use the original
 /// freeaddrinfo function and when to use our implementation
@@ -302,9 +308,39 @@ unsafe extern "C" fn freeaddrinfo_detour(addrinfo: *mut libc::addrinfo) {
         })
 }
 
+#[hook_guard_fn]
+unsafe extern "C" fn recv_from_detour(
+    sockfd: i32,
+    buf: *mut libc::c_void,
+    len: libc::size_t,
+    flags: libc::c_int,
+    src_addr: *mut libc::sockaddr,
+    addrlen: *mut libc::socklen_t,
+) -> ssize_t {
+    let socket_state = SOCKETS.get(&sockfd).unwrap().clone();
+
+    if let SocketKind::Udp(_) = &socket_state.kind && let SocketState::Connected(Connected { local_address, .. }) = &socket_state.state {
+        let sockaddr_in = &mut *(src_addr as *mut libc::sockaddr_in);
+        if let SocketAddress::Ip(addr) = local_address {
+            (*sockaddr_in).sin_port = addr.port() as u16;
+            if addr.is_ipv4() && let IpAddr::V4(ipv4) = addr.ip() {
+                (*sockaddr_in).sin_addr.s_addr =  u32::from_ne_bytes(ipv4.octets());
+            }
+        }
+    }
+
+    FN_RECV_FROM(sockfd, buf, len, flags, src_addr, addrlen)
+}
+
 pub(crate) unsafe fn enable_socket_hooks(hook_manager: &mut HookManager, enabled_remote_dns: bool) {
     replace!(hook_manager, "socket", socket_detour, FnSocket, FN_SOCKET);
-
+    replace!(
+        hook_manager,
+        "recvfrom",
+        recv_from_detour,
+        FnRecv_from,
+        FN_RECV_FROM
+    );
     replace!(hook_manager, "bind", bind_detour, FnBind, FN_BIND);
     replace!(hook_manager, "listen", listen_detour, FnListen, FN_LISTEN);
 

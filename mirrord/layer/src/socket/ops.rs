@@ -289,6 +289,16 @@ fn connect_outgoing<const TYPE: ConnectType>(
         user_app_address,
     } = mirror_rx.blocking_recv()??;
 
+    println!("connect_outgoing -> layer_address {:#?}", layer_address);
+    println!(
+        "connect_outgoing -> user_app_address {:#?}",
+        user_app_address.as_socket().unwrap().ip()
+    );
+    println!(
+        "connect_outgoing -> user_app_address {:#?}",
+        user_app_address.as_socket().unwrap().port()
+    );
+
     // Connect to the interceptor socket that is listening.
     let connect_result: ConnectResult =
         unsafe { FN_CONNECT(sockfd, layer_address.as_ptr(), layer_address.len()) }.into();
@@ -328,7 +338,13 @@ pub(super) fn connect(
     address_length: socklen_t,
 ) -> Detour<ConnectResult> {
     let remote_address = SockAddr::try_from_raw(raw_address, address_length)?;
+    println!("connect -> remote_address: {:?}", remote_address);
     let optional_ip_address = remote_address.as_socket();
+    println!(
+        "connect -> remote_address: {:?} - {:?}",
+        optional_ip_address.unwrap().ip(),
+        optional_ip_address.unwrap().port()
+    );
 
     let unix_streams = REMOTE_UNIX_STREAMS
         .get()
