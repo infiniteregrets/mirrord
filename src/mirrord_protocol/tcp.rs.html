@@ -411,7 +411,7 @@
 </span><span class="kw">pub enum </span>StealType {
     <span class="doccomment">/// Steal all traffic to this port.
     </span>All(Port),
-    <span class="doccomment">/// Steal HTTP traffic matching a given filter.
+    <span class="doccomment">/// Steal HTTP traffic matching a given filter (header based).
     </span>FilteredHttp(Port, Filter),
 }
 
