@@ -198,85 +198,6 @@
 <a href="#198" id="198">198</a>
 <a href="#199" id="199">199</a>
 <a href="#200" id="200">200</a>
-<a href="#201" id="201">201</a>
-<a href="#202" id="202">202</a>
-<a href="#203" id="203">203</a>
-<a href="#204" id="204">204</a>
-<a href="#205" id="205">205</a>
-<a href="#206" id="206">206</a>
-<a href="#207" id="207">207</a>
-<a href="#208" id="208">208</a>
-<a href="#209" id="209">209</a>
-<a href="#210" id="210">210</a>
-<a href="#211" id="211">211</a>
-<a href="#212" id="212">212</a>
-<a href="#213" id="213">213</a>
-<a href="#214" id="214">214</a>
-<a href="#215" id="215">215</a>
-<a href="#216" id="216">216</a>
-<a href="#217" id="217">217</a>
-<a href="#218" id="218">218</a>
-<a href="#219" id="219">219</a>
-<a href="#220" id="220">220</a>
-<a href="#221" id="221">221</a>
-<a href="#222" id="222">222</a>
-<a href="#223" id="223">223</a>
-<a href="#224" id="224">224</a>
-<a href="#225" id="225">225</a>
-<a href="#226" id="226">226</a>
-<a href="#227" id="227">227</a>
-<a href="#228" id="228">228</a>
-<a href="#229" id="229">229</a>
-<a href="#230" id="230">230</a>
-<a href="#231" id="231">231</a>
-<a href="#232" id="232">232</a>
-<a href="#233" id="233">233</a>
-<a href="#234" id="234">234</a>
-<a href="#235" id="235">235</a>
-<a href="#236" id="236">236</a>
-<a href="#237" id="237">237</a>
-<a href="#238" id="238">238</a>
-<a href="#239" id="239">239</a>
-<a href="#240" id="240">240</a>
-<a href="#241" id="241">241</a>
-<a href="#242" id="242">242</a>
-<a href="#243" id="243">243</a>
-<a href="#244" id="244">244</a>
-<a href="#245" id="245">245</a>
-<a href="#246" id="246">246</a>
-<a href="#247" id="247">247</a>
-<a href="#248" id="248">248</a>
-<a href="#249" id="249">249</a>
-<a href="#250" id="250">250</a>
-<a href="#251" id="251">251</a>
-<a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
-<a href="#254" id="254">254</a>
-<a href="#255" id="255">255</a>
-<a href="#256" id="256">256</a>
-<a href="#257" id="257">257</a>
-<a href="#258" id="258">258</a>
-<a href="#259" id="259">259</a>
-<a href="#260" id="260">260</a>
-<a href="#261" id="261">261</a>
-<a href="#262" id="262">262</a>
-<a href="#263" id="263">263</a>
-<a href="#264" id="264">264</a>
-<a href="#265" id="265">265</a>
-<a href="#266" id="266">266</a>
-<a href="#267" id="267">267</a>
-<a href="#268" id="268">268</a>
-<a href="#269" id="269">269</a>
-<a href="#270" id="270">270</a>
-<a href="#271" id="271">271</a>
-<a href="#272" id="272">272</a>
-<a href="#273" id="273">273</a>
-<a href="#274" id="274">274</a>
-<a href="#275" id="275">275</a>
-<a href="#276" id="276">276</a>
-<a href="#277" id="277">277</a>
-<a href="#278" id="278">278</a>
-<a href="#279" id="279">279</a>
 </pre><pre class="rust"><code><span class="kw">use </span>std::{ops::Deref, sync::Arc};
 
 <span class="kw">use </span>async_trait::async_trait;
@@ -309,7 +230,7 @@
 <span class="kw">where
     </span>IPT: IPTables,
 {
-    <span class="kw">pub const </span>ENTRYPOINT: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;PREROUTING&quot;</span>;
+    <span class="kw">const </span>ENTRYPOINT: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;PREROUTING&quot;</span>;
 
     <span class="kw">pub fn </span>create(ipt: Arc&lt;IPT&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>managed = IPTableChain::create(ipt, IPTABLE_PREROUTING.to_string())<span class="question-mark">?</span>;
@@ -374,85 +295,6 @@
 
     <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
         <span class="kw-2">&amp;</span><span class="self">self</span>.managed
-    }
-}
-
-<span class="kw">pub struct </span>StandardRedirect&lt;IPT: IPTables&gt; {
-    preroute: PreroutingRedirect&lt;IPT&gt;,
-}
-
-<span class="kw">impl</span>&lt;IPT&gt; StandardRedirect&lt;IPT&gt;
-<span class="kw">where
-    </span>IPT: IPTables,
-{
-    <span class="kw">const </span>ENTRYPOINT: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;OUTPUT&quot;</span>;
-
-    <span class="kw">pub fn </span>create(ipt: Arc&lt;IPT&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>preroute = PreroutingRedirect::create(ipt.clone())<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>(StandardRedirect { preroute })
-    }
-
-    <span class="kw">pub fn </span>load(ipt: Arc&lt;IPT&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>preroute = PreroutingRedirect::load(ipt.clone())<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>(StandardRedirect { preroute })
-    }
-}
-
-
-
-<span class="doccomment">/// This wrapper adds a new rule to the NAT OUTPUT chain to redirect &quot;localhost&quot; traffic as well
-/// Note: OUTPUT chain is only traversed for packets produced by local applications
-</span><span class="attr">#[async_trait]
-</span><span class="kw">impl</span>&lt;IPT&gt; Redirect <span class="kw">for </span>StandardRedirect&lt;IPT&gt;
-<span class="kw">where
-    </span>IPT: IPTables + Send + Sync,
-{
-    <span class="kw">async fn </span>mount_entrypoint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="self">self</span>.preroute.managed.inner().add_rule(
-            PreroutingRedirect::&lt;IPT&gt;::ENTRYPOINT,
-            <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;-j {}&quot;</span>, <span class="self">self</span>.preroute.managed.chain_name()),
-        )<span class="question-mark">?</span>;
-
-        <span class="self">self</span>.preroute.managed.inner().add_rule(
-            <span class="self">Self</span>::ENTRYPOINT,
-            <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;-j {}&quot;</span>, <span class="self">self</span>.preroute.managed.chain_name()),
-        )<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>(())
-    }
-
-    <span class="kw">async fn </span>unmount_entrypoint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="self">self</span>.preroute.managed.inner().remove_rule(
-            PreroutingRedirect::&lt;IPT&gt;::ENTRYPOINT,
-            <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;-j {}&quot;</span>, <span class="self">self</span>.preroute.managed.chain_name()),
-        )<span class="question-mark">?</span>;
-
-        <span class="self">self</span>.preroute.managed.inner().remove_rule(
-            <span class="self">Self</span>::ENTRYPOINT,
-            <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;-j {}&quot;</span>, <span class="self">self</span>.preroute.managed.chain_name()),
-        )<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>(())
-    }
-
-    <span class="kw">async fn </span>add_redirect(<span class="kw-2">&amp;</span><span class="self">self</span>, redirected_port: Port, target_port: Port) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="kw">let </span>redirect_rule =
-            <span class="macro">format!</span>(<span class="string">&quot;-m tcp -p tcp --dport {redirected_port} -j REDIRECT --to-ports {target_port}&quot;</span>);
-
-        <span class="self">self</span>.preroute.managed.add_rule(<span class="kw-2">&amp;</span>redirect_rule)<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>(())
-    }
-
-    <span class="kw">async fn </span>remove_redirect(<span class="kw-2">&amp;</span><span class="self">self</span>, redirected_port: Port, target_port: Port) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
-        <span class="kw">let </span>redirect_rule =
-            <span class="macro">format!</span>(<span class="string">&quot;-m tcp -p tcp --dport {redirected_port} -j REDIRECT --to-ports {target_port}&quot;</span>);
-
-        <span class="self">self</span>.preroute.managed.remove_rule(<span class="kw-2">&amp;</span>redirect_rule)<span class="question-mark">?</span>;
-
-        <span class="prelude-val">Ok</span>(())
     }
 }
 
