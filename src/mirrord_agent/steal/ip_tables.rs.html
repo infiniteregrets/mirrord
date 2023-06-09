@@ -392,7 +392,7 @@
     steal::ip_tables::{
         flush_connections::FlushConnections,
         mesh::{MeshRedirect, MeshVendor},
-        redirect::{PreroutingRedirect, Redirect},
+        redirect::{Redirect, StandardRedirect},
     },
 };
 
@@ -482,7 +482,7 @@
 
 <span class="attr">#[enum_dispatch(Redirect)]
 </span><span class="kw">pub enum </span>Redirects&lt;IPT: IPTables + Send + Sync&gt; {
-    Standard(PreroutingRedirect&lt;IPT&gt;),
+    Standard(StandardRedirect&lt;IPT&gt;),
     Mesh(MeshRedirect&lt;IPT&gt;),
     FlushConnections(FlushConnections&lt;Redirects&lt;IPT&gt;&gt;),
 }
@@ -505,7 +505,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>redirect = <span class="kw">if let </span><span class="prelude-val">Some</span>(vendor) = MeshVendor::detect(<span class="kw-2">&amp;</span>ipt)<span class="question-mark">? </span>{
             Redirects::Mesh(MeshRedirect::create(Arc::new(ipt), vendor)<span class="question-mark">?</span>)
         } <span class="kw">else </span>{
-            Redirects::Standard(PreroutingRedirect::create(Arc::new(ipt))<span class="question-mark">?</span>)
+            Redirects::Standard(StandardRedirect::create(Arc::new(ipt))<span class="question-mark">?</span>)
         };
 
         <span class="kw">if </span>flush_connections {
@@ -521,7 +521,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>redirect = <span class="kw">if let </span><span class="prelude-val">Some</span>(vendor) = MeshVendor::detect(<span class="kw-2">&amp;</span>ipt)<span class="question-mark">? </span>{
             Redirects::Mesh(MeshRedirect::load(Arc::new(ipt), vendor)<span class="question-mark">?</span>)
         } <span class="kw">else </span>{
-            Redirects::Standard(PreroutingRedirect::load(Arc::new(ipt))<span class="question-mark">?</span>)
+            Redirects::Standard(StandardRedirect::load(Arc::new(ipt))<span class="question-mark">?</span>)
         };
 
         <span class="kw">if </span>flush_connections {
