@@ -129,8 +129,7 @@
 <a href="#129" id="129">129</a>
 <a href="#130" id="130">130</a>
 <a href="#131" id="131">131</a>
-<a href="#132" id="132">132</a>
-</pre><pre class="rust"><code><span class="kw">use </span>std::{ptr::null_mut, sync::LazyLock};
+</pre><pre class="rust"><code><span class="kw">use </span>std::sync::LazyLock;
 
 <span class="kw">use </span>frida_gum::{interceptor::Interceptor, Gum, Module, NativePointer};
 <span class="kw">use </span>tracing::trace;
@@ -174,11 +173,10 @@
             }
             <span class="kw">if let </span><span class="prelude-val">Ok</span>(function) = get_export_by_name(<span class="prelude-val">Some</span>(module), symbol) {
                 <span class="macro">trace!</span>(<span class="string">&quot;found {symbol:?} in {module:?}, hooking&quot;</span>);
-                <span class="kw">match </span><span class="self">self</span>.interceptor.replace(
-                    function,
-                    NativePointer(detour),
-                    NativePointer(null_mut()),
-                ) {
+                <span class="kw">match </span><span class="self">self
+                    </span>.interceptor
+                    .replace_fast(function, NativePointer(detour))
+                {
                     <span class="prelude-val">Ok</span>(original) =&gt; <span class="kw">return </span><span class="prelude-val">Ok</span>(original),
                     <span class="prelude-val">Err</span>(err) =&gt; {
                         <span class="macro">trace!</span>(<span class="string">&quot;hook {symbol:?} in {module:?} failed with err {err:?}&quot;</span>)
@@ -202,7 +200,7 @@
         </span><span class="kw">let </span>function = get_export_by_name(<span class="prelude-val">None</span>, symbol)<span class="question-mark">?</span>;
 
         <span class="self">self</span>.interceptor
-            .replace(function, NativePointer(detour), NativePointer(null_mut()))
+            .replace_fast(function, NativePointer(detour))
             .or_else(|<span class="kw">_</span>| <span class="self">self</span>.hook_any_lib_export(symbol, detour))
     }
 
@@ -219,7 +217,7 @@
             .ok_or_else(|| LayerError::NoSymbolName(symbol.to_string()))<span class="question-mark">?</span>;
 
         <span class="self">self</span>.interceptor
-            .replace(function, NativePointer(detour), NativePointer(null_mut()))
+            .replace_fast(function, NativePointer(detour))
             .map_err(Into::into)
     }
 
