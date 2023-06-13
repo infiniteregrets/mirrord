@@ -83,12 +83,18 @@
 <a href="#83" id="83">83</a>
 <a href="#84" id="84">84</a>
 <a href="#85" id="85">85</a>
-</pre><pre class="rust"><code><span class="kw">use </span>kube::CustomResource;
+<a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+</pre><pre class="rust"><code><span class="kw">use </span>chrono::NaiveDate;
+<span class="kw">use </span>kube::CustomResource;
 <span class="kw">use </span>mirrord_config::target::{Target, TargetConfig};
 <span class="kw">use </span>schemars::JsonSchema;
 <span class="kw">use </span>serde::{Deserialize, Serialize};
-
-<span class="kw">use </span><span class="kw">crate</span>::license::License;
 
 <span class="kw">pub const </span>TARGETLESS_TARGET_NAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;targetless&quot;</span>;
 
@@ -153,7 +159,7 @@
 </span><span class="kw">pub struct </span>MirrordOperatorSpec {
     <span class="kw">pub </span>operator_version: String,
     <span class="kw">pub </span>default_namespace: String,
-    <span class="kw">pub </span>license: License,
+    <span class="kw">pub </span>license: LicenseInfoOwned,
 }
 
 <span class="attr">#[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema)]
@@ -167,5 +173,13 @@
     <span class="kw">pub </span>duration_secs: u64,
     <span class="kw">pub </span>user: String,
     <span class="kw">pub </span>target: String,
+}
+
+<span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+</span><span class="kw">pub struct </span>LicenseInfoOwned {
+    <span class="kw">pub </span>name: String,
+    <span class="kw">pub </span>organization: String,
+    <span class="kw">pub </span>expire_at: NaiveDate,
+    <span class="kw">pub </span>fingerprint: <span class="prelude-ty">Option</span>&lt;String&gt;,
 }
 </code></pre></div></section></main></body></html>
