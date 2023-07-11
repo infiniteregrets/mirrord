@@ -661,16 +661,31 @@
 <a href="#661" id="661">661</a>
 <a href="#662" id="662">662</a>
 <a href="#663" id="663">663</a>
+<a href="#664" id="664">664</a>
+<a href="#665" id="665">665</a>
+<a href="#666" id="666">666</a>
+<a href="#667" id="667">667</a>
+<a href="#668" id="668">668</a>
+<a href="#669" id="669">669</a>
+<a href="#670" id="670">670</a>
+<a href="#671" id="671">671</a>
+<a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{collections::BTreeMap, convert::Infallible, io::Write, str::FromStr, sync::LazyLock};
 
 <span class="kw">use </span>k8s_openapi::{
     api::{
         apps::v1::{Deployment, DeploymentSpec},
         core::v1::{
-            Container, ContainerPort, EnvFromSource, EnvVar, Namespace, PersistentVolumeClaim,
+            Container, ContainerPort, EnvVar, Namespace, PersistentVolumeClaim,
             PersistentVolumeClaimSpec, PersistentVolumeClaimVolumeSource, PodSpec, PodTemplateSpec,
-            ResourceRequirements, Secret, SecretEnvSource, SecretVolumeSource, SecurityContext,
-            Service, ServiceAccount, ServicePort, ServiceSpec, Volume, VolumeMount,
+            ResourceRequirements, Secret, SecretVolumeSource, SecurityContext, Service,
+            ServiceAccount, ServicePort, ServiceSpec, Volume, VolumeMount,
         },
         rbac::v1::{ClusterRole, ClusterRoleBinding, PolicyRule, RoleRef, Subject},
     },
@@ -742,21 +757,25 @@
     <span class="kw">fn </span>to_writer&lt;W: Write&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, writer: W) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt;;
 }
 
+<span class="kw">pub enum </span>LicenseType {
+    Online(String),
+    Offline(String),
+}
+
 <span class="kw">pub struct </span>SetupOptions {
-    <span class="kw">pub </span>license: String,
+    <span class="kw">pub </span>license: LicenseType,
     <span class="kw">pub </span>namespace: OperatorNamespace,
-    <span class="kw">pub </span>offline: bool,
 }
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>Operator {
     api_service: OperatorApiService,
-    namespace: OperatorNamespace,
     deployment: OperatorDeployment,
+    license_secret: <span class="prelude-ty">Option</span>&lt;OperatorLicenseSecret&gt;,
+    namespace: OperatorNamespace,
     pvc: OperatorPersistentVolumeClaim,
     role: OperatorRole,
     role_binding: OperatorRoleBinding,
-    secret: OperatorLicenseSecret,
     service: OperatorService,
     service_account: OperatorServiceAccount,
     tls_secret: OperatorTlsSecret,
@@ -764,13 +783,15 @@
 
 <span class="kw">impl </span>Operator {
     <span class="kw">pub fn </span>new(options: SetupOptions) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>SetupOptions {
-            license,
-            namespace,
-            offline,
-        } = options;
+        <span class="kw">let </span>SetupOptions { license, namespace } = options;
 
-        <span class="kw">let </span>secret = OperatorLicenseSecret::new(<span class="kw-2">&amp;</span>license, <span class="kw-2">&amp;</span>namespace);
+        <span class="kw">let </span>(license_secret, license_key) = <span class="kw">match </span>license {
+            LicenseType::Online(license_key) =&gt; (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(license_key)),
+            LicenseType::Offline(license) =&gt; {
+                (<span class="prelude-val">Some</span>(OperatorLicenseSecret::new(<span class="kw-2">&amp;</span>license, <span class="kw-2">&amp;</span>namespace)), <span class="prelude-val">None</span>)
+            }
+        };
+
         <span class="kw">let </span>service_account = OperatorServiceAccount::new(<span class="kw-2">&amp;</span>namespace);
 
         <span class="kw">let </span>tls_secret = OperatorTlsSecret::new(<span class="kw-2">&amp;</span>namespace);
@@ -778,8 +799,13 @@
         <span class="kw">let </span>role = OperatorRole::new();
         <span class="kw">let </span>role_binding = OperatorRoleBinding::new(<span class="kw-2">&amp;</span>role, <span class="kw-2">&amp;</span>service_account);
 
-        <span class="kw">let </span>deployment =
-            OperatorDeployment::new(<span class="kw-2">&amp;</span>namespace, <span class="kw-2">&amp;</span>service_account, <span class="kw-2">&amp;</span>secret, <span class="kw-2">&amp;</span>tls_secret, offline);
+        <span class="kw">let </span>deployment = OperatorDeployment::new(
+            <span class="kw-2">&amp;</span>namespace,
+            <span class="kw-2">&amp;</span>service_account,
+            license_secret.as_ref(),
+            license_key,
+            <span class="kw-2">&amp;</span>tls_secret,
+        );
 
         <span class="kw">let </span>pvc = OperatorPersistentVolumeClaim::new(<span class="kw-2">&amp;</span>namespace);
 
@@ -790,11 +816,11 @@
         Operator {
             api_service,
             deployment,
+            license_secret,
             namespace,
             pvc,
             role,
             role_binding,
-            secret,
             service,
             service_account,
             tls_secret,
@@ -806,8 +832,10 @@
     <span class="kw">fn </span>to_writer&lt;W: Write&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>writer: W) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
         <span class="self">self</span>.namespace.to_writer(<span class="kw-2">&amp;mut </span>writer)<span class="question-mark">?</span>;
 
-        writer.write_all(<span class="string">b&quot;---\n&quot;</span>)<span class="question-mark">?</span>;
-        <span class="self">self</span>.secret.to_writer(<span class="kw-2">&amp;mut </span>writer)<span class="question-mark">?</span>;
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(secret) = <span class="self">self</span>.license_secret.as_ref() {
+            writer.write_all(<span class="string">b&quot;---\n&quot;</span>)<span class="question-mark">?</span>;
+            secret.to_writer(<span class="kw-2">&amp;mut </span>writer)<span class="question-mark">?</span>;
+        }
 
         writer.write_all(<span class="string">b&quot;---\n&quot;</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.service_account.to_writer(<span class="kw-2">&amp;mut </span>writer)<span class="question-mark">?</span>;
@@ -869,9 +897,9 @@
     <span class="kw">pub fn </span>new(
         namespace: <span class="kw-2">&amp;</span>OperatorNamespace,
         sa: <span class="kw-2">&amp;</span>OperatorServiceAccount,
-        license_secret: <span class="kw-2">&amp;</span>OperatorLicenseSecret,
+        license_secret: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>OperatorLicenseSecret&gt;,
+        license_key: <span class="prelude-ty">Option</span>&lt;String&gt;,
         tls_secret: <span class="kw-2">&amp;</span>OperatorTlsSecret,
-        offline: bool,
     ) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>envs = <span class="macro">vec!</span>[
             EnvVar {
@@ -882,11 +910,6 @@
             EnvVar {
                 name: <span class="string">&quot;OPERATOR_ADDR&quot;</span>.to_owned(),
                 value: <span class="prelude-val">Some</span>(<span class="macro">format!</span>(<span class="string">&quot;0.0.0.0:{OPERATOR_PORT}&quot;</span>)),
-                value_from: <span class="prelude-val">None</span>,
-            },
-            EnvVar {
-                name: <span class="string">&quot;OPERATOR_LICENSE_PATH&quot;</span>.to_owned(),
-                value: <span class="prelude-val">Some</span>(<span class="macro">format!</span>(<span class="string">&quot;/license/{OPERATOR_LICENSE_SECRET_FILE_NAME}&quot;</span>)),
                 value_from: <span class="prelude-val">None</span>,
             },
             EnvVar {
@@ -906,10 +929,65 @@
             },
         ];
 
-        <span class="kw">if </span>offline {
+        <span class="kw">let </span><span class="kw-2">mut </span>volumes = <span class="macro">vec!</span>[
+            Volume {
+                name: OPERATOR_TLS_VOLUME_NAME.to_owned(),
+                secret: <span class="prelude-val">Some</span>(SecretVolumeSource {
+                    secret_name: <span class="prelude-val">Some</span>(tls_secret.name().to_owned()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            },
+            Volume {
+                name: OPERATOR_PVC_VOLUME_NAME.to_owned(),
+                persistent_volume_claim: <span class="prelude-val">Some</span>(PersistentVolumeClaimVolumeSource {
+                    claim_name: OPERATOR_PVC_NAME.to_owned(),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            },
+        ];
+
+        <span class="kw">let </span><span class="kw-2">mut </span>volume_mounts = <span class="macro">vec!</span>[
+            VolumeMount {
+                name: OPERATOR_TLS_VOLUME_NAME.to_owned(),
+                mount_path: <span class="string">&quot;/tls&quot;</span>.to_owned(),
+                ..Default::default()
+            },
+            VolumeMount {
+                name: OPERATOR_PVC_VOLUME_NAME.to_owned(),
+                mount_path: <span class="string">&quot;/state&quot;</span>.to_owned(),
+                ..Default::default()
+            },
+        ];
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(license_secret) = license_secret {
             envs.push(EnvVar {
-                name: <span class="string">&quot;OPERATOR_TELEMETRY_INGRESS_ADDR&quot;</span>.to_owned(),
-                value: <span class="prelude-val">Some</span>(<span class="string">&quot;file:///state/telemetry&quot;</span>.to_owned()),
+                name: <span class="string">&quot;OPERATOR_LICENSE_PATH&quot;</span>.to_owned(),
+                value: <span class="prelude-val">Some</span>(<span class="macro">format!</span>(<span class="string">&quot;/license/{OPERATOR_LICENSE_SECRET_FILE_NAME}&quot;</span>)),
+                value_from: <span class="prelude-val">None</span>,
+            });
+
+            volumes.push(Volume {
+                name: OPERATOR_LICENSE_SECRET_VOLUME_NAME.to_owned(),
+                secret: <span class="prelude-val">Some</span>(SecretVolumeSource {
+                    secret_name: <span class="prelude-val">Some</span>(license_secret.name().to_owned()),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            });
+
+            volume_mounts.push(VolumeMount {
+                name: OPERATOR_LICENSE_SECRET_VOLUME_NAME.to_owned(),
+                mount_path: <span class="string">&quot;/license&quot;</span>.to_owned(),
+                ..Default::default()
+            });
+        }
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(license_key) = license_key {
+            envs.push(EnvVar {
+                name: <span class="string">&quot;OPERATOR_LICENSE_KEY&quot;</span>.to_owned(),
+                value: <span class="prelude-val">Some</span>(license_key),
                 value_from: <span class="prelude-val">None</span>,
             });
         }
@@ -922,35 +1000,12 @@
             )),
             image_pull_policy: <span class="prelude-val">Some</span>(<span class="string">&quot;IfNotPresent&quot;</span>.to_owned()),
             env: <span class="prelude-val">Some</span>(envs),
-            env_from: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[EnvFromSource {
-                secret_ref: <span class="prelude-val">Some</span>(SecretEnvSource {
-                    name: <span class="prelude-val">Some</span>(license_secret.name().to_owned()),
-                    ..Default::default()
-                }),
-                ..Default::default()
-            }]),
             ports: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[ContainerPort {
                 name: <span class="prelude-val">Some</span>(<span class="string">&quot;https&quot;</span>.to_owned()),
                 container_port: OPERATOR_PORT,
                 ..Default::default()
             }]),
-            volume_mounts: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[
-                VolumeMount {
-                    name: OPERATOR_LICENSE_SECRET_VOLUME_NAME.to_owned(),
-                    mount_path: <span class="string">&quot;/license&quot;</span>.to_owned(),
-                    ..Default::default()
-                },
-                VolumeMount {
-                    name: OPERATOR_TLS_VOLUME_NAME.to_owned(),
-                    mount_path: <span class="string">&quot;/tls&quot;</span>.to_owned(),
-                    ..Default::default()
-                },
-                VolumeMount {
-                    name: OPERATOR_PVC_VOLUME_NAME.to_owned(),
-                    mount_path: <span class="string">&quot;/state&quot;</span>.to_owned(),
-                    ..Default::default()
-                },
-            ]),
+            volume_mounts: <span class="prelude-val">Some</span>(volume_mounts),
             security_context: <span class="prelude-val">Some</span>(SecurityContext {
                 allow_privilege_escalation: <span class="prelude-val">Some</span>(<span class="bool-val">false</span>),
                 privileged: <span class="prelude-val">Some</span>(<span class="bool-val">false</span>),
@@ -967,32 +1022,7 @@
         <span class="kw">let </span>pod_spec = PodSpec {
             containers: <span class="macro">vec!</span>[container],
             service_account_name: <span class="prelude-val">Some</span>(sa.name().to_owned()),
-            volumes: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[
-                Volume {
-                    name: OPERATOR_LICENSE_SECRET_VOLUME_NAME.to_owned(),
-                    secret: <span class="prelude-val">Some</span>(SecretVolumeSource {
-                        secret_name: <span class="prelude-val">Some</span>(license_secret.name().to_owned()),
-                        ..Default::default()
-                    }),
-                    ..Default::default()
-                },
-                Volume {
-                    name: OPERATOR_TLS_VOLUME_NAME.to_owned(),
-                    secret: <span class="prelude-val">Some</span>(SecretVolumeSource {
-                        secret_name: <span class="prelude-val">Some</span>(tls_secret.name().to_owned()),
-                        ..Default::default()
-                    }),
-                    ..Default::default()
-                },
-                Volume {
-                    name: OPERATOR_PVC_VOLUME_NAME.to_owned(),
-                    persistent_volume_claim: <span class="prelude-val">Some</span>(PersistentVolumeClaimVolumeSource {
-                        claim_name: OPERATOR_PVC_NAME.to_owned(),
-                        ..Default::default()
-                    }),
-                    ..Default::default()
-                },
-            ]),
+            volumes: <span class="prelude-val">Some</span>(volumes),
             ..Default::default()
         };
 

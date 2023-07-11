@@ -82,14 +82,11 @@
 <a href="#82" id="82">82</a>
 <a href="#83" id="83">83</a>
 <a href="#84" id="84">84</a>
-<a href="#85" id="85">85</a>
-<a href="#86" id="86">86</a>
-<a href="#87" id="87">87</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>mirrord_config_derive::MirrordConfig;
+</pre></div><pre class="rust"><code><span class="kw">use </span>mirrord_analytics::CollectAnalytics;
+<span class="kw">use </span>mirrord_config_derive::MirrordConfig;
 <span class="kw">use </span>schemars::JsonSchema;
 
 <span class="kw">use </span><span class="self">self</span>::{env::EnvConfig, fs::FsConfig, network::NetworkConfig};
-<span class="kw">use </span><span class="kw">crate</span>::config::source::MirrordConfigSource;
 
 <span class="kw">pub mod </span>env;
 <span class="kw">pub mod </span>fs;
@@ -140,7 +137,6 @@
 ///       },
 ///       &quot;dns&quot;: false
 ///     },
-///     &quot;capture_error_trace&quot;: false
 ///   }
 /// }
 /// ```
@@ -148,16 +144,6 @@
 #[config(map_to = <span class="string">&quot;FeatureFileConfig&quot;</span>, derive = <span class="string">&quot;JsonSchema&quot;</span>)]
 #[cfg_attr(test, config(derive = <span class="string">&quot;PartialEq, Eq&quot;</span>))]
 </span><span class="kw">pub struct </span>FeatureConfig {
-    <span class="doccomment">/// ## feature.capture_error_trace {#feature-capture_error_trace}
-    ///
-    /// Controls the crash reporting feature.
-    ///
-    /// With this feature enabled, mirrord generates a nice crash report log.
-    ///
-    /// Defaults to `false`.
-    </span><span class="attr">#[config(env = <span class="string">&quot;MIRRORD_CAPTURE_ERROR_TRACE&quot;</span>, default = <span class="bool-val">false</span>)]
-    </span><span class="kw">pub </span>capture_error_trace: bool,
-
     <span class="doccomment">/// ## feature.env {#feature-env}
     </span><span class="attr">#[config(nested, toggleable)]
     </span><span class="kw">pub </span>env: EnvConfig,
@@ -171,5 +157,13 @@
     <span class="doccomment">/// ## feature.network {#feature-network}
     </span><span class="attr">#[config(nested, toggleable)]
     </span><span class="kw">pub </span>network: NetworkConfig,
+}
+
+<span class="kw">impl </span>CollectAnalytics <span class="kw">for </span><span class="kw-2">&amp;</span>FeatureConfig {
+    <span class="kw">fn </span>collect_analytics(<span class="kw-2">&amp;</span><span class="self">self</span>, analytics: <span class="kw-2">&amp;mut </span>mirrord_analytics::Analytics) {
+        analytics.add(<span class="string">&quot;env&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.env);
+        analytics.add(<span class="string">&quot;fs&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.fs);
+        analytics.add(<span class="string">&quot;network&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.network);
+    }
 }
 </code></pre></div></section></main></body></html>

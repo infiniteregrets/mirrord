@@ -286,39 +286,6 @@
 <a href="#286" id="286">286</a>
 <a href="#287" id="287">287</a>
 <a href="#288" id="288">288</a>
-<a href="#289" id="289">289</a>
-<a href="#290" id="290">290</a>
-<a href="#291" id="291">291</a>
-<a href="#292" id="292">292</a>
-<a href="#293" id="293">293</a>
-<a href="#294" id="294">294</a>
-<a href="#295" id="295">295</a>
-<a href="#296" id="296">296</a>
-<a href="#297" id="297">297</a>
-<a href="#298" id="298">298</a>
-<a href="#299" id="299">299</a>
-<a href="#300" id="300">300</a>
-<a href="#301" id="301">301</a>
-<a href="#302" id="302">302</a>
-<a href="#303" id="303">303</a>
-<a href="#304" id="304">304</a>
-<a href="#305" id="305">305</a>
-<a href="#306" id="306">306</a>
-<a href="#307" id="307">307</a>
-<a href="#308" id="308">308</a>
-<a href="#309" id="309">309</a>
-<a href="#310" id="310">310</a>
-<a href="#311" id="311">311</a>
-<a href="#312" id="312">312</a>
-<a href="#313" id="313">313</a>
-<a href="#314" id="314">314</a>
-<a href="#315" id="315">315</a>
-<a href="#316" id="316">316</a>
-<a href="#317" id="317">317</a>
-<a href="#318" id="318">318</a>
-<a href="#319" id="319">319</a>
-<a href="#320" id="320">320</a>
-<a href="#321" id="321">321</a>
 </pre></div><pre class="rust"><code><span class="attr">#![deny(missing_docs)]
 
 </span><span class="kw">use </span>std::path::PathBuf;
@@ -363,7 +330,6 @@ Join our Discord server at https://discord.gg/metalbear, create a GitHub issue a
     <span class="attr">#[command(hide = <span class="bool-val">true</span>)]
     </span>Extract { path: String },
     <span class="doccomment">/// Operator commands eg. setup
-    </span><span class="attr">#[command(hide = <span class="bool-val">true</span>)]
     </span>Operator(Box&lt;OperatorArgs&gt;),
 
     <span class="doccomment">/// List targets/resources like pods/namespaces in json format
@@ -490,36 +456,17 @@ Join our Discord server at https://discord.gg/metalbear, create a GitHub issue a
     </span><span class="attr">#[arg(long)]
     </span><span class="kw">pub </span>no_udp_outgoing: bool,
 
-    <span class="doccomment">/// Disable telemetry - this also disables version check. See https://github.com/metalbear-co/mirrord/blob/main/TELEMETRY.md
+    <span class="doccomment">/// Disable telemetry. See https://github.com/metalbear-co/mirrord/blob/main/TELEMETRY.md
     </span><span class="attr">#[arg(long)]
     </span><span class="kw">pub </span>no_telemetry: bool,
+
+    <span class="attr">#[arg(long)]
+    </span><span class="doccomment">/// Disable version check on startup.
+    </span><span class="kw">pub </span>disable_version_check: bool,
 
     <span class="doccomment">/// Load config from config file
     </span><span class="attr">#[arg(short = <span class="string">&#39;f&#39;</span>, long)]
     </span><span class="kw">pub </span>config_file: <span class="prelude-ty">Option</span>&lt;PathBuf&gt;,
-
-    <span class="doccomment">/// Create a trace file of errors for debugging.
-    </span><span class="attr">#[arg(long)]
-    </span><span class="kw">pub </span>capture_error_trace: bool,
-}
-
-<span class="attr">#[derive(Args, Debug)]
-</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>LoginArgs {
-    <span class="doccomment">/// Manualy insert token
-    </span><span class="attr">#[arg(long)]
-    </span><span class="kw">pub </span>token: <span class="prelude-ty">Option</span>&lt;String&gt;,
-
-    <span class="doccomment">/// Time to wait till close the connection wating for reply from identity server
-    </span><span class="attr">#[arg(long, default_value_t = <span class="number">120</span>)]
-    </span><span class="kw">pub </span>timeout: u64,
-
-    <span class="doccomment">/// Override identity server url
-    </span><span class="attr">#[arg(long, default_value = <span class="string">&quot;https://identity.metalbear.dev&quot;</span>)]
-    </span><span class="kw">pub </span>auth_server: String,
-
-    <span class="doccomment">/// Don&#39;t open web browser automatically and just print url
-    </span><span class="attr">#[arg(long)]
-    </span><span class="kw">pub </span>no_open: bool,
 }
 
 <span class="attr">#[derive(Args, Debug)]
@@ -539,38 +486,25 @@ Join our Discord server at https://discord.gg/metalbear, create a GitHub issue a
         </span><span class="attr">#[arg(long)]
         </span>accept_tos: bool,
 
-        <span class="doccomment">/// License key to be stored in mirrord-operator-license secret
+        <span class="doccomment">/// A mirrord for Teams license key (online)
         </span><span class="attr">#[arg(long)]
         </span>license_key: <span class="prelude-ty">Option</span>&lt;String&gt;,
 
-        <span class="doccomment">/// License key file path to be stored in mirrord-operator-license secret
+        <span class="doccomment">/// Path to a file containing a mirrord for Teams license certificate
         </span><span class="attr">#[arg(long)]
         </span>license_path: <span class="prelude-ty">Option</span>&lt;PathBuf&gt;,
 
-        <span class="doccomment">/// Output to kubernetes specs to file instead of stdout and piping to kubectl
+        <span class="doccomment">/// Output Kubernetes specs to file instead of stdout
         </span><span class="attr">#[arg(short, long)]
         </span>file: <span class="prelude-ty">Option</span>&lt;PathBuf&gt;,
 
-        <span class="doccomment">/// Set namespace to setup operator in (this doesn&#39;t limit the namespaces the operator will
-        /// be able to access)
+        <span class="doccomment">/// Namespace to create the operator in (this doesn&#39;t limit the namespaces the operator
+        /// will be able to access)
         </span><span class="attr">#[arg(short, long, default_value = <span class="string">&quot;mirrord&quot;</span>)]
         </span>namespace: OperatorNamespace,
-
-        <span class="doccomment">/// Setup operator for offline telemetry collection
-        </span><span class="attr">#[arg(long, hide = <span class="bool-val">true</span>)]
-        </span>offline: bool,
     },
     <span class="doccomment">/// Print operator status
     </span>Status {
-        <span class="doccomment">/// Specify config file to use
-        </span><span class="attr">#[arg(short = <span class="string">&#39;f&#39;</span>)]
-        </span>config_file: <span class="prelude-ty">Option</span>&lt;String&gt;,
-    },
-    <span class="doccomment">/// Print telemtry export for offline operators
-    </span><span class="attr">#[command(
-        override_usage = <span class="string">&quot;mirrord operator telemetry-export [OPTIONS] &gt; telemetry-export.json&quot;
-    </span>)]
-    </span>TelemetryExport {
         <span class="doccomment">/// Specify config file to use
         </span><span class="attr">#[arg(short = <span class="string">&#39;f&#39;</span>)]
         </span>config_file: <span class="prelude-ty">Option</span>&lt;String&gt;,
