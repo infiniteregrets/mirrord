@@ -185,14 +185,14 @@
 <a href="#185" id="185">185</a>
 <a href="#186" id="186">186</a>
 <a href="#187" id="187">187</a>
-<a href="#188" id="188">188</a>
 </pre></div><pre class="rust"><code><span class="attr">#[cfg(test)]
 
+</span><span class="doccomment">/// The pause tests use predefined resource names (service/deployment), so they can&#39;t be run at the
+/// same time. We use `serial_test` to run them one after the other.
 </span><span class="kw">mod </span>pause {
-    <span class="kw">use </span>std::{io::ErrorKind::UnexpectedEof, time::Duration};
+    <span class="kw">use </span>std::time::Duration;
 
     <span class="kw">use </span>futures::{AsyncBufReadExt, StreamExt};
-    <span class="kw">use </span>futures_util::TryStreamExt;
     <span class="kw">use </span>k8s_openapi::api::{batch::v1::Job, core::v1::Pod};
     <span class="kw">use </span>kube::{
         api::{ListParams, LogParams},
@@ -200,6 +200,7 @@
         Api, Client, ResourceExt,
     };
     <span class="kw">use </span>rstest::<span class="kw-2">*</span>;
+    <span class="kw">use </span>serial_test::serial;
 
     <span class="kw">use </span><span class="kw">crate</span>::utils::{
         get_service_url, http_log_requester_service, http_logger_service, kube_client,
@@ -233,6 +234,7 @@
     </span><span class="attr">#[rstest]
     #[tokio::test(flavor = <span class="string">&quot;multi_thread&quot;</span>, worker_threads = <span class="number">2</span>)]
     #[timeout(Duration::from_secs(<span class="number">240</span>))]
+    #[serial]
     </span><span class="kw">pub async fn </span>pause_log_requests(
         <span class="attr">#[future] </span>http_logger_service: KubeService,
         <span class="attr">#[future] </span>http_log_requester_service: KubeService,
@@ -261,12 +263,7 @@
 
         <span class="kw">let </span>log_stream = pod_api.log_stream(pod_name, <span class="kw-2">&amp;</span>lp).<span class="kw">await</span>.unwrap();
 
-        <span class="comment">// `IntoAsyncRead` needs a stream with `Error = io::Error`, so convert the error type of the
-        // result from kube::Error to io::Error.
-        </span><span class="kw">let </span>log_stream = log_stream
-            .map(|res| res.map_err(|err| std::io::Error::new(UnexpectedEof, err.to_string())));
-
-        <span class="kw">let </span>log_lines = log_stream.into_async_read().lines();
+        <span class="kw">let </span>log_lines = log_stream.lines();
 
         <span class="comment">// skip 2 lines of flask prints.
         </span><span class="kw">let </span><span class="kw-2">mut </span>log_lines = log_lines.skip(<span class="number">2</span>);
@@ -328,6 +325,7 @@
     </span><span class="attr">#[rstest]
     #[tokio::test(flavor = <span class="string">&quot;multi_thread&quot;</span>, worker_threads = <span class="number">2</span>)]
     #[timeout(Duration::from_secs(<span class="number">60</span>))]
+    #[serial]
     </span><span class="kw">pub async fn </span>unpause_after_error(
         <span class="attr">#[future] </span>random_namespace_self_deleting_service: KubeService,
         <span class="attr">#[future] </span>kube_client: Client,
