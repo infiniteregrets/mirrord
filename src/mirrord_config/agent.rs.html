@@ -292,6 +292,21 @@
 <a href="#292" id="292">292</a>
 <a href="#293" id="293">293</a>
 <a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::HashMap;
 
 <span class="kw">use </span>k8s_openapi::api::core::v1::Toleration;
@@ -370,7 +385,7 @@
     <span class="doccomment">/// ### agent.namespace {#agent-namespace}
     ///
     /// Namespace where the agent shall live.
-    ///
+    /// Note: Doesn&#39;t work with ephemeral containers.
     /// Defaults to the current kubernetes namespace.
     </span><span class="attr">#[config(env = <span class="string">&quot;MIRRORD_AGENT_NAMESPACE&quot;</span>)]
     </span><span class="kw">pub </span>namespace: <span class="prelude-ty">Option</span>&lt;String&gt;,
@@ -518,6 +533,15 @@
     </span><span class="attr">#[config(default = <span class="bool-val">true</span>)]
     </span><span class="kw">pub </span>check_out_of_pods: bool,
 
+    <span class="doccomment">/// ### agent.privileged {#agent-privileged}
+    ///
+    /// Run the mirror agent as privileged container.
+    /// Defaults to `false`.
+    ///
+    /// Might be needed in strict environments such as Bottlerocket.
+    </span><span class="attr">#[config(default = <span class="bool-val">false</span>)]
+    </span><span class="kw">pub </span>privileged: bool,
+
     <span class="doccomment">/// &lt;!--${internal}--&gt;
     /// Create an agent that returns an error after accepting the first client. For testing
     /// purposes. Only supported with job agents (not with ephemeral agents).
@@ -538,7 +562,10 @@
     <span class="kw">use </span>rstest::rstest;
 
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use crate</span>::{config::MirrordConfig, util::testing::with_env_vars};
+    <span class="kw">use crate</span>::{
+        config::{ConfigContext, MirrordConfig},
+        util::testing::with_env_vars,
+    };
 
     <span class="attr">#[rstest]
     </span><span class="kw">fn </span>default(
@@ -572,7 +599,10 @@
                 (<span class="string">&quot;MIRRORD_AGENT_STARTUP_TIMEOUT&quot;</span>, startup_timeout.<span class="number">0</span>),
             ],
             || {
-                <span class="kw">let </span>agent = AgentFileConfig::default().generate_config().unwrap();
+                <span class="kw">let </span><span class="kw-2">mut </span>cfg_context = ConfigContext::default();
+                <span class="kw">let </span>agent = AgentFileConfig::default()
+                    .generate_config(<span class="kw-2">&amp;mut </span>cfg_context)
+                    .unwrap();
 
                 <span class="macro">assert_eq!</span>(agent.log_level, log_level.<span class="number">1</span>);
                 <span class="macro">assert_eq!</span>(agent.namespace.as_deref(), namespace.<span class="number">1</span>);

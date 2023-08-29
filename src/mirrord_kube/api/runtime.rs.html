@@ -342,6 +342,10 @@
 <a href="#342" id="342">342</a>
 <a href="#343" id="343">343</a>
 <a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{
     collections::BTreeMap,
     convert::Infallible,
@@ -384,6 +388,7 @@
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>RuntimeData {
     <span class="kw">pub </span>pod_name: String,
+    <span class="kw">pub </span>pod_namespace: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="kw">pub </span>node_name: String,
     <span class="kw">pub </span>container_id: String,
     <span class="kw">pub </span>container_runtime: ContainerRuntime,
@@ -447,6 +452,7 @@
 
         <span class="prelude-val">Ok</span>(RuntimeData {
             pod_name,
+            pod_namespace: pod.metadata.namespace.clone(),
             node_name,
             container_id,
             container_runtime,
@@ -454,7 +460,8 @@
         })
     }
 
-    <span class="kw">pub async fn </span>check_node(<span class="kw-2">&amp;</span><span class="self">self</span>, client: <span class="kw-2">&amp;</span>kube::Client) -&gt; NodeCheck {
+    <span class="attr">#[tracing::instrument(level = <span class="string">&quot;trace&quot;</span>, skip(client), ret)]
+    </span><span class="kw">pub async fn </span>check_node(<span class="kw-2">&amp;</span><span class="self">self</span>, client: <span class="kw-2">&amp;</span>kube::Client) -&gt; NodeCheck {
         <span class="kw">let </span>node_api: Api&lt;Node&gt; = Api::all(client.clone());
         <span class="kw">let </span>pod_api: Api&lt;Pod&gt; = Api::all(client.clone());
 
@@ -497,7 +504,8 @@
     }
 }
 
-<span class="kw">pub enum </span>NodeCheck {
+<span class="attr">#[derive(Debug)]
+</span><span class="kw">pub enum </span>NodeCheck {
     Success,
     Failed(String, usize),
     Error(KubeApiError),
