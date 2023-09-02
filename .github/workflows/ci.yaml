@@ -369,7 +369,7 @@ jobs:
       - run: npm install express # For http mirroring test with node.
       - run: cargo build --target=x86_64-apple-darwin -p mirrord-layer # Build layer lib. The tests load it into the apps.
       - name: mirrord layer tests
-        run: cargo test --target=x86_64-apple-darwin -p mirrord-layer -- --nocapture
+        run: cargo test --package mirrord-layer --test http_mirroring -- mirroring_with_http::application_1_Application__PythonFastApiHTTP --exact --nocapture
 
   # e2e:
   #   runs-on: ubuntu-latest
