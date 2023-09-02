@@ -241,6 +241,7 @@ impl LayerConnection {
     }
 
     async fn send_tcp_data(&mut self, message_data: &str, connection_id: u64) {
+        println!("Sending data to layer: {message_data}");
         self.codec
             .send(DaemonMessage::Tcp(DaemonTcp::Data(TcpData {
                 connection_id,

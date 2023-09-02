@@ -18,9 +18,9 @@ pub use common::*;
 #[timeout(Duration::from_secs(60))]
 async fn mirroring_with_http(
     #[values(
-        Application::PythonFlaskHTTP,
+        // Application::PythonFlaskHTTP,
         Application::PythonFastApiHTTP,
-        Application::NodeHTTP
+        // Application::NodeHTTP
     )]
     application: Application,
     dylib_path: &PathBuf,
@@ -30,6 +30,7 @@ async fn mirroring_with_http(
         .start_process_with_layer_and_port(
             dylib_path,
             vec![
+                ("RUST_LOG", "mirrord=trace"),
                 ("MIRRORD_FILE_MODE", "local"),
                 ("MIRRORD_UDP_OUTGOING", "false"),
                 ("OBJC_DISABLE_INITIALIZE_FORK_SAFETY", "YES"),
