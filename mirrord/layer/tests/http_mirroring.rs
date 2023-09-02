@@ -18,9 +18,9 @@ pub use common::*;
 #[timeout(Duration::from_secs(60))]
 async fn mirroring_with_http(
     #[values(
-        // Application::PythonFlaskHTTP,
+        Application::PythonFlaskHTTP,
         Application::PythonFastApiHTTP,
-        // Application::NodeHTTP
+        Application::NodeHTTP
     )]
     application: Application,
     dylib_path: &PathBuf,
