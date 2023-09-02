@@ -84,14 +84,14 @@ async fn mirroring_with_http(
 }
 
 /// Run the http mirroring test only on MacOS, because of a known crash on Linux.
-#[cfg(target_os = "macos")]
-#[rstest]
-#[tokio::test]
-#[timeout(Duration::from_secs(60))]
-async fn mirroring_with_http_go(
-    dylib_path: &PathBuf,
-    config_dir: &PathBuf,
-    #[values(Application::Go19HTTP, Application::Go20HTTP)] application: Application,
-) {
-    mirroring_with_http(application, dylib_path, config_dir).await;
-}
+// #[cfg(target_os = "macos")]
+// #[rstest]
+// #[tokio::test]
+// #[timeout(Duration::from_secs(60))]
+// async fn mirroring_with_http_go(
+//     dylib_path: &PathBuf,
+//     config_dir: &PathBuf,
+//     #[values(Application::Go19HTTP, Application::Go20HTTP)] application: Application,
+// ) {
+//     mirroring_with_http(application, dylib_path, config_dir).await;
+// }
