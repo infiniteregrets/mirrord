@@ -158,7 +158,7 @@ jobs:
     steps:
       - id: release-branch
         run: |
-          echo [[ 3.67.0 =~ "^[0-9]+\.[0-9]+\.[0-9]+$" ]] && echo $?
+          echo $([[ 3.67.0 =~ "^[0-9]+\.[0-9]+\.[0-9]+$" ]]) && echo $?
           echo "branch=$([[ 3.67.0 =~ "^[0-9]+\.[0-9]+\.[0-9]+$" ]]  && echo "true" || echo "false" )" >> "$GITHUB_OUTPUT"
           echo "branch=$([[ 3.67.0 =~ "^[0-9]+\.[0-9]+\.[0-9]+$" ]]  && echo "true" || echo "false" )"
       - name: output test
