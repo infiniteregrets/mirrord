@@ -150,7 +150,7 @@ jobs:
 
   # if the branch is named is `x.x.x`, x ∈ [0, 9], then it's a release branch
   # the output of this test is a boolean indicating if it's a release branch
-  # which is then used by `build_mirrord_on_release_branch`
+  # which is then used by `build_mirrord_on_release_branch`.
   check_if_release_branch:
     runs-on: ubuntu-latest
     outputs:
