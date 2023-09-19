@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 //! Internal proxy is accepting connection from local layers and forward it to agent
 //! while having 1:1 relationship - each layer connection is another agent connection.
 //!
