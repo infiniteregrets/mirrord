@@ -87,6 +87,7 @@ var srcIndex = JSON.parse('{\
 "cipher":["",[],["block.rs","errors.rs","lib.rs","stream.rs","stream_core.rs","stream_wrapper.rs"]],\
 "clap":["",[],["lib.rs"]],\
 "clap_builder":["",[["builder",[],["action.rs","app_settings.rs","arg.rs","arg_group.rs","arg_predicate.rs","arg_settings.rs","command.rs","debug_asserts.rs","ext.rs","mod.rs","os_str.rs","possible_value.rs","range.rs","resettable.rs","str.rs","styled_str.rs","styling.rs","value_hint.rs","value_parser.rs"]],["error",[],["context.rs","format.rs","kind.rs","mod.rs"]],["output",[["textwrap",[],["core.rs","mod.rs"]]],["fmt.rs","help.rs","help_template.rs","mod.rs","usage.rs"]],["parser",[["features",[],["mod.rs","suggestions.rs"]],["matches",[],["arg_matches.rs","matched_arg.rs","mod.rs","value_source.rs"]]],["arg_matcher.rs","error.rs","mod.rs","parser.rs","validator.rs"]],["util",[],["any_value.rs","color.rs","flat_map.rs","flat_set.rs","graph.rs","id.rs","mod.rs","str_to_bool.rs"]]],["derive.rs","lib.rs","macros.rs","mkeymap.rs"]],\
+"clap_complete":["",[["generator",[],["mod.rs","utils.rs"]],["shells",[],["bash.rs","elvish.rs","fish.rs","mod.rs","powershell.rs","shell.rs","zsh.rs"]]],["lib.rs","macros.rs"]],\
 "clap_derive":["",[["derives",[],["args.rs","into_app.rs","mod.rs","parser.rs","subcommand.rs","value_enum.rs"]],["utils",[],["doc_comments.rs","error.rs","mod.rs","spanned.rs","ty.rs"]]],["attr.rs","dummies.rs","item.rs","lib.rs","macros.rs"]],\
 "clap_lex":["",[],["ext.rs","lib.rs"]],\
 "colorchoice":["",[],["lib.rs"]],\
