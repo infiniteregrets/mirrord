@@ -169,11 +169,11 @@ impl MirrordExecution {
             .spawn()
             .map_err(CliError::InternalProxyExecutionFailed)?;
 
-        let stderr = proxy_process
-            .stderr
-            .take()
-            .ok_or(CliError::InternalProxyStderrError)?;
-        let _stderr_guard = watch_stderr(stderr, progress).await;
+        // let stderr = proxy_process
+        //     .stderr
+        //     .take()
+        //     .ok_or(CliError::InternalProxyStderrError)?;
+        // let _stderr_guard = watch_stderr(stderr, progress).await;
 
         let stdout = proxy_process
             .stdout
