@@ -159,7 +159,7 @@ impl MirrordExecution {
         proxy_command
             .arg("intproxy")
             .stdout(std::process::Stdio::piped())
-            .stderr(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::inherit())
             .stdin(std::process::Stdio::null());
 
         let connect_info = serde_json::to_string(&connect_info)?;
