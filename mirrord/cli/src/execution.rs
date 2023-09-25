@@ -76,6 +76,7 @@ where
 
 /// Creates a task that reads stderr and returns a vector of warnings at the end.
 /// Caller should cancel the token and wait on join handle.
+#[allow(dead_code)]
 async fn watch_stderr<P>(stderr: ChildStderr, progress: &P) -> DropProgress<P>
 where
     P: Progress + Send + Sync,
