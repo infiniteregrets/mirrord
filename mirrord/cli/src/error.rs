@@ -44,6 +44,7 @@ pub(crate) enum InternalProxyError {
     PauseError(String),
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Error, Diagnostic)]
 pub(crate) enum CliError {
     #[error("Failed to connect to the operator. We have found the operator and unable to connect to it. {0:#?}")]

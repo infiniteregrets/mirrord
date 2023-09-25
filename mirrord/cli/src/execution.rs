@@ -76,6 +76,7 @@ where
 
 /// Creates a task that reads stderr and returns a vector of warnings at the end.
 /// Caller should cancel the token and wait on join handle.
+#[allow(dead_code)]
 async fn watch_stderr<P>(stderr: ChildStderr, progress: &P) -> DropProgress<P>
 where
     P: Progress + Send + Sync,
@@ -159,7 +160,7 @@ impl MirrordExecution {
         proxy_command
             .arg("intproxy")
             .stdout(std::process::Stdio::piped())
-            .stderr(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::inherit())
             .stdin(std::process::Stdio::null());
 
         let connect_info = serde_json::to_string(&connect_info)?;
@@ -169,11 +170,11 @@ impl MirrordExecution {
             .spawn()
             .map_err(CliError::InternalProxyExecutionFailed)?;
 
-        let stderr = proxy_process
-            .stderr
-            .take()
-            .ok_or(CliError::InternalProxyStderrError)?;
-        let _stderr_guard = watch_stderr(stderr, progress).await;
+        // let stderr = proxy_process
+        //     .stderr
+        //     .take()
+        //     .ok_or(CliError::InternalProxyStderrError)?;
+        // let _stderr_guard = watch_stderr(stderr, progress).await;
 
         let stdout = proxy_process
             .stdout

@@ -487,7 +487,7 @@ pub async fn run_exec(
     base_env.insert("MIRRORD_CHECK_VERSION", "false");
     base_env.insert("MIRRORD_AGENT_RUST_LOG", "warn,mirrord=debug");
     base_env.insert("MIRRORD_AGENT_COMMUNICATION_TIMEOUT", "180");
-    base_env.insert("RUST_LOG", "warn,mirrord=debug");
+    base_env.insert("RUST_LOG", "warn,mirrord=trace");
 
     if let Some(env) = env {
         for (key, value) in env {
